@@ -24,13 +24,6 @@
                             <label for="exampleInputPassword4">Password</label>
                             <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
                         </div>
-                        <!-- <div class="form-group">
-                            <label for="exampleSelectGender">Gender</label>
-                            <select class="form-control" id="exampleSelectGender">
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-                        </div> -->
                         <div class="form-group">
                             <label>File upload</label>
                             <input type="file" name="img[]" class="file-upload-default">
@@ -58,12 +51,3 @@
     </div>
 </div>
 @endsection
-<!-- <div class="card-footer clearfix">
-                        <ul class="pagination pagination m-0 float-right">
-                            <li class="page-item"><a class="page-link" href="#">«</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">»</a></li>
-                        </ul>
-                    </div> -->

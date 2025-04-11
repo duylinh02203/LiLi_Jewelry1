@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,12 +26,12 @@ Route::get('dashboard', function () {
 //     return view('admin.layouts.products.product');
 // })->name('product');
 
-Route::get('product',[AdminProductController::class,'product'] )->name('product');
-Route::get('category',[AdminProductController::class,'category'] )->name('category');
-Route::get('addCategory',[AdminProductController::class,'addcategory'] )->name('addCategory');
-Route::get('admin/order',[AdminProductController::class,'order'] )->name('order');
-Route::get('setting',[AdminProductController::class,'setting'] )->name('setting.update');
-Route::get('admin/order_chuaduyet',[AdminProductController::class,'order_chuaduyet'] )->name('chuaduyet');
+Route::get('product',[HomeController::class,'product'] )->name('product');
+Route::get('category',[HomeController::class,'category'] )->name('category');
+Route::get('addCategory',[HomeController::class,'addcategory'] )->name('addCategory');
+Route::get('admin/order',[HomeController::class,'order'] )->name('order');
+Route::get('setting',[HomeController::class,'setting'] )->name('setting.update');
+Route::get('admin/order_chuaduyet',[HomeController::class,'order_chuaduyet'] )->name('chuaduyet');
 
 // Route::get('login', function () {
 //     return view('admin.layouts.login');
