@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->integerIncrements('user_id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->tinyInteger('role')->default(2)->comment('1 = admin, 2 = user');
+        Schema::create('categories', function (Blueprint $table) {
+            $table->integerIncrements('category_id');
+            $table->string('category_name')->nullable();
+            $table->string('category_description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('categories');
     }
 };

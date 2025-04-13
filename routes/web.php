@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,12 +28,25 @@ Route::get('dashboard', function () {
 // })->name('product');
 
 Route::get('product',[HomeController::class,'product'] )->name('product');
-Route::get('category',[HomeController::class,'category'] )->name('category');
-Route::get('addCategory',[HomeController::class,'addcategory'] )->name('addCategory');
+
+// Route::get('category',[HomeController::class,'category'] )->name('category');
+
+Route::get('create_category',[HomeController::class,'create_category'] )->name('create.category');
 Route::get('admin/order',[HomeController::class,'order'] )->name('order');
 Route::get('setting',[HomeController::class,'setting'] )->name('setting.update');
 Route::get('admin/order_chuaduyet',[HomeController::class,'order_chuaduyet'] )->name('chuaduyet');
 
+// Route::resource('category', CategoryController::class);
+//Route Category
+
+Route::get('category',[CategoryController::class,'index'] )->name('category.index');
+Route::post('category',[CategoryController::class,'store'] )->name('category.store');
+Route::get('category/create',[CategoryController::class,'create'] )->name('category.create');
+Route::put('category/{category}',[CategoryController::class,'update'] )->name('category.update');
+Route::get('category/{category}',[CategoryController::class,'destroy'] )->name('category.destroy');
+Route::get('category/{category}/edit',[CategoryController::class,'edit'] )->name('category.edit');
+
 // Route::get('login', function () {
 //     return view('admin.layouts.login');
 // })->name('login');
+//Route Product

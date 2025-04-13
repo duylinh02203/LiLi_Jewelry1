@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
+
 
 class HomeController extends Controller
 {
-    public function product()
-    {
-        return view('admin.products.product');
-    }
-
+    
     public function category()
     {
         
@@ -19,7 +17,7 @@ class HomeController extends Controller
 
     public function addcategory()
     {
-        return view('admin.categories.addcategory');
+        return view('admin.categories.create_category');
     }
 
     public function setting()
@@ -35,5 +33,9 @@ class HomeController extends Controller
     public function order_chuaduyet()
     {
         return view('admin.orders.chuaduyet');
+    }
+    public function product()
+    {
+        return view('admin.products.product');
     }
 }
