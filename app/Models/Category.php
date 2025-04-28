@@ -9,7 +9,12 @@ class Category extends Model
 {
     use HasFactory;
     // public $timestamps = false;
-    protected $table = 'categories';// ten bang trong csdl
-    protected $primaryKey = 'id';// khoa chinh laravel nhan id la khoa chinh
-    protected $fillable=['id','name','description'];
+    protected $table = 'categories';
+    protected $primaryKey = 'id';
+    protected $fillable = ['id', 'name', 'description'];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

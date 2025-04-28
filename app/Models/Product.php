@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Product extends Model
 {
-    use HasFactory;
-    protected $table = 'products';
+    use HasFactory, HasSlug;
 
-    // Các field cho phép mass assign
-    protected $fillable = [
+    public $fillable = [
         'name',
         'description',
         'price',
@@ -21,15 +21,25 @@ class Product extends Model
         'category_id',
     ];
 
-    // Một sản phẩm có nhiều ảnh
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('slug')
+            ->saveSlugsTo('slug');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function images()
     {
         return $this->hasMany(ProductImage::class);
     }
 
-    // Nếu cần: Một sản phẩm thuộc về một danh mục
-    public function category()
+    public function firstImage()
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasOne(ProductImage::class)->orderBy('id');
     }
 }
