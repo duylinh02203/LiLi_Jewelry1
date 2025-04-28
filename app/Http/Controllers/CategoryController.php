@@ -21,17 +21,17 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'category_name' => 'required',
-            'category_description' => 'required',
-        ]);
-        Category::create($data);
-        return redirect()->route('category.index')->with('success', 'Category created successfully.');
-        // $category = new Category();
-        // $category->category_name = $request->input('category_name');
-        // $category->category_description = $request->input('category_description');
-        // $category->save();
+        // $data = $request->validate([
+        //     'name' => 'required',
+        //     'description' => 'required',
+        // ]);
+        // Category::create($data);
         // return redirect()->route('category.index')->with('success', 'Category created successfully.');
+        $category = new Category();
+        $category->name = $request->input('category_name');
+        $category->description = $request->input('category_description');
+        $category->save();
+        return redirect()->route('category.index')->with('success', 'Category created successfully.');
     }
 
     public function edit(Category $category)
@@ -45,8 +45,8 @@ class CategoryController extends Controller
         $name = $request->input('category_name');
         $description = $request->input('category_description');
         $category->update([
-            'category_name' => $name,
-            'category_description' => $description,
+            'name' => $name,
+            'description' => $description,
         ]);
         return redirect()->route('category.index')->with('success', 'Category updated successfully.');
     }

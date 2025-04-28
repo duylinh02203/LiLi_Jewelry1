@@ -10,7 +10,7 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Thêm danh mục</h4>
+                    <h4 class="card-title">Thêm danh</h4>
                     <form action="{{route('category.store')}}" class="forms-sample" method="post">
                         @csrf
                         <div class="form-group">

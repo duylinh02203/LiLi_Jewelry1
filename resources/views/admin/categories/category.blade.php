@@ -135,14 +135,14 @@
                                 @if(count($cats) > 0)
                                 @foreach($cats as $cat)
                                 <tr>
-                                    <td>{{$cat->category_id}}</td>
-                                    <td>{{$cat->category_name}}</td>
-                                    <td>{{$cat->category_description}}</td>
+                                    <td>{{$cat->id}}</td>
+                                    <td>{{$cat->name}}</td>
+                                    <td>{{$cat->description}}</td>
                                     <td>
-                                        <a href="{{route('category.edit',$cat->category_id)}}"><button type="button" class="btn btn-edit">Sửa</button></a>
+                                        <a href="{{route('category.edit',$cat->id)}}"><button type="button" class="btn btn-edit">Sửa</button></a>
                                         @csrf
                                         @method('DELETE')
-                                        <a href="{{route('category.destroy',$cat->category_id)}}"> <button type="button" class="btn btn-delete">Xóa</button>
+                                        <a href="{{route('category.destroy',$cat->id)}}"> <button type="button" class="btn btn-delete">Xóa</button>
                                         </a>
                                     </td>
                                 </tr>

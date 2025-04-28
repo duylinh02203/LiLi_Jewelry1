@@ -10,6 +10,6 @@ class Category extends Model
     use HasFactory;
     // public $timestamps = false;
     protected $table = 'categories';// ten bang trong csdl
-    protected $primaryKey = 'category_id';// khoa chinh laravel nhan id la khoa chinh
-    protected $fillable=['category_id','category_name','category_description'];
+    protected $primaryKey = 'id';// khoa chinh laravel nhan id la khoa chinh
+    protected $fillable=['id','name','description'];
 }
