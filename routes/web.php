@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CMS\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,10 +31,22 @@ Route::get('product',[HomeController::class,'product'] )->name('product');
 
 // Route::get('category',[HomeController::class,'category'] )->name('category');
 
-Route::get('create_category',[HomeController::class,'create_category'] )->name('create.category');
-Route::get('admin/order',[HomeController::class,'order'] )->name('order');
-Route::get('setting',[HomeController::class,'setting'] )->name('setting.update');
-Route::get('admin/order_chuaduyet',[HomeController::class,'order_chuaduyet'] )->name('chuaduyet');
+// Route::get('create_category',[HomeController::class,'create_category'] )->name('create.category');
+// Route::get('admin/order',[HomeController::class,'order'] )->name('order');
+// Route::get('setting',[HomeController::class,'setting'] )->name('setting.update');
+// Route::get('admin/order_chuaduyet',[HomeController::class,'order_chuaduyet'] )->name('chuaduyet');
+Route::get('admin/logout',[AdminProductController::class,'logout'] )->name('admin.logout');
+Route::get('home',[HomeController::class,'index'] )->name('home');
+Route::get('shop',[HomeController::class,'shop'] )->name('shop');
+Route::get('cart',[HomeController::class,'cart'] )->name('cart');
+Route::get('contact',[HomeController::class,'contact'] )->name('contact');
+Route::get('about',[HomeController::class,'about'] )->name('about');
+// Route::get('show',[HomeController::class,'show'] )->name('show');
+Route::get('dashboard',[HomeController::class,'dashboard'] )->name('dashboard');
+Route::get('checkout',[HomeController::class,'checkout'] )->name('checkout');
+Route::get('login',[HomeController::class,'login'] )->name('login');
+Route::get('register',[HomeController::class,'register'] )->name('register');
+Route::get('product/{slug}',[HomeController::class,'productDetails'] )->name('shop.product.details');
 
 // Route::resource('category', CategoryController::class);
 //Route Category
