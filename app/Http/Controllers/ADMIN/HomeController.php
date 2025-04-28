@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ADMIN;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 
 
 class HomeController extends Controller
 {
-    
+
     public function category()
     {
-        
         return view('admin.categories.category');
     }
 
@@ -33,9 +33,5 @@ class HomeController extends Controller
     public function order_chuaduyet()
     {
         return view('admin.orders.chuaduyet');
-    }
-    public function product()
-    {
-        return view('admin.products.product');
     }
 }
