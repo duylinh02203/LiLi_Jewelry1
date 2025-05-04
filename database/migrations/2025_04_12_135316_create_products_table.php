@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->unsignedBigInteger('price');
+            $table->string('gender')->comment('male, female, unisex');
             $table->unsignedBigInteger('listed_price');
             $table->string('status')->default('active');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
             $table->softDeletes();
