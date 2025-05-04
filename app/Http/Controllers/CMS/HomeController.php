@@ -22,17 +22,6 @@ class HomeController extends Controller
         return view('cms.cart.cart');
     }
 
-    public function shop()
-    {
-        $products = Product::with('images')->where('status', 'active')->paginate(5);
-        return view('cms.shop.shop', compact('products'));
-    }
-    public function productDetails($slug)
-    {   
-        $product = Product::where('slug', $slug)->first();
-        return view('cms.show.show', compact('product'));
-    }
-
     public function contact()
     {
         return view('cms.contact.contact');
@@ -41,11 +30,6 @@ class HomeController extends Controller
     public function about()
     {
         return view('cms.about.about');
-    }
-
-    public function show()
-    {
-        return view('cms.show.show');
     }
 
     public function dashboard()

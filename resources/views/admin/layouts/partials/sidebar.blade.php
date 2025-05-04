@@ -92,8 +92,8 @@
             </a>
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('order') }}">All</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('chuaduyet') }}">Unapproved Orders</a>
+                    <li class="nav-item"> <a class="nav-link" href="#">All</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#">Unapproved Orders</a>
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Approved
                             Orders</a></li>

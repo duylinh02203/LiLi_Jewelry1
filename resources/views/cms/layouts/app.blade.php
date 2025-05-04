@@ -275,7 +275,7 @@
             $('[data-bs-toggle="tooltip"]').tooltip()
         });
     </script>
-
+        @stack('scripts')
 </body>
 
 </html>

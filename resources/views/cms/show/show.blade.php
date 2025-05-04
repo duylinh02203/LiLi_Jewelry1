@@ -41,7 +41,7 @@
             <div class="col-lg-12 col-12">
                 <div class="details-items">
                     <div class="row g-4">
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="row">
                                 <div class="col-lg-2">
                                     <div class="details-image-vertical black-slide rounded">
@@ -55,7 +55,7 @@
                                         @endphp
                                         @foreach($images as $image)
                                         <div>
-                                            <img src="{{ asset('storage/'.$image) }}" class="img-fluid blur-up lazyload" alt="{{$product->name}}">
+                                            <img src="{{$image}}" class="img-fluid blur-up lazyload" alt="{{$product->name}}">
                                         </div>
                                         @endforeach
                                         @endif
@@ -79,7 +79,35 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> -->
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="details-image-vertical black-slide rounded">
+                                        @foreach($product->images as $image)
+                                        <div>
+                                            <img src="{{ asset('images/' . $image->image) }} "
+                                                class="img-fluid blur-up lazyload"
+                                                alt="{{ $product->name }}">
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-10">
+                                    <div class="details-image-1 ratio_asos">
+                                        @foreach($product->images as $index => $image)
+                                        <div>
+                                            <img src="{{ asset('images/' . $image->image) }}"
+                                                class="img-fluid w-100 image_zoom_cls-{{ $index }} blur-up lazyload"
+                                                alt="{{ $product->name }}">
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
 
                         <div class="col-md-6">
                             <div class="cloth-details-size">

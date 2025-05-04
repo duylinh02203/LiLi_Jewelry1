@@ -15,8 +15,10 @@ return new class extends Migration
             $table->integerIncrements('user_id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('role')->default(2)->comment('1 = admin, 2 = user');
+            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });

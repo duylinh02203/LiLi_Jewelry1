@@ -5,6 +5,7 @@ use App\Http\Controllers\CMS\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ADMIN\CategoryController;
 use App\Http\Controllers\ADMIN\ProductController;
+use App\Http\Controllers\CMS\ShopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,6 @@ Route::get('dashboard', function () {
 Route::get('product', [HomeController::class, 'product'])->name('product');
 Route::get('admin/logout', [AdminProductController::class, 'logout'])->name('admin.logout');
 Route::get('home', [HomeController::class, 'index'])->name('home');
-Route::get('shop', [HomeController::class, 'shop'])->name('shop');
 Route::get('cart', [HomeController::class, 'cart'])->name('cart');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('about', [HomeController::class, 'about'])->name('about');
@@ -36,7 +36,9 @@ Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard')
 Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 Route::get('login', [HomeController::class, 'login'])->name('login');
 Route::get('register', [HomeController::class, 'register'])->name('register');
-Route::get('product/{slug}', [HomeController::class, 'productDetails'])->name('shop.product.details');
+//Shop
+Route::get('shop', [ShopController::class, 'shop'])->name('shop');
+Route::get('product/{id}', [ShopController::class, 'productDetails'])->name('shop.product.details');
 
 Route::prefix('admin')
     ->as('admin.')
