@@ -36,6 +36,7 @@ class ProductController extends Controller
                 'price' => $request->price,
                 'listed_price' => $request->listed_price ?? '',
                 'category_id' => $request->category_id,
+                'gender' => $request->gender,
                 'slug' => Str::slug($request->slug),
                 'category_id' => $request->category_id,
             ];
@@ -88,6 +89,7 @@ class ProductController extends Controller
                 'price' => $request->price,
                 'listed_price' => $request->listed_price,
                 'category_id' => $request->category_id ?? $oldProduct->category_id,
+                'gender' => $request->gender ?? $oldProduct->gender,
                 'slug' => Str::slug($request->slug) ?? $oldProduct->slug,
             ];
             $oldProduct->update($newProduct);

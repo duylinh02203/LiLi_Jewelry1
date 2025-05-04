@@ -52,6 +52,18 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label>Gender
+                                    @error('gender')
+                                        <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                                <select class="form-control" name="gender">
+                                    <option value="unisex">Unisex</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>Images
                                 </label>
                                 <input type="file" name="image[]" class="file-upload-default" multiple

@@ -19,6 +19,7 @@ class Product extends Model
         'status',
         'slug',
         'category_id',
+        'gender'
     ];
 
     public function getSlugOptions(): SlugOptions

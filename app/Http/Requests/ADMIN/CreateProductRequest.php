@@ -27,6 +27,7 @@ class CreateProductRequest extends FormRequest
             'listed_price' => 'numeric',
             'description' => 'required',
             'category_id' => 'required|numeric',
+            'gender' => 'required|in:male,female,unisex',
             'image' => 'required|array',
             'image.*' => 'image|max:2048',
         ];
@@ -43,6 +44,8 @@ class CreateProductRequest extends FormRequest
             'description.required' => 'Description is required',
             'category_id.required' => 'Category is required',
             'category_id.numeric' => 'Category must be number',
+            'gender.required' => 'Gender is required',
+            'gender.in' => 'Gender must be male, female, unisex',
             'image.required' => 'Image is required',
             'image.image' => 'Image must be image',
             'image.max' => 'Image is too long',
