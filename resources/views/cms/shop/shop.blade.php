@@ -1,5 +1,19 @@
 @extends('cms.layouts.app')
 @section('content')
+@push('styles')
+<style>
+    .category-price ul li a {
+        display: block;
+        padding: 5px 0;
+        color: #000;
+        text-decoration: none;
+    }
+
+    .category-price ul li a:hover {
+        color: orange;
+    }
+</style>
+@endpush
 <!-- breadcrumb section start -->
 <section class="breadcrumb-section section-b-space" style="padding-top:20px;padding-bottom:20px;">
     <ul class="circles">
@@ -53,55 +67,98 @@
                             <div id="collapseSix" class="accordion-collapse collapse show"
                                 aria-labelledby="headingOne">
                                 <div class="accordion-body category-scroll">
+                                    <!-- <ul class="category-list">
+                                        
+                                        <li>
+                                            <div class="form-check ps-0 custome-form-check">
+                                                <label class="form-check-label">Qui Ut</label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-check ps-0 custome-form-check">
+                                                <label class="form-check-label">Qui Ut</label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-check ps-0 custome-form-check">
+                                                <label class="form-check-label">Qui Ut</label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-check ps-0 custome-form-check">
+                                                <label class="form-check-label">Qui Ut</label>
+                                            </div>
+                                        </li>
+                                    </ul> -->
                                     <ul class="category-list">
-
+                                        @forelse ($categories as $category)
                                         <li>
                                             <div class="form-check ps-0 custome-form-check">
-                                                <label class="form-check-label">Qui Ut</label>
+                                                <input class="checkbox_animated check-it"
+                                                    id="category-{{ $category->id }}"
+                                                    name="categories[]"
+                                                    type="checkbox"
+                                                    value="{{ $category->id }}">
+                                                <label class="form-check-label" for="category-{{ $category->id }}">
+                                                    {{ $category->name }}
+                                                </label>
                                             </div>
                                         </li>
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <label class="form-check-label">Qui Ut</label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <label class="form-check-label">Qui Ut</label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <label class="form-check-label">Qui Ut</label>
-                                            </div>
-                                        </li>
-                                        <!-- <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" id="ct2" name="categories"
-                                                    type="checkbox" value="2">
-                                                <label class="form-check-label">Blanditiis Error</label>
-                                                <p class="font-light">(8)</p>
-                                            </div>
-                                        </li> -->
+                                        @empty
+                                        <li>Không có danh mục nào</li>
+                                        @endforelse
                                     </ul>
+
                                 </div>
+                                <!-- <li>
+                                    <div class="form-check ps-0 custome-form-check">
+                                        <input class="checkbox_animated check-it" id="ct2" name="categories"
+                                            type="checkbox" value="2">
+                                        <label class="form-check-label">Blanditiis Error</label>
+                                        <p class="font-light">(8)</p>
+                                    </div>
+                                </li> -->
                             </div>
                         </div>
 
                         <div class="accordion-item category-price">
                             <h2 class="accordion-header" id="headingFour">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFour">Price</button>
+                                    data-bs-target="#collapseFour">KHOẢNG GIÁ</button>
                             </h2>
                             <div id="collapseFour" class="accordion-collapse collapse show"
                                 aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    <div class="range-slider category-list">
-                                        <input type="text" class="js-range-slider" id="js-range-price" value="">
-                                    </div>
+                                    <ul class="list-unstyled" style="display: flex; flex-direction: column;">
+                                        <li>
+                                            <a href="{{ request()->fullUrlWithQuery(['prange' => '0,1000000']) }}"
+                                                class="{{ ($from == 0 && $to == 1000000) ? 'fw-bold text-primary' : '' }}">
+                                                Dưới 1.000.000
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ request()->fullUrlWithQuery(['prange' => '1000000,2000000']) }}"
+                                                class="{{ ($from == 1000000 && $to == 1500000 ) ? 'fw-bold text-primary' : '' }}">
+                                                1.000.000 - 2.000.000
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ request()->fullUrlWithQuery(['prange' => '3000000,5000000']) }}"
+                                                class="{{ ($from == 3000000 && $to == 5000000) ? 'fw-bold text-primary' : '' }}">
+                                                2.000.000 - 5.000.000
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ request()->fullUrlWithQuery(['prange' => '5000000,500000000']) }}"
+                                                class="{{ ($from == 5000000) ? 'fw-bold text-primary' : '' }}">
+                                                Trên 5.000.000
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
+
 
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingSeven">
@@ -160,25 +217,24 @@
                     <div class="col-12">
                         <div class="filter-options">
                             <div class="select-options">
-                                <div class="page-view-filter">
-                                    <div class="dropdown select-featured">
-                                        <select class="form-select" name="orderby" id="orderby">
-                                            <option value="-1" selected="">Default</option>
-                                            <option value="1">Date, New To Old</option>
-                                            <option value="2">Date, Old To New</option>
-                                            <option value="3">Price, Low To High</option>
-                                            <option value="4">Price, High To Low</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="dropdown select-featured">
-                                    <select class="form-select" name="size" id="pagesize">
-                                        <option value="12" selected="">12 Products Per Page</option>
-                                        <option value="24">24 Products Per Page</option>
-                                        <option value="52">52 Products Per Page</option>
-                                        <option value="100">100 Products Per Page</option>
+                                <form method="GET" action="{{ route('shop') }}" class="mb-4 d-flex gap-2 align-items-center">
+                                    @if(request()->has('prange'))
+                                    <input type="hidden" name="prange" value="{{ request('prange') }}">
+                                    @endif
+                                    <select name="sort" onchange="this.form.submit()" class="form-select w-auto">
+                                        <option value="">-- Sắp xếp --</option>
+                                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Mới nhất</option>
+                                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá tăng dần</option>
+                                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá giảm dần</option>
                                     </select>
-                                </div>
+                                    <select name="size" onchange="this.form.submit()" class="form-select w-auto">
+                                        <option value="5" {{ request('size', 5) == 5 ? 'selected' : '' }}>Hiển thị 5</option>
+                                        <option value="10" {{ request('size') == 10 ? 'selected' : '' }}>Hiển thị 10</option>
+                                        <option value="20" {{ request('size') == 20 ? 'selected' : '' }}>Hiển thị 20</option>
+                                        <option value="50" {{ request('size') == 50 ? 'selected' : '' }}>Hiển thị 50</option>
+                                    </select>
+                                </form>
+
                             </div>
                             <div class="grid-options d-sm-inline-block d-none">
                                 <ul class="d-flex">
@@ -288,13 +344,15 @@
                         <div class="product-box">
                             <div class="img-wrapper">
                                 <div class="back">
-                                    <a href="{{ route('shop.product.details', ['slug' => $product->slug]) }}">
+                                    <a href="{{ route('shop.product.details', ['id' => $product->id]) }}">
                                         @if ($product->images->first())
-                                        <img src="{{asset('cms/assets/images/fashion/product/back/12.jpg')}}"
-                                            class="bg-img blur-up lazyload" alt="{{ $product->name }}">
+                                        <img src="{{ asset('images/' . $product->images->first()->image) }}"
+                                            class="bg-img blur-up lazyload"
+                                            alt="{{ $product->name }}">
                                         @else
-                                        <img src="{{asset('cms/assets/images/fashion/product/back/12.jpg')}}"
-                                            class="bg-img blur-up lazyload" alt="No Image">
+                                        <img src="{{ asset('cms/assets/images/fashion/product/back/12.jpg') }}"
+                                            class="bg-img blur-up lazyload"
+                                            alt="No Image">
                                         @endif
                                     </a>
                                 </div>
@@ -330,7 +388,7 @@
                                     </ul>
                                 </div>
                                 <div class="main-price">
-                                    <a href="{{ route('shop.product.details', ['slug' => $product->slug]) }}" class="font-default">
+                                    <a href="{{ route('shop.product.details', ['id' => $product->id]) }}" class="font-default">
                                         <h5 class="ms-0">{{ $product->name }}</h5>
                                     </a>
                                     <div class="listing-content">
@@ -376,13 +434,4 @@
 </section>
 <!-- Subscribe Section End -->
 <div id="qvmodal"></div>
-
-<form id="frmFilter" method="GET">
-    <input type="hidden" id="page" name="page" value="1">
-    <input type="hidden" id="size" name="size" value="12">
-    <input type="hidden" id="prange" name="prange" value="">
-    <input type="hidden" id="order" name="order" value="-1">
-    <input type="hidden" id="brands" name="brands" value="">
-    <input type="hidden" id="categories" name="categories" value="">
-</form>
 @endsection

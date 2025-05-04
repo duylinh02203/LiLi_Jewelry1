@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('listed_price');
             $table->string('status')->default('active');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
             $table->softDeletes();
