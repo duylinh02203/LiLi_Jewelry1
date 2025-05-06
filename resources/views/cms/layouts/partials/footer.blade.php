@@ -11,10 +11,10 @@
                     </div>
                     <ul class="contact-lists" style="clear:both;">
                         <li>
-                            <span><b>phone:</b> <span class="font-light"> +1 0000000000</span></span>
+                            <span><b>Điện thoại:</b> <span class="font-light"> +1 0000000000</span></span>
                         </li>
                         <li>
-                            <span><b>Address:</b><span class="font-light"> NIT, Faridabad, Haryana,
+                            <span><b>Địa chỉ:</b><span class="font-light"> NIT, Faridabad, Haryana,
                                     India</span></span>
                         </li>
                         <li>
@@ -26,24 +26,24 @@
             <div class="col-lg-2 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3>About us</h3>
+                        <h3>Chúng tôi</h3>
                     </div>
                     <div class="footer-content">
                         <ul>
                             <li>
-                                <a href="index.htm" class="font-dark">Home</a>
+                                <a href="{{route('home')}}" class="font-dark">Trang chủ</a>
                             </li>
                             <li>
-                                <a href="shop.html" class="font-dark">Shop</a>
+                                <a href="{{route('shop')}}" class="font-dark">Shop</a>
                             </li>
                             <li>
-                                <a href="about-us.html" class="font-dark">About Us</a>
+                                <a href="{{route('about')}}" class="font-dark">Chúng tôi</a>
                             </li>
                             <li>
-                                <a href="#" class="font-dark">Blog</a>
+                                <a href="#" class="font-dark">Bảng tin</a>
                             </li>
                             <li>
-                                <a href="contact-us.html" class="font-dark">Contact</a>
+                                <a href="{{route('contact')}}" class="font-dark">Liên hệ</a>
                             </li>
                         </ul>
                     </div>
@@ -52,7 +52,7 @@
             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3>New Categories</h3>
+                        <h3>Danh mục mới</h3>
                     </div>
                     <div class="footer-content">
                         <ul>
@@ -78,7 +78,7 @@
             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3>Get Help</h3>
+                        <h3>Trợ giúp</h3>
                     </div>
                     <div class="footer-content">
                         <ul>
@@ -103,14 +103,14 @@
             </div>
             <div class="col-xl-3 col-lg-4 col-sm-6 d-none d-sm-block">
                 <div class="footer-newsletter">
-                    <h3>Let’s stay in touch</h3>
+                    <h3>Chúng ta hãy giữ liên lạc nhé</h3>
                     <div class="form-newsletter">
                         <div class="input-group mb-4">
                             <input type="text" class="form-control color-4" placeholder="Your Email Address" style="border-radius:10px 0 0 10px;">
                             <span class="input-group-text" id="basic-addon4" style="border-radius:0 10px 10px 0;"><i
                                     class="fas fa-arrow-right"></i></span>
                         </div>
-                        <p class="font-dark mb-0">Keep up to date with our latest news and special offers.
+                        <p class="font-dark mb-0">Cập nhật tin tức mới nhất và các ưu đãi đặc biệt của chúng tôi.
                         </p>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
         <div class="row gy-3">
             <div class="col-md-6">
                 <ul>
-                    <li class="font-dark">We accept:</li>
+                    <li class="font-dark">Chúng tôi chấp nhận:</li>
                     <li>
                         <a href="javascript:void(0)">
                             <img src="{{asset('cms/assets/images/payment-icon/1.jpg')}}" class="img-fluid blur-up lazyload"

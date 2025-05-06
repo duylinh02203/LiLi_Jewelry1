@@ -12,6 +12,10 @@
     .category-price ul li a:hover {
         color: orange;
     }
+
+    .list-unstyled li {
+        margin-bottom: 10px;
+    }
 </style>
 @endpush
 <!-- breadcrumb section start -->
@@ -51,156 +55,154 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3 category-side col-md-4">
-                <div class="category-option">
-                    <div class="button-close mb-3">
-                        <button class="btn p-0"><i data-feather="arrow-left"></i> Close</button>
-                    </div>
-                    <div class="accordion category-name" id="accordionExample">
-
-                        <div class="accordion-item category-rating">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseSix">
-                                    Category
-                                </button>
-                            </h2>
-                            <div id="collapseSix" class="accordion-collapse collapse show"
-                                aria-labelledby="headingOne">
-                                <div class="accordion-body category-scroll">
-                                    <!-- <ul class="category-list">
-                                        
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <label class="form-check-label">Qui Ut</label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <label class="form-check-label">Qui Ut</label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <label class="form-check-label">Qui Ut</label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <label class="form-check-label">Qui Ut</label>
-                                            </div>
-                                        </li>
-                                    </ul> -->
-                                    <ul class="category-list">
-                                        @forelse ($categories as $category)
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it"
-                                                    id="category-{{ $category->id }}"
-                                                    name="categories[]"
-                                                    type="checkbox"
-                                                    value="{{ $category->id }}">
-                                                <label class="form-check-label" for="category-{{ $category->id }}">
-                                                    {{ $category->name }}
-                                                </label>
-                                            </div>
-                                        </li>
-                                        @empty
-                                        <li>Không có danh mục nào</li>
-                                        @endforelse
-                                    </ul>
-
-                                </div>
-                                <!-- <li>
-                                    <div class="form-check ps-0 custome-form-check">
-                                        <input class="checkbox_animated check-it" id="ct2" name="categories"
-                                            type="checkbox" value="2">
-                                        <label class="form-check-label">Blanditiis Error</label>
-                                        <p class="font-light">(8)</p>
+                <form id="filterForm" method="GET" action="{{ route('shop') }}">
+                    
+                    <div class="category-option">
+                        <div class="button-close mb-3">
+                            <button class="btn p-0"><i data-feather="arrow-left"></i> Close</button>
+                        </div>
+                        <div class="accordion category-name" id="accordionExample">
+                            <div class="accordion-item category-rating">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo">
+                                        Danh mục
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse show"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body category-scroll">
+                                        <ul class="category-list">
+                                            @foreach ($categories as $category)
+                                            <li>
+                                                <div class="form-check ps-0 custom-form-check">
+                                                    <input class="checkbox_animated check-it"
+                                                        id="category_{{$category->id}}"
+                                                        name="category[]"
+                                                        value="{{$category->id}}"
+                                                        type="checkbox"
+                                                        {{ (is_array(request('category')) && in_array($category->id, request('category'))) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="category_{{$category->id}}">{{$category->name}}</label>
+                                                    <p class="font-light">({{$category->products->count()}})</p>
+                                                </div>
+                                            </li>
+                                            @endforeach
+                                        </ul>
                                     </div>
-                                </li> -->
-                            </div>
-                        </div>
-
-                        <div class="accordion-item category-price">
-                            <h2 class="accordion-header" id="headingFour">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFour">KHOẢNG GIÁ</button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse show"
-                                aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <ul class="list-unstyled" style="display: flex; flex-direction: column;">
-                                        <li>
-                                            <a href="{{ request()->fullUrlWithQuery(['prange' => '0,1000000']) }}"
-                                                class="{{ ($from == 0 && $to == 1000000) ? 'fw-bold text-primary' : '' }}">
-                                                Dưới 1.000.000
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ request()->fullUrlWithQuery(['prange' => '1000000,2000000']) }}"
-                                                class="{{ ($from == 1000000 && $to == 1500000 ) ? 'fw-bold text-primary' : '' }}">
-                                                1.000.000 - 2.000.000
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ request()->fullUrlWithQuery(['prange' => '3000000,5000000']) }}"
-                                                class="{{ ($from == 3000000 && $to == 5000000) ? 'fw-bold text-primary' : '' }}">
-                                                2.000.000 - 5.000.000
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ request()->fullUrlWithQuery(['prange' => '5000000,500000000']) }}"
-                                                class="{{ ($from == 5000000) ? 'fw-bold text-primary' : '' }}">
-                                                Trên 5.000.000
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
-                        </div>
+                            <div class="accordion-item category-price">
+                                <h2 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">Khoảng giá</button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <ul class="list-unstyled" style="display: flex; flex-direction: column; padding-left: 10px;">
+                                            <li>
+                                                <div class="form-check ps-0 custom-form-check">
+                                                    <input class="radio_animated check-it" id="price1" name="price[]" type="radio" value="0,1000000"
+                                                        {{ (is_array(request('price')) && in_array('0,1000000', request('price'))) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="price1">Dưới 1.000.000</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="form-check ps-0 custom-form-check">
+                                                    <input class="radio_animated check-it" id="price2" name="price[]" type="radio" value="1000000,2000000"
+                                                        {{ (is_array(request('price')) && in_array('1000000,2000000', request('price'))) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="price2">1.000.000 - 2.000.000</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="form-check ps-0 custom-form-check">
+                                                    <input class="radio_animated check-it" id="price3" name="price[]" type="radio" value="2000000,5000000"
+                                                        {{ (is_array(request('price')) && in_array('2000000,5000000', request('price'))) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="price3">2.000.000 - 5.000.000</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item category-gender">
+                                <h2 class="accordion-header" id="headingFive">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true">
+                                        Giới tính
+                                    </button>
+                                </h2>
 
+                                <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingFive" data-bs-parent="#accordionExample" style="">
+                                    <div class="accordion-body">
+                                        <ul class="category-list">
+                                            <li>
+                                                <div class="form-check ps-0 custom-form-check">
+                                                    <input class="checkbox_animated check-it" id="gender1" name="gender[]" type="checkbox" value="male"
+                                                    {{ (is_array(request('gender') ?? []) && in_array('male', request('gender') ?? [])) ? 'checked' : '' }}
+                                                    >
+                                                    <label class="form-check-label" for="gender1">Nữ</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="form-check ps-0 custom-form-check">
+                                                    <input class="checkbox_animated check-it" id="gender2" name="gender[]" type="checkbox" value="female"
+                                                        {{ (is_array(request('gender')) && in_array('female', request('gender'))) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="gender2">Nam</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="form-check ps-0 custom-form-check">
+                                                    <input class="checkbox_animated check-it" id="gender3" name="gender[]" type="checkbox" value="unisex"
+                                                        {{ (is_array(request('gender')) && in_array('unisex', request('gender'))) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="gender3">Unisex</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingSeven">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseSeven">
-                                    Discount Range
-                                </button>
-                            </h2>
-                            <div id="collapseSeven" class="accordion-collapse collapse show"
-                                aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <ul class="category-list">
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" type="checkbox"
-                                                    id="flexCheckDefault19">
-                                                <label class="form-check-label" for="flexCheckDefault19">5% and
-                                                    above</label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" type="checkbox"
-                                                    id="flexCheckDefault20">
-                                                <label class="form-check-label" for="flexCheckDefault20">10% and
-                                                    above</label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" type="checkbox"
-                                                    id="flexCheckDefault21">
-                                                <label class="form-check-label" for="flexCheckDefault21">20% and
-                                                    above</label>
-                                            </div>
-                                        </li>
-                                    </ul>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSeven">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseSeven">
+                                        Discount Range
+                                    </button>
+                                </h2>
+                                <div id="collapseSeven" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <ul class="category-list">
+                                            <li>
+                                                <div class="form-check ps-0 custom-form-check">
+                                                    <input class="checkbox_animated check-it" type="checkbox"
+                                                        id="flexCheckDefault19">
+                                                    <label class="form-check-label" for="flexCheckDefault19">5% and
+                                                        above</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="form-check ps-0 custom-form-check">
+                                                    <input class="checkbox_animated check-it" type="checkbox"
+                                                        id="flexCheckDefault20">
+                                                    <label class="form-check-label" for="flexCheckDefault20">10% and
+                                                        above</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="form-check ps-0 custom-form-check">
+                                                    <input class="checkbox_animated check-it" type="checkbox"
+                                                        id="flexCheckDefault21">
+                                                    <label class="form-check-label" for="flexCheckDefault21">20% and
+                                                        above</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+
             </div>
 
             <div class="category-product col-lg-9 col-12 ratio_30">
@@ -209,22 +211,16 @@
                     <!-- label and featured section -->
                     <div class="col-md-12">
                         <ul class="short-name">
-
-
                         </ul>
                     </div>
 
                     <div class="col-12">
                         <div class="filter-options">
                             <div class="select-options">
-                                <form method="GET" action="{{ route('shop') }}" class="mb-4 d-flex gap-2 align-items-center">
-                                    @if(request()->has('prange'))
-                                    <input type="hidden" name="prange" value="{{ request('prange') }}">
-                                    @endif
+                                <div class="mb-4 d-flex gap-2 align-items-center">
                                     <select name="sort" onchange="this.form.submit()" class="form-select w-auto">
-                                        <option value="">-- Sắp xếp --</option>
-                                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Mới nhất</option>
                                         <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá tăng dần</option>
+                                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Mới nhất</option>
                                         <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá giảm dần</option>
                                     </select>
                                     <select name="size" onchange="this.form.submit()" class="form-select w-auto">
@@ -232,7 +228,8 @@
                                         <option value="10" {{ request('size') == 10 ? 'selected' : '' }}>Hiển thị 10</option>
                                         <option value="20" {{ request('size') == 20 ? 'selected' : '' }}>Hiển thị 20</option>
                                         <option value="50" {{ request('size') == 50 ? 'selected' : '' }}>Hiển thị 50</option>
-                                    </select>
+                                    </select></div>
+                                    
                                 </form>
 
                             </div>
@@ -339,6 +336,7 @@
                     </div>
                 </div> -->
                 <div class="row g-sm-4 g-3 row-cols-lg-4 row-cols-md-3 row-cols-2 mt-1 custom-gy-5 product-style-2 ratio_asos product-list-section">
+                    @if(count($products) > 0)
                     @foreach ($products as $product)
                     <div>
                         <div class="product-box">
@@ -402,6 +400,11 @@
                         </div>
                     </div>
                     @endforeach
+                    @else
+                    <div class="col-12" style="text-align: center;">
+                        <h4>Không có sản phẩm nào.</h4>
+                    </div>
+                    @endif
                 </div>
                 {{ $products->links('cms.pagination.default') }}
             </div>
@@ -415,9 +418,8 @@
         <div class="row">
             <div class="col-lg-8 col-md-6">
                 <div class="subscribe-details">
-                    <h2 class="mb-3">Subscribe Our News</h2>
-                    <h6 class="font-light">Subscribe and receive our newsletters to follow the news about our fresh
-                        and fantastic Products.</h6>
+                    <h2 class="mb-3">Đăng ký để nhận tin tức mới</h2>
+                    <h6 class="font-light">Hãy đăng ký để theo dõi những tin tức mới nhất về các sản phẩm độc đáo và hấp dẫn mà chúng tôi mang đến.</h6>
                 </div>
             </div>
 
@@ -435,3 +437,17 @@
 <!-- Subscribe Section End -->
 <div id="qvmodal"></div>
 @endsection
+@push('scripts')
+<script>
+    document.querySelectorAll('#filterForm input[type="checkbox"]').forEach(input => {
+        input.addEventListener('change', () => {
+            document.getElementById('filterForm').submit();
+        });
+    });
+    document.querySelectorAll('#filterForm input[type="radio"]').forEach(input => {
+        input.addEventListener('change', () => {
+            document.getElementById('filterForm').submit();
+        });
+    });
+</script>
+@endpush

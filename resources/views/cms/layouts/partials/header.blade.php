@@ -6,7 +6,7 @@
                 <div class="main-menu">
                     <div class="menu-left">
                         <div class="brand-logo">
-                            <a href="index.htm">
+                            <a href="{{route('home')}}" class="logo">
                                 <img src="{{asset('cms/assets/images/LiLi_logo.png')}}" class="h-logo img-fluid blur-up lazyload"
                                     alt="logo">
                             </a>
@@ -27,13 +27,13 @@
                                             </span>
                                         </div>
                                     </li>
-                                    <li><a href="{{route('home')}}" class="nav-link menu-title">Home</a></li>
+                                    <li><a href="{{route('home')}}" class="nav-link menu-title">Trang chủ</a></li>
                                     <li><a href="{{route('shop')}}" class="nav-link menu-title">Shop</a></li>
-                                    <li><a href="{{route('cart')}}" class="nav-link menu-title">Cart</a></li>
-                                    <li><a href="{{route('about')}}" class="nav-link menu-title">About Us</a></li>
-                                    <li><a href="{{route('contact')}}" class="nav-link menu-title">Contact Us</a>
+                                    <li><a href="{{route('cart')}}" class="nav-link menu-title">Giỏ hàng</a></li>
+                                    <li><a href="{{route('about')}}" class="nav-link menu-title">Chúng tôi</a></li>
+                                    <li><a href="{{route('contact')}}" class="nav-link menu-title">Liên hệ</a>
                                     </li>
-                                    <li><a href="blog.html" class="nav-link menu-title">Blog</a></li>
+                                    <li><a href="blog.html" class="nav-link menu-title">Bảng tin</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -72,10 +72,10 @@
                                 <div class="onhover-div profile-dropdown">
                                     <ul>
                                         <li>
-                                            <a href="{{route('login')}}" class="d-block">Login</a>
+                                            <a href="{{route('login')}}" class="d-block">Đăng nhập</a>
                                         </li>
                                         <li>
-                                            <a href="{{route('login')}}" class="d-block">Register</a>
+                                            <a href="{{route('register')}}" class="d-block">Đăng ký</a>
                                         </li>
 
                                     </ul>
@@ -84,13 +84,12 @@
                         </ul>
                     </div>
                     <div class="search-full">
-                        <form method="GET" class="search-full" action="http://localhost:8000/search">
+                        <form method="GET" class="search-full" action="{{ route('shop') }}">
                             <div class="input-group" style="border-radius:10px;">
                                 <span class="input-group-text">
                                     <i data-feather="search" class="font-light"></i>
                                 </span>
-                                <input type="text" name="q" class="form-control search-type"
-                                    placeholder="Search Products here..">
+                                <input type="text" name="q" class="form-control search-type" placeholder="Tìm kiếm sản phẩm.." value="{{ request('search-product') }}">
                                 <span class="input-group-text close-search">
                                     <i data-feather="x" class="font-light"></i>
                                 </span>

@@ -146,84 +146,7 @@
                                     @endif
                                 </h3>
 
-                                <div class="color-image">
-                                    <div class="image-select">
-                                        <h5>Color :</h5>
-                                        <ul class="image-section">
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <img src="../assets/images/fashion/product/front/5.jpg"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <img src="../assets/images/fashion/product/front/6.jpg"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <img src="../assets/images/fashion/product/front/7.jpg"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div id="selectSize" class="addeffect-section product-description border-product">
-                                    <h6 class="product-title size-text">select size
-                                        <a href="javascript:void(0)" data-bs-toggle="modal"
-                                            data-bs-target="#sizemodal">size chart</a>
-                                    </h6>
-
-                                    <h6 class="error-message">please select size</h6>
-
-                                    <div class="size-box">
-                                        <ul>
-                                            <li>
-                                                <a href="javascript:void(0)">s</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">m</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">l</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">xl</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <h6 class="product-title product-title-2 d-block">quantity</h6>
-
-                                    <div class="qty-box">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <button type="button" class="btn quantity-left-minus"
-                                                    onclick="updateQuantity()" data-type="minus" data-field="">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                            </span>
-                                            <input type="text" name="quantity" id="quantity"
-                                                class="form-control input-number" value="1">
-                                            <span class="input-group-prepend">
-                                                <button type="button" class="btn quantity-right-plus"
-                                                    onclick="updateQuantity()" data-type="plus" data-field="">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="product-buttons">
-                                    <a href="javascript:void(0)" class="btn btn-solid">
-                                        <i class="fa fa-bookmark fz-16 me-2"></i>
-                                        <span>Wishlist</span>
-                                    </a>
                                     <a href="javascript:void(0)"
                                         id="cartEffect" class="btn btn-solid hover-solid btn-animation">
                                         <i class="fa fa-shopping-cart"></i>
@@ -329,12 +252,6 @@
 
                             <button class="nav-link" id="nav-speci-tab" data-bs-toggle="tab" data-bs-target="#speci"
                                 type="button">Specifications</button>
-
-                            <button class="nav-link" id="nav-size-tab" data-bs-toggle="tab"
-                                data-bs-target="#nav-guide" type="button">Sizing Guide</button>
-
-                            <button class="nav-link" id="nav-question-tab" data-bs-toggle="tab"
-                                data-bs-target="#question" type="button">Q & A</button>
 
                             <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
                                 data-bs-target="#review" type="button">Review</button>
