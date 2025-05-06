@@ -32,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/feather-icon.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/animate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/slick/slick.css')}}">
+    
     <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/slick/slick-theme.css')}}">
     <link id="color-link" rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/demo4.css')}}">
     <!-- <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap" rel="stylesheet"> -->
