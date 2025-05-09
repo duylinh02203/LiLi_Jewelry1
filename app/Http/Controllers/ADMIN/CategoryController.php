@@ -6,8 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ADMIN\CreateCategoryRequest;
 use App\Http\Requests\ADMIN\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use App\Models\ProductImage;
+
 
 class CategoryController extends Controller
 {
@@ -24,53 +28,83 @@ class CategoryController extends Controller
 
     public function store(CreateCategoryRequest $request)
     {
+        DB::beginTransaction();
         try {
-            $data = $request->all();
-            Category::create($data);
+            $data = [
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+            ];
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->extension();
+                $image->move(public_path('images/categories'), $imageName);
+                $data['image'] = $imageName;
+            }
+            $createdCategory = Category::create($data);
+            if (!$createdCategory) {
+                DB::rollBack();
+                return redirect()->route('admin.category.index')->with('error', 'Category creation failed.');
+            }
+            DB::commit();
             return redirect()->route('admin.category.index')->with('success', 'Category created successfully.');
-        } catch (\Exception $e) {
-            return redirect()->route('admin.category.create')->with('error', 'Error creating category.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->route('admin.category.create')->with('error', 'Error creating category: ' . $th->getMessage());
         }
     }
 
-    public function edit($id)
+    public function editForm($id)
     {
         $categoryUpdate = Category::find($id);
         return view('admin.categories.edit_category', compact('categoryUpdate'));
     }
-
-    public function update(UpdateCategoryRequest $request, $id)
+    public function edit(UpdateCategoryRequest $request, $id)
     {
         DB::beginTransaction();
         try {
-            $categoryUpdate = Category::find($id);
-            if (!$categoryUpdate) {
-                return redirect()->route('admin.category.index')->with('error', 'Category not found.');
+            $oldCategory = Category::findOrFail($id);
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->extension();
+                $image->move(public_path('images/categories'), $imageName);
+
+                if ($oldCategory->image && file_exists(public_path('images/categories/' . $oldCategory->image))) {
+                    unlink(public_path('images/categories/' . $oldCategory->image));
+                }
+                $oldCategory->image = $imageName;
             }
-            $data = $request->all();
-            $categoryUpdate->update($data);
+            $oldCategory->update([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'image' => $oldCategory->image,
+            ]);
             DB::commit();
             return redirect()->route('admin.category.index')->with('success', 'Category updated successfully.');
-        } catch (\Exception $e) {
+        } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('admin.category.index')->with('error', 'Category not found.');
+            return redirect()->route('admin.category.index')->with('error', 'Category update failed: ' . $th->getMessage());
         }
     }
+
 
     public function destroy($id)
     {
         DB::beginTransaction();
         try {
             $categoryDelete = Category::find($id);
+            $product = Product::where('category_id', $id);
+            if ($product->count() > 0) {
+                return redirect()->route('admin.category.index')->with('error', 'Không thể xóa danh mục vì nó có sản phẩm.');
+            }
             if (!$categoryDelete) {
-                return redirect()->route('admin.category.index')->with('error', 'Category not found.');
+                return redirect()->route('admin.category.index')->with('error', 'Không tìm thấy danh mục.');
             }
             $categoryDelete->delete();
             DB::commit();
-            return redirect()->route('admin.category.index')->with('success', 'Category deleted successfully.');
+            return redirect()->route('admin.category.index')->with('success', 'Xóa danh mục thành công.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('admin.category.index')->with('error', 'Category not found.');
+            return redirect()->route('admin.category.index')->with('error', 'Không tìm thấy danh mục.');
         }
     }
 }

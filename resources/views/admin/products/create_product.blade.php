@@ -82,8 +82,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Slug</label>
-                                <input type="text" class="form-control" placeholder="Slug" name="slug">
+                                <label>Quantity</label>
+                                <input type="text" class="form-control" placeholder="Quantity" name="quantity">
                             </div>
                             <div class="form-group">
                                 <label>Description

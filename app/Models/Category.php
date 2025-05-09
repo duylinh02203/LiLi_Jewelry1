@@ -4,17 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Category extends Model
 {
     use HasFactory;
-    // public $timestamps = false;
     protected $table = 'categories';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'name', 'description'];
+    protected $fillable = ['id', 'name', 'image', 'slug'];
 
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
     }
 }

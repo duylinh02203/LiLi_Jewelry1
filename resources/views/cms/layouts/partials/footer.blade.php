@@ -11,14 +11,23 @@
                     </div>
                     <ul class="contact-lists" style="clear:both;">
                         <li>
-                            <span><b>Điện thoại:</b> <span class="font-light"> +1 0000000000</span></span>
+                            <div>
+                                <i class="fa-solid fa-phone-volume"></i>
+                                <span style="margin-left: 5px;"><b>Điện thoại:</b> <span class="font-light"> +1 0000000000</span></span>
+                            </div>
                         </li>
                         <li>
-                            <span><b>Địa chỉ:</b><span class="font-light"> NIT, Faridabad, Haryana,
-                                    India</span></span>
+                            <div>
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span style="margin-left: 5px;"><b>Địa chỉ:</b><span class="font-light"> NIT, Faridabad, Haryana,
+                                        India</span></span>
+                            </div>
                         </li>
                         <li>
-                            <span><b>Email:</b><span class="font-light"> contact@surfsidemedia.in</span></span>
+                            <div>
+                                <i class="fa-solid fa-envelope"></i>
+                                <span style="margin-left: 5px;"><b>Email:</b><span class="font-light"> contact@surfsidemedia.in</span></span>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -91,12 +100,6 @@
                             <li>
                                 <a href="#" class="font-dark">Track Orders</a>
                             </li>
-                            <li>
-                                <a href="#" class="font-dark">Your Wishlist</a>
-                            </li>
-                            <li>
-                                <a href="#" class="font-dark">Shopping FAQs</a>
-                            </li>
                         </ul>
                     </div>
                 </div>
@@ -106,7 +109,7 @@
                     <h3>Chúng ta hãy giữ liên lạc nhé</h3>
                     <div class="form-newsletter">
                         <div class="input-group mb-4">
-                            <input type="text" class="form-control color-4" placeholder="Your Email Address" style="border-radius:10px 0 0 10px;">
+                            <input type="text" class="form-control color-4" placeholder="Địa chỉ Email" style="border-radius:10px 0 0 10px;">
                             <span class="input-group-text" id="basic-addon4" style="border-radius:0 10px 10px 0;"><i
                                     class="fas fa-arrow-right"></i></span>
                         </div>
