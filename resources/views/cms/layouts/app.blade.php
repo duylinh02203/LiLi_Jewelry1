@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="MkRqEzTGuoSx6LqJUm0OAKxSgNUYt26wTT7RMUZY">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="assets/images/favicon.ico')}}">
-    <link rel="icon" href="{{asset('cms/assets/images/favicon.ico')}}" type="image/x-icon">
-    <link rel="icon" href="{{asset('cms/assets/images/favicon.ico')}}" type="image/x-icon">
+    <!-- <link rel="icon" href="{{asset('cms/assets/images/favicon.ico')}}" type="image/x-icon" >
+    <link rel="icon" href="{{asset('cms/assets/images/favicon.ico')}}" type="image/x-icon" > -->
     <meta name="theme-color" content="#e87316">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -32,10 +32,9 @@
     <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/feather-icon.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/animate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/slick/slick.css')}}">
-    
+
     <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/slick/slick-theme.css')}}">
     <link id="color-link" rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/demo4.css')}}">
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap" rel="stylesheet"> -->
     <link rel="stylesheet" href="{{asset('cms/assets/css/custom.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{asset('cms/assets/css/custom1.css')}}">
@@ -43,7 +42,7 @@
 </head>
 
 <body class="theme-color4 light ltr">
-    <header class="header-style-2" id="home">
+    <header class="header-style-2 fixed-header" id="home">
         @include('cms.layouts.partials.header')
     </header>
 

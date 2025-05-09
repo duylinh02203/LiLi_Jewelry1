@@ -12,12 +12,14 @@ class Product extends Model
     use HasFactory, HasSlug;
 
     public $fillable = [
+        'id',
         'name',
         'description',
         'price',
         'listed_price',
         'status',
         'slug',
+        'quantity',
         'category_id',
         'gender'
     ];
@@ -25,14 +27,15 @@ class Product extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('slug')
+            ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
-
+    // Lấy danh mục mà sản phẩm thuộc về
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
+    // Lấy ảnh mà sản phẩm thuộc về
 
     public function images()
     {
