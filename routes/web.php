@@ -4,7 +4,9 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\CMS\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ADMIN\CategoryController;
+use App\Http\Controllers\ADMIN\DashboardController;
 use App\Http\Controllers\ADMIN\ProductController;
+use App\Http\Controllers\CMS\AuthController;
 use App\Http\Controllers\CMS\ShopController;
 
 /*
@@ -18,12 +20,7 @@ use App\Http\Controllers\CMS\ShopController;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.content');
-});
-Route::get('dashboard', function () {
-    return view('admin.content');
-})->name('dashboard');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('product', [HomeController::class, 'product'])->name('product');
 Route::get('admin/logout', [AdminProductController::class, 'logout'])->name('admin.logout');
@@ -31,18 +28,27 @@ Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::get('cart', [HomeController::class, 'cart'])->name('cart');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('about', [HomeController::class, 'about'])->name('about');
-// Route::get('show',[HomeController::class,'show'] )->name('show');
 Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
-Route::get('login', [HomeController::class, 'login'])->name('login');
-Route::get('register', [HomeController::class, 'register'])->name('register');
 //Shop
 Route::get('shop', [ShopController::class, 'shop'])->name('shop');
 Route::get('product/{id}', [ShopController::class, 'productDetails'])->name('shop.product.details');
 
+// cms
+Route::prefix('auth')->as('auth.')->group(
+    function () {
+        Route::get('login', [AuthController::class, 'login'])->name('login');
+        Route::get('register', [AuthController::class, 'register'])->name('register');
+        Route::post('register', [AuthController::class, 'registerAction'])->name('register');
+        Route::post('login', [AuthController::class, 'loginAction'])->name('login');
+        Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    }
+);
+// admin
 Route::prefix('admin')
     ->as('admin.')
     ->group(function () {
+        Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
         Route::prefix('category')
             ->as('category.')
             ->group(function () {

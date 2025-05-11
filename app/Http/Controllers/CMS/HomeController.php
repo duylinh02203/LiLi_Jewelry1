@@ -41,14 +41,4 @@ class HomeController extends Controller
     {
         return view('cms.checkout.checkout');
     }
-
-    public function login()
-    {
-        return view('cms.account.login');
-    }
-
-    public function register()
-    {
-        return view('cms.account.register');
-    }
 }
