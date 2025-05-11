@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->integerIncrements('id');
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->unsignedBigInteger('price');
             $table->string('gender')->comment('male, female, unisex');
             $table->unsignedBigInteger('listed_price');
             $table->string('status')->default('active');
-            $table->string('slug');
+            $table->unsignedBigInteger('quantity')->default(0);
+            $table->string('slug')->unique();
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
             $table->softDeletes();

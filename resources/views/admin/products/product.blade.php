@@ -124,8 +124,9 @@
                                         <th>Danh mục</th>
                                         <th>Giới tính</th>
                                         <th>Mô tả</th>
-                                        <th>Giá tiền</th>
+                                        <th>Giá niêm yết</th>
                                         <th>Giá ưu đãi</th>
+                                        <th>Số lượng</th>
                                         <th>Chức năng</th>
                                     </tr>
                                 </thead>
@@ -144,8 +145,9 @@
                                                 <td>{{ $product->category->name ?? 'null' }}</td>
                                                 <td>{{ $product->gender ?? 'null' }}</td>
                                                 <td>{{ $product->description ?? 'null' }}</td>
-                                                <td>{{ $product->price ?? 'null' }}</td>
                                                 <td>{{ $product->listed_price ?? 'null' }}</td>
+                                                <td>{{ $product->price ?? 'null' }}</td>
+                                                <td>{{ $product->quantity ?? 'null' }}</td>
                                                 <td>
                                                     <a href="{{ route('admin.product.edit', $product->id) }}">
                                                         <button type="button" class="btn btn-edit">Sửa</button></a>

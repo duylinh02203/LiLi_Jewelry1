@@ -1,5 +1,4 @@
 <div class="main-header navbar-searchbar">
-
     <div class="container-fluid-lg">
         <div class="row">
             <div class="col-lg-12">

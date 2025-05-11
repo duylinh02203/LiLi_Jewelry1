@@ -23,7 +23,7 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:categories,name|min:6|max:32|string',
-            'description' => 'required|min:10|max:256|string'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 
@@ -36,10 +36,6 @@ class CreateCategoryRequest extends FormRequest
             'name.min' => 'Name must be at least 6 characters',
             'name.max' => 'Name must be at most 32 characters',
             'name.string' => 'Name must be a string',
-            'description.required' => 'Description is required',
-            'description.min' => 'Description must be at least 10 characters',
-            'description.max' => 'Description must be at most 256 characters',
-            'description.string' => 'Description must be a string'
         ];
     }
 }

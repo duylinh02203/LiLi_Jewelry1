@@ -30,6 +30,7 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
+            $status = $request->quantity && $request->quantity > 0 ? 'active' : 'inactive';
             $dataProduct = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -37,8 +38,9 @@ class ProductController extends Controller
                 'listed_price' => $request->listed_price ?? '',
                 'category_id' => $request->category_id,
                 'gender' => $request->gender,
-                'slug' => Str::slug($request->slug),
-                'category_id' => $request->category_id,
+                'quantity' => $request->quantity ?? 0,
+                'slug' => Str::slug($request->name),
+                'status' => $status,
             ];
             $createdProduct = Product::create($dataProduct);
             if (!$createdProduct) {
@@ -72,17 +74,21 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            $oldProduct = Product::find($id);
+            $oldProduct = Product::findOrFail($id);
             if ($request->hasFile('image')) {
-                foreach ($request->image as $key =>  $image) {
-                    $imageName = $key .  time() . '.' . $image->extension();
-                    $image->move(public_path('images'), $imageName);
-                    ProductImage::create([
-                        'product_id' => $oldProduct->id,
-                        'image' => $imageName,
-                    ]);
+                $images = $request->file('image');
+                if (is_array($images)) {
+                    foreach ($images as $key => $image) {
+                        $imageName = $key . time() . '.' . $image->extension();
+                        $image->move(public_path('images'), $imageName);
+                        ProductImage::create([
+                            'product_id' => $oldProduct->id,
+                            'image' => $imageName,
+                        ]);
+                    }
                 }
             }
+            $newStatus = $request->quantity && $request->quantity > 0 ? 'active' : 'inactive';
             $newProduct = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -90,14 +96,17 @@ class ProductController extends Controller
                 'listed_price' => $request->listed_price,
                 'category_id' => $request->category_id ?? $oldProduct->category_id,
                 'gender' => $request->gender ?? $oldProduct->gender,
-                'slug' => Str::slug($request->slug) ?? $oldProduct->slug,
+                'status' => $newStatus,
+                'slug' => Str::slug($request->name),
+                'quantity' => $request->quantity ?? $oldProduct->quantity,
             ];
             $oldProduct->update($newProduct);
+
             DB::commit();
             return redirect()->route('admin.product.index')->with('success', 'Product updated successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('admin.product.index')->with('error', 'Product updated failed');
+            return redirect()->route('admin.product.index')->with('error', 'Product update failed: ' . $th->getMessage());
         }
     }
 

@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 @section('content')
-    <div class="content-wrapper">
+<div class="content-wrapper">
         <div class="page-header">
-            <h3 class="page-title">Categories</h3>
+            <h3 class="page-title">Contact</h3>
             <nav>
             </nav>
             @if ($message = Session::get('success'))
@@ -20,41 +20,35 @@
                             <div class="search-bar col-lg-3" style="width: 250px; flex: 1;">
                                 <form class="nav-link mt-2 mt-md-0 d-lg-flex search">
                                     <input type="text" style="padding: 15;" class="form-control"
-                                        placeholder="Search products">
+                                        placeholder="Search Contact">
                                 </form>
                             </div>
-                            <a href="{{ route('admin.category.create') }}" style="text-decoration: none;">
-                                <button class="btn btn-primary"
-                                    style="border-radius: 20px; font-size: 14px; padding: 10px 20px; display: flex; align-items: center;">
-                                    <span style="margin-right: 5px;">+</span> Add New
-                                </button>
-                            </a>
                         </div>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
-                                        <th>Name</th>
-                                        <th>Image</th>
+                                        <th>STT</th>
+                                        <th>Tên</th>
+                                        <th>Họ</th>
+                                        <th>Email</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Bình luận</th>
                                         <th>Chức năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (count($cats) > 0)
-                                        @foreach ($cats as $index => $cat)
+                                    @if (count($contacts) > 0)
+                                        @foreach ($contacts as $index => $contact)
                                             <tr>
                                                 <td>{{ ++$index }}</td>
-                                                <td>{{ $cat->name }}</td>
+                                                <td>{{ $contact->first_name }}</td>
+                                                <td>{{ $contact->last_name }}</td>
+                                                <td>{{ $contact->email }}</td>
+                                                <td>{{ $contact->phone }}</td>
+                                                <td>{{ $contact->comment }}</td>
                                                 <td>
-                                                    <img src="{{ asset('images/categories/' . ($cat->image ?? 'default.png')) }}" alt="Category Image"
-
-                                                        style="width: 80px; height: 100px; object-fit: cover; border-radius: 5px;">
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('admin.category.edit', $cat->id)}}"><button
-                                                            type="button" class="btn btn-edit">Update</button></a>
-                                                    <a href="{{ route('admin.category.destroy', $cat->id) }}">
+                                                    <a href="{{ route('admin.contact.remove', $contact->id) }}">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="button" class="btn btn-delete">Delete</button>

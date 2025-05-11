@@ -4,11 +4,12 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\CMS\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ADMIN\CategoryController;
-use App\Http\Controllers\ADMIN\DashboardController;
+use App\Http\Controllers\ADMIN\ContactController;
 use App\Http\Controllers\ADMIN\ProductController;
 use App\Http\Controllers\CMS\AuthController;
 use App\Http\Controllers\CMS\ShopController;
-
+use App\Http\Controllers\CMS\AuthController;
+use App\Http\Controllers\ADMIN\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,11 +29,14 @@ Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::get('cart', [HomeController::class, 'cart'])->name('cart');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('about', [HomeController::class, 'about'])->name('about');
-Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+// Route::get('show',[HomeController::class,'show'] )->name('show');
 Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 //Shop
 Route::get('shop', [ShopController::class, 'shop'])->name('shop');
-Route::get('product/{id}', [ShopController::class, 'productDetails'])->name('shop.product.details');
+Route::get('product/{slug}', [ShopController::class, 'productDetails'])->name('shop.product.details');
+//success
+Route::get('/contact-us/success', [ContactController::class, 'success'])->name('admin.contact.success');
+
 
 // cms
 Route::prefix('auth')->as('auth.')->group(
@@ -44,7 +48,8 @@ Route::prefix('auth')->as('auth.')->group(
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     }
 );
-// admin
+
+
 Route::prefix('admin')
     ->as('admin.')
     ->group(function () {
@@ -55,8 +60,8 @@ Route::prefix('admin')
                 Route::get('/', [CategoryController::class, 'index'])->name('index');
                 Route::post('/', [CategoryController::class, 'store'])->name('store');
                 Route::get('/create', [CategoryController::class, 'create'])->name('create');
-                Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('edit');
-                Route::put('/{id}', [CategoryController::class, 'update'])->name('update');
+                Route::get('/edit/{id}', [CategoryController::class, 'editForm'])->name('edit');
+                Route::put('/edit/{id}', [CategoryController::class, 'edit'])->name('edit');
                 Route::get('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
             });
         Route::prefix('product')
@@ -69,4 +74,12 @@ Route::prefix('admin')
                 Route::put('/edit/{id}', [ProductController::class, 'edit'])->name('edit');
                 Route::get('/remove/{id}', [ProductController::class, 'remove'])->name('remove');
             });
+        Route::prefix('contact')
+            ->as('contact.')
+            ->group(function () {
+                Route::get('', [ContactController::class, 'index'])->name('index');
+                Route::post('/create', [ContactController::class, 'create'])->name('create');
+                Route::get('/remove/{id}', [ContactController::class, 'remove'])->name('remove');
+            });
+        Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     });

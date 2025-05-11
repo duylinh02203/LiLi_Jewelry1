@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ADMIN;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCategoryRequest extends FormRequest
 {
@@ -23,10 +24,17 @@ class UpdateCategoryRequest extends FormRequest
     {
         $id = $this->route('id');
         return [
-            'name' => 'required|min:6|max:32|string|unique:categories,name,' . $id,
-            'description' => 'required|min:10|max:256|string'
+            'name' => [
+                'required',
+                'string',
+                'min:6',
+                'max:256',
+                Rule::unique('categories','name')->ignore($id),
+            ],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
+
 
     public function messages(): array
     {
@@ -36,10 +44,6 @@ class UpdateCategoryRequest extends FormRequest
             'name.min' => 'Name must be at least 6 characters',
             'name.max' => 'Name must be at most 32 characters',
             'name.string' => 'Name must be a string',
-            'description.required' => 'Description is required',
-            'description.min' => 'Description must be at least 10 characters',
-            'description.max' => 'Description must be at most 256 characters',
-            'description.string' => 'Description must be a string'
         ];
     }
 }

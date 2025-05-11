@@ -23,12 +23,12 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'slug' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'array',
-            'image.*' => 'image|max:2048',
+            'price' => 'required|numeric|min:0',
+            'listed_price' => 'nullable|numeric|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'gender' => 'required|in:male,female,unisex',
+            'quantity' => 'required|integer|min:0',
+            'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 

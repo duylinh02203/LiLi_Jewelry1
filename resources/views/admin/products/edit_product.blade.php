@@ -47,7 +47,7 @@
                                 <select class="form-control" name="category_id">
                                     <option value="" hidden>Chọn danh mục sản phẩm</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}" {{$category->id == $productUpdate->category_id ? 'selected' : ''}}>{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -58,9 +58,9 @@
                                     @enderror
                                 </label>
                                 <select class="form-control" name="gender">
-                                    <option value="unisex">Unisex</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="unisex" {{ $productUpdate->gender == 'unisex' ? 'selected' : '' }}>Unisex</option>
+                                    <option value="male" {{ $productUpdate->gender == 'male' ? 'selected' : '' }}>Male</option>
+                                    <option value="female" {{ $productUpdate->gender == 'female' ? 'selected' : '' }}>Female</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -77,9 +77,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Slug</label>
-                                <input type="text" class="form-control" placeholder="Slug" name="slug"
-                                    value="{{ $productUpdate->slug }}">
+                                <label>Quantity</label>
+                                <input type="text" class="form-control" placeholder="Quantity" name="quantity"
+                                    value="{{ $productUpdate->quantity }}">
                             </div>
                             <div class="form-group">
                                 <label>Description
@@ -90,7 +90,8 @@
                                 <textarea class="form-control" id="exampleTextarea1" rows="4" name="description">{{ $productUpdate->description }}</textarea>
                             </div>
                             <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                            <button class="btn btn-dark">Cancel</button>
+                            <button class="btn btn-dark"><a href="{{ route('admin.product.index') }}"
+                            style="text-decoration: none; color:white;">Cancel</a></button>
                         </form>
                     </div>
                 </div>
