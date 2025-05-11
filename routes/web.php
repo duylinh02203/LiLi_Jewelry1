@@ -8,7 +8,6 @@ use App\Http\Controllers\ADMIN\ContactController;
 use App\Http\Controllers\ADMIN\ProductController;
 use App\Http\Controllers\CMS\AuthController;
 use App\Http\Controllers\CMS\ShopController;
-use App\Http\Controllers\CMS\AuthController;
 use App\Http\Controllers\ADMIN\DashboardController;
 /*
 |--------------------------------------------------------------------------
