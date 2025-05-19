@@ -29,20 +29,23 @@ class UpdateProductRequest extends FormRequest
             'gender' => 'required|in:male,female,unisex',
             'quantity' => 'required|integer|min:0',
             'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'sizes' => 'nullable|string',
+
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'Name is required',
-            'name.max' => 'Name is too long',
-            'description.required' => 'Description is required',
-            'price.required' => 'Price is required',
-            'price.numeric' => 'Price must be number',
-            'image.array' => 'Image must be array',
-            'image.*.image' => 'Image must be image',
-            'image.*.max' => 'Image is too long',
+            'name.required' => 'Điền tên sản phẩm',
+            'name.max' => 'Tên sản phẩm không được vượt quá :max ký tự',
+            'description.required' => 'Điền mô tả sản phẩm',
+            'price.required' => 'Điền giá sản phẩm',
+            'price.numeric' => 'Giá sản phẩm không hợp lệ',
+            'image.array' => 'Hình ảnh sản phẩm phải là một mảng',
+            'image.*.image' => 'Hình ảnh không hợp lệ',
+            'image.*.max' => 'Kích thước mỗi hình ảnh không được vượt quá :max KB',
+            'sizes.string' => 'Kích thước sản phẩm phải là một chuỗi',
         ];
     }
 }

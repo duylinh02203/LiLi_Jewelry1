@@ -30,27 +30,32 @@ class CreateProductRequest extends FormRequest
             'gender' => 'required|in:male,female,unisex',
             'image' => 'required|array',
             'image.*' => 'image|max:2048',
+            'quantity' => 'nullable|numeric|min:0',
+            'sizes' => 'nullable|string',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'Name is required',
-            'name.max' => 'Name is too long',
-            'price.required' => 'Price is required',
-            'price.numeric' => 'Price must be number',
-            'listed_price.numeric' => 'Listed price must be number',
-            'description.required' => 'Description is required',
-            'category_id.required' => 'Category is required',
-            'category_id.numeric' => 'Category must be number',
-            'gender.required' => 'Gender is required',
-            'gender.in' => 'Gender must be male, female, unisex',
-            'image.required' => 'Image is required',
-            'image.image' => 'Image must be image',
-            'image.max' => 'Image is too long',
-            'image.*.image' => 'Image must be image',
-            'image.*.max' => 'Image is too long',
+            'name.required' => 'Điền tên sản phẩm.',
+            'name.max' => 'Tên sản phẩm không được vượt quá :max ký tự.',
+            'price.required' => 'Điền giá sản phẩm.',
+            'price.numeric' => 'Giá bán phải là một số hợp lệ.',
+            'listed_price.numeric' => 'Giá niêm yết phải là một số hợp lệ.',
+            'description.required' => 'Điền mô tả sản phẩm.',
+            'category_id.required' => 'Chọn danh mục sản phẩm.',
+            'category_id.numeric' => 'Danh mục phải là một giá trị số hợp lệ.',
+            'gender.required' => 'Chọn giới tính',
+            'gender.in' => 'Giới tính là một trong các giá trị: nam (male), nữ (female), hoặc unisex.',
+            'image.required' => 'Bạn cần tải lên ít nhất một hình ảnh sản phẩm.',
+            'image.array' => 'Hình ảnh sản phẩm phải là một mảng.',
+            'image.*.image' => 'Mỗi tệp trong hình ảnh phải là một định dạng ảnh hợp lệ.',
+            'image.*.max' => 'Kích thước mỗi hình ảnh không được vượt quá :max KB.',
+            'quantity.numeric' => 'Số lượng sản phẩm phải là một số hợp lệ.',
+            'quantity.min' => 'Số lượng sản phẩm không được nhỏ hơn :min.',
+            'sizes.string' => 'Kích thước sản phẩm phải là một chuỗi.',
+            'sizes.nullable' => 'Kích thước sản phẩm không bắt buộc.',
         ];
     }
 }

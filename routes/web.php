@@ -9,6 +9,8 @@ use App\Http\Controllers\ADMIN\ProductController;
 use App\Http\Controllers\CMS\AuthController;
 use App\Http\Controllers\CMS\ShopController;
 use App\Http\Controllers\ADMIN\DashboardController;
+use App\Http\Controllers\ADMIN\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +37,7 @@ Route::get('shop', [ShopController::class, 'shop'])->name('shop');
 Route::get('product/{slug}', [ShopController::class, 'productDetails'])->name('shop.product.details');
 //success
 Route::get('/contact-us/success', [ContactController::class, 'success'])->name('admin.contact.success');
+Route::get('/danh-muc/{slug}', [HomeController::class, 'products'])->name('shop.product.category');
 
 
 // cms
@@ -62,6 +65,8 @@ Route::prefix('admin')
                 Route::get('/edit/{id}', [CategoryController::class, 'editForm'])->name('edit');
                 Route::put('/edit/{id}', [CategoryController::class, 'edit'])->name('edit');
                 Route::get('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
+                Route::get('/detail/{id}', [CategoryController::class, 'detail'])->name('detail');
+                Route::get('/searchCategory', [CategoryController::class, 'searchCategory'])->name('searchCategory');
             });
         Route::prefix('product')
             ->as('product.')
@@ -72,6 +77,8 @@ Route::prefix('admin')
                 Route::get('/edit/{id}', [ProductController::class, 'editForm'])->name('edit');
                 Route::put('/edit/{id}', [ProductController::class, 'edit'])->name('edit');
                 Route::get('/remove/{id}', [ProductController::class, 'remove'])->name('remove');
+                Route::get('/detail/{id}', [ProductController::class, 'detail'])->name('detail');
+                Route::get('/search', [ProductController::class, 'searchProduct'])->name('search');
             });
         Route::prefix('contact')
             ->as('contact.')
@@ -79,6 +86,22 @@ Route::prefix('admin')
                 Route::get('', [ContactController::class, 'index'])->name('index');
                 Route::post('/create', [ContactController::class, 'create'])->name('create');
                 Route::get('/remove/{id}', [ContactController::class, 'remove'])->name('remove');
+                Route::get('/search', [ContactController::class, 'searchContact'])->name('search');
+                Route::get('/detail/{id}', [ContactController::class, 'detail'])->name('detail');
+            });
+        Route::prefix('user')
+            ->as('user.')
+            ->group(function () {
+                Route::get('listUser', [UserController::class, 'listUser'])->name('listUser');
+                Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
+                Route::get('/create', [UserController::class, 'create'])->name('create');
+                Route::post('/store', [UserController::class, 'store'])->name('store');
+                Route::get('/edit/{id}', [UserController::class, 'editForm'])->name('edit');
+                Route::put('/edit/{id}', [UserController::class, 'edit'])->name('edit');
+                Route::get('/destroy/{id}', [UserController::class, 'destroy'])->name('destroy');
+                Route::get('/searchUser', [UserController::class, 'searchUser'])->name('searchUser');
+                Route::get('/searchAdmin', [UserController::class, 'searchAdmin'])->name('searchAdmin');
+                Route::get('/detail/{id}', [UserController::class, 'detail'])->name('detail');
             });
         Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     });

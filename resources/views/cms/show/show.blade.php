@@ -12,16 +12,18 @@
         overflow: hidden;
     }
 
-    .btn-plus, .btn-minus {
+    .btn-plus,
+    .btn-minus {
         width: 40px;
         height: 48.1px;
         background-color: #f4f4f4;
         border: none;
-        font-size: 18px;
+        font-size: 14px;
         cursor: pointer;
     }
 
-    .btn-plus:hover, .btn-minus:hover {
+    .btn-plus:hover,
+    .btn-minus:hover {
         background-color: #e2e2e2;
     }
 
@@ -34,8 +36,77 @@
         pointer-events: none;
         align-items: center;
     }
-    #cartEffect{
+
+    #cartEffect {
         margin-left: 15px;
+    }
+
+    .size-selector {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .size-selector label {
+        display: inline-block;
+        width: 45px;
+        height: 45px;
+        line-height: 45px;
+        text-align: center;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        user-select: none;
+        transition: all 0.3s;
+    }
+
+    .size-selector input[type="radio"] {
+        display: none;
+    }
+
+    .size-selector input[type="radio"]:checked+label {
+        border-color: black;
+        background-color: #f0f0f0;
+    }
+
+    .size-selector label:hover {
+        border-color: #999;
+    }
+
+    .details-image-concept {
+        border-bottom: dashed 1px #333;
+        padding-bottom: 10px;
+    }
+
+    .rating {
+        display: inline-block;
+        font-size: 30px;
+    }
+
+    .rating {
+        display: inline-block;
+        font-size: 30px;
+    }
+
+    .star {
+        display: inline-block;
+        color: #ccc;
+        /* Màu mặc định của sao */
+        cursor: pointer;
+        transition: color 0.2s ease-in-out;
+    }
+
+    .star.active {
+        color: #ffcc00;
+        /* Màu vàng khi sao được chọn */
+    }
+
+    .star.hover {
+        color: #ffcc00;
+        /* Màu vàng khi hover */
     }
 </style>
 @endpush
@@ -70,7 +141,7 @@
             </div>
         </div>
     </div>
-</section> <!-- Shop Section start -->
+</section>
 
 <section>
     <div class="container">
@@ -78,45 +149,6 @@
             <div class="col-lg-12 col-12">
                 <div class="details-items">
                     <div class="row g-4">
-                        <!-- <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-lg-2">
-                                    <div class="details-image-vertical black-slide rounded">
-                                        <div>
-                                            <img src="../assets/images/fashion/product/front/1.jpg"
-                                                class="img-fluid blur-up lazyload" alt="{{$product->name}}">
-                                        </div>
-                                        @if($product->images)
-                                        @php
-                                        $images = explode(',', $product->images);
-                                        @endphp
-                                        @foreach($images as $image)
-                                        <div>
-                                            <img src="{{$image}}" class="img-fluid blur-up lazyload" alt="{{$product->name}}">
-                                        </div>
-                                        @endforeach
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-lg-10">
-                                    <div class="details-image-1 ratio_asos">
-                                        <div>
-                                            <img src="../assets/images/fashion/product/front/1.jpg" class="img-fluid w-100 image_zoom_cls-0 blur-up lazyload" alt="{{$product->name}}">
-                                        </div>
-                                        @if($product->images)
-                                            @php
-                                                $images = explode(',', $product->images);
-                                            @endphp
-                                            @foreach($images as $image)
-                                                <div>
-                                                    <img src="../assets/images/fashion/2.jpg" class="img-fluid w-100 image_zoom_cls-1 blur-up lazyload" alt="">
-                                                </div>
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-lg-2">
@@ -148,32 +180,9 @@
 
                         <div class="col-md-6">
                             <div class="cloth-details-size">
-                                <div class="product-count">
-                                    <ul>
-                                        <li>
-                                            <img src="../assets/images/gif/fire.gif"
-                                                class="img-fluid blur-up lazyload" alt="image">
-                                            <span class="p-counter">37</span>
-                                            <span class="lang">orders in last 24 hours</span>
-                                        </li>
-                                        <li>
-                                            <img src="../assets/images/gif/person.gif"
-                                                class="img-fluid user_img blur-up lazyload" alt="image">
-                                            <span class="p-counter">44</span>
-                                            <span class="lang">active view this</span>
-                                        </li>
-                                    </ul>
-                                </div>
-
                                 <div class="details-image-concept">
                                     <h2>{{$product->name}}</h2>
                                 </div>
-
-                                <div class="label-section">
-                                    <span class="badge badge-grey-color">#1 Best seller</span>
-                                    <span class="label-text">in fashion</span>
-                                </div>
-
                                 <h3 class="price-detail">
                                     @if($product->price)
                                     {{ number_format($product->price, 0, ',', '.') }} VNĐ
@@ -182,7 +191,24 @@
                                     {{ number_format($product->listed_price, 0, ',', '.') }} VNĐ
                                     @endif
                                 </h3>
+                                <div class="label-section">
+                                    <p>{{$product->description}}</p>
+                                </div>
+                                <div>
+                                    <p><strong>Lưu ý: </strong>{{$product->is_free_size === 1 ? 'Sản phẩm Free Size có thể điều chỉnh kích thước tùy ý. Nếu bạn yêu cầu khắc tên, vui lòng ấn liên hệ (góc phải) để được hỗ trợ' : 'Nếu bạn yêu cầu khắc tên, thắc mắc về size số vui lòng ấn liên hệ (góc phải) để được hỗ trợ !'}}</p>
+                                </div>
+                                <!--  -->
+                                <div class="size-selector">
+                                    <strong><span>Kích thước: </span></strong>
+                                    @foreach($productSizes as $size)
+                                    <div>
+                                        <input type="radio" id="size{{ $size->id }}" name="size" value="{{ $size->size }}">
+                                        <label for="size{{ $size->id }}">{{ $size->size }}</label>
+                                    </div>
+                                    @endforeach
+                                </div>
 
+                                <!--  -->
                                 <div class="product-buttons">
                                     <div class="quantity-container">
                                         <button class="btn-minus" onclick="decreaseQuantity()">-</button>
@@ -204,47 +230,21 @@
                                             <input type="hidden" name="quantity" id="qty" value="1">
                                         </form>
                                     </a>
-                                    
-
-
-
                                 </div>
-
-                                <ul class="product-count shipping-order">
-                                    <li>
-                                        <img src="../assets/images/gif/truck.png" class="img-fluid blur-up lazyload"
-                                            alt="image">
-                                        <span class="lang">Free shipping for orders above $500 USD</span>
-                                    </li>
-                                </ul>
-
                                 <div class="mt-2 mt-md-3 border-product">
-                                    <h6 class="product-title hurry-title d-block">
-                                        @if($product->status=='active')
-                                        Active
-                                        @else
-                                        Inactive
-                                        @endif
-                                    </h6>
+                                    <table>
+                                        <tr>
+                                            <td>Cam kết chất lượng sản phẩm</td>
+                                            <td>Đổi trả trong vòng 15 ngày</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>Cam kết chất lượng, đảm bảo từng chi tiết</td>
+                                            <td>Uy tín hàng đầu – Mua sắm không lo</td>
+                                        </tr>
+                                    </table>
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar" style="width: 78%"></div>
-                                    </div>
-                                    <div class="font-light timer-5">
-                                        <h5>Đặt hàng tiếp theo để nhận</h5>
-                                        <ul class="timer1">
-                                            <li class="counter">
-                                                <h5 id="days">&#9251;</h5> Days :
-                                            </li>
-                                            <li class="counter">
-                                                <h5 id="hours">&#9251;</h5> Hour :
-                                            </li>
-                                            <li class="counter">
-                                                <h5 id="minutes">&#9251;</h5> Min :
-                                            </li>
-                                            <li class="counter">
-                                                <h5 id="seconds">&#9251;</h5> Sec
-                                            </li>
-                                        </ul>
                                     </div>
                                 </div>
 
@@ -303,8 +303,65 @@
 
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="desc">
-                            <div class="shipping-chart">
-                                {{$product->description}}
+                            <div class="shipping-chart" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                @foreach($product->images as $image)
+                                <div style="margin: 10px;">
+                                    <img src="{{ asset('images/' . $image->image) }} "
+                                        class="img-fluid blur-up lazyload"
+                                        alt="{{ $product->name }}"
+                                        style="max-width: 100%; max-height: auto; object-fit: cover; border-radius: 10px;">
+                                </div>
+                                @endforeach
+                            </div>
+                            <hr>
+                            <h2 style="text-align: center;">THÔNG SỐ SẢN PHẨM</h2>
+                            <div class="product-details-table">
+                                <style>
+                                    .product-details-table {
+                                        margin: 20px auto;
+                                        width: 80%;
+                                        text-align: left;
+                                        padding-top: 15px;
+                                    }
+
+                                    .product-details-table table {
+                                        width: 100%;
+                                        border-collapse: collapse;
+                                    }
+
+                                    .product-details-table td {
+                                        padding: 10px 15px;
+                                        vertical-align: top;
+                                        text-align: left !important;
+                                    }
+                                </style>
+                                <table>
+                                    <tr>
+                                        <td>Loại:</td>
+                                        <td>{{$product->category->name}}</td>
+                                        <td>Kích thước: </td>
+                                        <td>
+                                            @if ($product->is_free_size === 1)
+                                            Free Size
+                                            @else
+                                            {{ $productSizes->pluck('size')->join(' ') }}
+                                            @endif
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Kiểu dáng:</td>
+                                        <td>Sang trọng</td>
+                                        <td>Giới tính:</td>
+                                        <td>{{ $product->gender == "male" ? "Nam" : ($product->gender == "female" ? "Nữ" : "Cả nam và nữ") }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chất liệu:</td>
+                                        <td>Bạc 92.5%</td>
+                                        <td>Độ hoàn thiện:</td>
+                                        <td>Xuất sắc</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
 
@@ -572,28 +629,20 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-8">
+                                <div class="col-lg-8" style="margin-top:45px;">
+                                    <h2 style="margin-top: -20px;">Đánh giá của bạn</h2>
                                     <p class="d-inline-block me-2">Đánh giá</p>
-                                    <ul class="rating mb-3 d-inline-block">
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                    </ul>
+                                    <div class="rating mb-3 d-inline-block">
+                                        <span class="star" data-value="1">★</span>
+                                        <span class="star" data-value="2">★</span>
+                                        <span class="star" data-value="3">★</span>
+                                        <span class="star" data-value="4">★</span>
+                                        <span class="star" data-value="5">★</span>
+                                    </div>
                                     <div class="review-box">
                                         <form class="row g-4">
-                                            <div class="col-12 col-md-6">
+                                            <input type="hidden" name="rating" id="rating-value" value="">
+                                            <!-- <div class="col-12 col-md-6">
                                                 <label class="mb-1" for="name">Tên</label>
                                                 <input type="text" class="form-control" id="name"
                                                     placeholder="Nhập tên của bạn" required="">
@@ -603,7 +652,7 @@
                                                 <label class="mb-1" for="id">Địa chỉ Email</label>
                                                 <input type="email" class="form-control" id="id"
                                                     placeholder="Địa chỉ Email" required="">
-                                            </div>
+                                            </div> -->
 
                                             <div class="col-12">
                                                 <label class="mb-1" for="comments">Bình luận</label>
@@ -661,111 +710,6 @@
                                                 <p class="date-custo font-light">- Sep 08, 2021</p>
                                             </div>
                                         </div>
-
-                                        <div class="customer-section">
-                                            <div class="customer-profile">
-                                                <img src="../assets/images/inner-page/review-image/2.jpg"
-                                                    class="img-fluid blur-up lazyload" alt="">
-                                            </div>
-
-                                            <div class="customer-details">
-                                                <h5>Norwalker</h5>
-                                                <ul class="rating my-2 d-inline-block">
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                </ul>
-                                                <p class="font-light">Pros: Nice large(9.7") screen. Bright colors.
-                                                    Easy
-                                                    to setup and get started. Arrived on time. Cons: a bit slow on
-                                                    response, but expected as tablet is 2 generations old. But works
-                                                    fine and good value for the money.</p>
-
-                                                <p class="date-custo font-light">- Sep 08, 2021</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="customer-section">
-                                            <div class="customer-profile">
-                                                <img src="../assets/images/inner-page/review-image/3.jpg"
-                                                    class="img-fluid blur-up lazyload" alt="">
-                                            </div>
-
-                                            <div class="customer-details">
-                                                <h5>B. Perdue</h5>
-                                                <ul class="rating my-2 d-inline-block">
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                </ul>
-                                                <p class="font-light">Love the processor speed and the sensitivity
-                                                    of
-                                                    the touch screen.</p>
-
-                                                <p class="date-custo font-light">- Sep 08, 2021</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="customer-section">
-                                            <div class="customer-profile">
-                                                <img src="../assets/images/inner-page/review-image/4.jpg"
-                                                    class="img-fluid blur-up lazyload" alt="">
-                                            </div>
-
-                                            <div class="customer-details">
-                                                <h5>MSL</h5>
-                                                <ul class="rating my-2 d-inline-block">
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                </ul>
-                                                <p class="font-light">I purchased the Tablet May 2017 and now April
-                                                    2019
-                                                    I have to charge it everyday. I don't watch movies on it..just
-                                                    play
-                                                    a game or two while on lunch. I guess now I need to power it
-                                                    down
-                                                    for future use.</p>
-
-                                                <p class="date-custo font-light">- Sep 08, 2021</p>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -776,14 +720,12 @@
         </div>
     </div>
 </section>
-<!-- Shop Section end -->
-
-<!-- product section start -->
-<section class="ratio_asos section-b-space overflow-hidden">
+<section class="ratio_asos section-b-space overflow-hidden" style="padding-top:30px !important;">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h2 class="mb-lg-4 mb-3">Sản phẩm liên quan</h2>
+                <hr>
+                <h2 class="mb-lg-4 mb-3" style="text-align: center;">Sản phẩm liên quan</h2>
                 <div class="product-wrapper product-style-2 slide-4 p-0 light-arrow bottom-space">
                     @if(count($relatedProducts)>0)
                     @foreach($relatedProducts as $relatedProduct)
@@ -876,6 +818,13 @@
 @endsection
 @push('scripts')
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sizeSelector = document.querySelector('.size-selector');
+        if (sizeSelector && sizeSelector.querySelectorAll('input[type="radio"]').length === 0) {
+            sizeSelector.style.display = 'none';
+        }
+    });
+
     function increaseQuantity() {
         const input = document.getElementById("quantity");
         input.value = parseInt(input.value) + 1;
@@ -885,6 +834,59 @@
         const input = document.getElementById("quantity");
         if (input.value > 1) {
             input.value = parseInt(input.value) - 1;
+        }
+    }
+    // Biến lưu trạng thái số sao đã chọn
+    let selectedRating = 0;
+
+    // Lấy danh sách tất cả các sao
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('rating-value');
+    // Thêm sự kiện hover và click vào từng sao
+    stars.forEach((star, index) => {
+        // Khi hover
+        star.addEventListener('mouseover', () => {
+            highlightStars(index + 1, 'hover'); // Làm sáng tạm thời các sao
+        });
+
+        // Khi chuột rời khỏi khu vực sao
+        star.addEventListener('mouseout', () => {
+            resetHover(); // Xóa hiệu ứng hover
+            highlightStars(selectedRating, 'active'); // Hiển thị số sao đã chọn
+        });
+
+        // Khi click để chọn sao
+        star.addEventListener('click', () => {
+            selectedRating = index + 1; // Cập nhật số sao được chọn
+            ratingInput.value = selectedRating; // Cập nhật giá trị vào input ẩn
+            setActiveStars(selectedRating); // Làm sáng các sao theo số sao đã chọn
+            console.log(`Bạn đã chọn ${selectedRating} sao!`);
+        });
+    });
+
+    // Hàm làm sáng sao khi hover hoặc chọn
+    function highlightStars(rating, type) {
+        resetAllStars(); // Xóa tất cả trạng thái hiện có
+        for (let i = 0; i < rating; i++) {
+            stars[i].classList.add(type); // Thêm trạng thái (hover hoặc active)
+        }
+    }
+
+    // Hàm xóa hiệu ứng hover và trạng thái trước đó
+    function resetHover() {
+        stars.forEach((star) => star.classList.remove('hover'));
+    }
+
+    // Hàm xóa tất cả trạng thái (hover và active)
+    function resetAllStars() {
+        stars.forEach((star) => star.classList.remove('hover', 'active'));
+    }
+
+    // Hàm làm sáng các sao đã chọn
+    function setActiveStars(rating) {
+        resetAllStars(); // Xóa trạng thái cũ
+        for (let i = 0; i < rating; i++) {
+            stars[i].classList.add('active'); // Làm sáng theo số sao được chọn
         }
     }
 </script>

@@ -24,9 +24,13 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .accordion-button{
+        background-color: #e87316 !important;
+        color: #fff;
+        border-radius: 5px !important;
+    }
 </style>
 @endpush
-<!-- breadcrumb section start -->
 <section class="breadcrumb-section section-b-space" style="padding-top:20px;padding-bottom:20px;">
     <ul class="circles">
         <li></li>
@@ -58,7 +62,6 @@
         </div>
     </div>
 </section>
-<!-- Shop Section start -->
 <section class="section-b-space">
     <div class="container">
         <div class="row">
@@ -70,7 +73,11 @@
                             <button class="btn p-0"><i data-feather="arrow-left"></i> Close</button>
                         </div>
                         <div class="accordion category-name" id="accordionExample">
-                            <div class="accordion-item category-rating">
+                            <div class="accordion-item category-rating ">
+                                <div style="display: flex; align-items: center; padding: 10px;">
+                                    <i class="fa-solid fa-filter"></i>
+                                    <h3 style="padding:10px; font-weight:bold;">BỘ LỌC TÌM KIẾM </h3>
+                                </div>
                                 <h2 class="accordion-header" id="headingTwo">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseTwo">
@@ -174,16 +181,20 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                    </div>
+                        <div style=" background-color: #e87316; border-radius: 5px; text-align: center;">
+                            <a href="{{ route('shop') }}"
+                                style="color: black; text-decoration: none; padding: 10px 20px; font-size: 16px; font-weight: bold; display: inline-block; background-color: #e87316; border-radius: 5px; text-align: center;">
+                                Xóa tất cả bộ lọc
+                            </a>
+                        </div>
 
+                    </div>
             </div>
 
             <div class="category-product col-lg-9 col-12 ratio_30">
 
                 <div class="row g-4">
-                    <!-- label and featured section -->
                     <div class="col-md-12">
                         <ul class="short-name">
                         </ul>
@@ -194,15 +205,15 @@
                             <div class="select-options">
                                 <div class="mb-4 d-flex gap-2 align-items-center">
                                     <select name="sort" onchange="this.form.submit()" class="form-select w-auto">
-                                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá tăng dần</option>
                                         <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Mới nhất</option>
+                                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá tăng dần</option>
                                         <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá giảm dần</option>
                                     </select>
                                     <select name="size" onchange="this.form.submit()" class="form-select w-auto">
-                                        <option value="5" {{ request('size', 5) == 5 ? 'selected' : '' }}>Hiển thị 5</option>
-                                        <option value="10" {{ request('size') == 10 ? 'selected' : '' }}>Hiển thị 10</option>
-                                        <option value="20" {{ request('size') == 20 ? 'selected' : '' }}>Hiển thị 20</option>
-                                        <option value="50" {{ request('size') == 50 ? 'selected' : '' }}>Hiển thị 50</option>
+                                        <option value="5" {{ request('size', 5) == 5 ? 'selected' : '' }}>Hiển thị 5 sản phẩm</option>
+                                        <option value="10" {{ request('size') == 10 ? 'selected' : '' }}>Hiển thị 10 sản phẩm</option>
+                                        <option value="20" {{ request('size') == 20 ? 'selected' : '' }}>Hiển thị 20 sản phẩm</option>
+                                        <option value="50" {{ request('size') == 50 ? 'selected' : '' }}>Hiển thị 50 sản phẩm</option>
                                     </select>
                                 </div>
 
@@ -295,7 +306,6 @@
                                         <h5 class="ms-0">{{ $product->name }}</h5>
                                     </a>
                                     <div class="listing-content">
-                                        <!-- <span class="font-light">{{ $product->name }}</span> -->
                                         <p class="font-light">{{ \Illuminate\Support\Str::limit($product->description, 100) }}</p>
                                     </div>
                                     <h3 class="theme-color">{{ number_format($product->price, 0, ',', '.') }} VNĐ</h3>
@@ -306,9 +316,11 @@
                     </div>
                     @endforeach
                     @else
-                    <div class="col-12" style="text-align: center;">
+                    <div class="col-md-12" style="text-align: center;">
                         <h4>Không có sản phẩm nào.</h4>
                     </div>
+
+
                     @endif
                 </div>
                 {{ $products->links('cms.pagination.default') }}
@@ -316,8 +328,6 @@
         </div>
     </div>
 </section>
-<!-- Shop Section end -->
-<!-- Subscribe Section Start -->
 <section class="subscribe-section section-b-space">
     <div class="container">
         <div class="row">
@@ -339,7 +349,6 @@
         </div>
     </div>
 </section>
-<!-- Subscribe Section End -->
 <div id="qvmodal"></div>
 @endsection
 @push('scripts')

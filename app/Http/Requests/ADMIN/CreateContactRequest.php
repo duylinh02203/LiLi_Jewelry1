@@ -22,9 +22,9 @@ class CreateContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'first_name' => ['required', 'regex:/^[\pL\s]+$/u'],
+            'first_name' => ['required', 'regex:/^[\pL\s]+$/u'],
             'last_name'  => ['required', 'regex:/^[\p{L}\s]+$/u', 'max:32'],
-            'email'      => 'required|email:rfc,dns|max:80',
+            'email' => 'required|unique:contacts,email|email:rfc,dns|max:80',
             'phone'      => ['required', 'regex:/^0\d{9}$/'],
             'comment'    => 'required|string|max:1000',
         ];
@@ -46,6 +46,7 @@ class CreateContactRequest extends FormRequest
             'email.required' => 'Vui lòng nhập địa chỉ email.',
             'email.email'    => 'Địa chỉ email không hợp lệ.',
             'email.max'      => 'Địa chỉ email không được vượt quá 80 ký tự.',
+            'email.unique'   => 'Địa chỉ email đã tồn tại.',
 
             'phone.required' => 'Vui lòng nhập số điện thoại.',
             'phone.regex'    => 'Số điện thoại phải bắt đầu bằng số 0 và gồm 10 chữ số.',

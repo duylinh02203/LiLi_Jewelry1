@@ -2,7 +2,7 @@
 @section('content')
 <div class="content-wrapper">
         <div class="page-header">
-            <h3 class="page-title">Contact</h3>
+            <h3 class="page-title">Liên hệ</h3>
             <nav>
             </nav>
             @if ($message = Session::get('success'))
@@ -18,9 +18,9 @@
                         <div class="search-add-wrapper"
                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                             <div class="search-bar col-lg-3" style="width: 250px; flex: 1;">
-                                <form class="nav-link mt-2 mt-md-0 d-lg-flex search">
-                                    <input type="text" style="padding: 15;" class="form-control"
-                                        placeholder="Search Contact">
+                                <form class="nav-link mt-2 mt-md-0 d-lg-flex search" action="{{ route('admin.contact.search') }}" method="GET">
+                                    <input type="text" style="padding: 15;" class="form-control" name="search"
+                                        value="{{ request()->input('search') }}" placeholder="Tìm kiếm liên hệ">
                                 </form>
                             </div>
                         </div>
@@ -48,6 +48,9 @@
                                                 <td>{{ $contact->phone }}</td>
                                                 <td>{{ $contact->comment }}</td>
                                                 <td>
+                                                    <a href="{{ route('admin.contact.detail', $contact->id) }}">
+                                                        <button type="button" class="btn btn-edit">Chi tiết</button>
+                                                    </a>
                                                     <a href="{{ route('admin.contact.remove', $contact->id) }}">
                                                         @csrf
                                                         @method('DELETE')
@@ -63,22 +66,10 @@
                                     @endif
                                 </tbody>
                             </table>
-                            <div style="position: absolute; bottom: 10px; right: 20px;">
-                                <div style="display: flex; gap: 8px;">
-                                    <button
-                                        style="padding: 8px 14px; border-radius: 8px; background-color: #2d2d44; color: #ffffff; font-size: 14px; font-weight: 500; text-align: center; border: 1px solid #444; transition: all 0.3s ease;">Previous</button>
-                                    <button
-                                        style="padding: 8px 14px; border-radius: 8px; background-color: #2d2d44; color: #ffffff; font-size: 14px; font-weight: 500; text-align: center; border: 1px solid #444; transition: all 0.3s ease;">1</button>
-                                    <button
-                                        style="padding: 8px 14px; border-radius: 8px; background-color: #2d2d44; color: #ffffff; font-size: 14px; font-weight: 500; text-align: center; border: 1px solid #444; transition: all 0.3s ease;">2</button>
-                                    <button
-                                        style="padding: 8px 14px; border-radius: 8px; background-color: #2d2d44; color: #ffffff; font-size: 14px; font-weight: 500; text-align: center; border: 1px solid #444; transition: all 0.3s ease;">3</button>
-                                    <button
-                                        style="padding: 8px 14px; border-radius: 8px; background-color: #2d2d44; color: #ffffff; font-size: 14px; font-weight: 500; text-align: center; border: 1px solid #444; transition: all 0.3s ease;">Next</button>
-                                </div>
-                            </div>
-
                         </div>
+                    </div>
+                     <div class="pagination-container" style="display: flex; width:100%;justify-content: center; margin-bottom: -10px;">
+                        {{ $contacts->links('admin.pagination.default') }}
                     </div>
                 </div>
             </div>
