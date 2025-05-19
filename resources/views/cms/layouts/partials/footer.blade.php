@@ -13,7 +13,7 @@
                         <li>
                             <div>
                                 <i class="fa-solid fa-phone-volume"></i>
-                                <span style="margin-left: 5px;"><b>Điện thoại:</b> <span class="font-light"> +1 0000000000</span></span>
+                                <span style="margin-left: 5px;"><b>Điện thoại:</b> <span class="font-light">+84 97326211</span></span>
                             </div>
                         </li>
                         <li>

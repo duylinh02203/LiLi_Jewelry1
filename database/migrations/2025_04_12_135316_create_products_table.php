@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('quantity')->default(0);
             $table->string('slug')->unique();
             $table->unsignedBigInteger('category_id');
+            $table->boolean('is_free_size')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

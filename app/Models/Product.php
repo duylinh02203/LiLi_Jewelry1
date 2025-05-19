@@ -21,7 +21,8 @@ class Product extends Model
         'slug',
         'quantity',
         'category_id',
-        'gender'
+        'gender',
+        'is_free_size',
     ];
 
     public function getSlugOptions(): SlugOptions
@@ -30,12 +31,16 @@ class Product extends Model
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
-    // Lấy danh mục mà sản phẩm thuộc về
+
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
-    // Lấy ảnh mà sản phẩm thuộc về
+
+    public function sizes()
+    {
+        return $this->hasMany(ProductSize::class);
+    }
 
     public function images()
     {

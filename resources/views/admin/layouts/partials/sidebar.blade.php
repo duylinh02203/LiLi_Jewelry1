@@ -1,7 +1,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        <a class="sidebar-brand brand-logo" href="{{ route('dashboard') }}"><img src="assets/images/logo.svg"
-                alt="logo" /></a>
+        <a class="sidebar-brand brand-logo" href="{{ route('dashboard') }}"><img src="{{asset('cms/assets/images/LiLi_logo.png')}}"
+                alt="logo" style="height:auto;" /></a>
         <!-- <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="#" alt="" /></a> -->
     </div>
     <ul class="nav">
@@ -14,7 +14,6 @@
                     </div>
                     <div class="profile-name">
                         <h5 class="mb-0 font-weight-normal">Name Amin</h5>
-                        <!-- <span>Gold Member</span> -->
                     </div>
                 </div>
                 <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
@@ -120,12 +119,9 @@
             </a>
             <div class="collapse" id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a>
+                    <li class="nav-item"> <a class="nav-link" href="{{route('admin.user.listUser')}}">Người dùng</a>
                     </li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{route('admin.user.listAdmin')}}">Quản trị viên</a></li>
                 </ul>
             </div>
         </li>

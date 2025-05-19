@@ -8,6 +8,7 @@ use App\Http\Requests\ADMIN\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductSize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -16,9 +17,11 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['images', 'category'])->paginate(10);
+        $products = Product::with(['images', 'category', 'sizes'])->paginate(2);
         return view('admin.products.product', compact('products'));
     }
+
+
 
     public function createForm()
     {
@@ -31,6 +34,7 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             $status = $request->quantity && $request->quantity > 0 ? 'active' : 'inactive';
+            $isFreeSize = $request->has('is_free_size') ? 1 : 0;
             $dataProduct = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -41,11 +45,13 @@ class ProductController extends Controller
                 'quantity' => $request->quantity ?? 0,
                 'slug' => Str::slug($request->name),
                 'status' => $status,
+                'is_free_size' => $isFreeSize,
             ];
             $createdProduct = Product::create($dataProduct);
             if (!$createdProduct) {
                 return redirect()->route('product.index')->with('error', 'Product created failed');
-            } else {
+            }
+            if ($request->hasFile('image')) {
                 foreach ($request->image as $key =>  $image) {
                     $imageName = $key .  time() . '.' . $image->extension();
                     $image->move(public_path('images'), $imageName);
@@ -54,20 +60,30 @@ class ProductController extends Controller
                         'image' => $imageName,
                     ]);
                 }
-                DB::commit();
-                return redirect()->route('admin.product.index')->with('success', 'Product created successfully');
             }
+            if ($isFreeSize === 0 && $request->sizes) {
+                $sizes = explode(',', $request->sizes);
+                foreach ($sizes as $size) {
+                    ProductSize::create([
+                        'product_id' => $createdProduct->id,
+                        'size' => trim($size),
+                    ]);
+                }
+            }
+            DB::commit();
+            return redirect()->route('admin.product.index')->with('success', 'Thêm sản phẩm thành công');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('admin.product.index')->with('error', 'Product created failed');
+            return redirect()->route('admin.product.index')->with('error', 'Thêm sản phẩm thất bại');
         }
     }
 
     public function editForm($id)
     {
         $categories = Category::all();
+        $productSizes = ProductSize::where('product_id', $id)->pluck('size')->toArray();
         $productUpdate = Product::find($id);
-        return view('admin.products.edit_product', compact(['categories', 'productUpdate']));
+        return view('admin.products.edit_product', compact(['categories', 'productUpdate', 'productSizes']));
     }
 
     public function edit(UpdateProductRequest $request, $id)
@@ -89,6 +105,18 @@ class ProductController extends Controller
                 }
             }
             $newStatus = $request->quantity && $request->quantity > 0 ? 'active' : 'inactive';
+            if ((!$request->has('is_free_size')) && $request->has('sizes')) {
+                $sizes = explode(',', $request->sizes);
+                ProductSize::where('product_id', $oldProduct->id)->delete();
+                foreach ($sizes as $size) {
+                    ProductSize::create([
+                        'product_id' => $oldProduct->id,
+                        'size' => trim($size),
+                    ]);
+                }
+            } else {
+                ProductSize::where('product_id', $oldProduct->id)->delete();
+            }
             $newProduct = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -99,14 +127,15 @@ class ProductController extends Controller
                 'status' => $newStatus,
                 'slug' => Str::slug($request->name),
                 'quantity' => $request->quantity ?? $oldProduct->quantity,
+                'is_free_size' => $request->has('is_free_size') ? 1 : 0,
             ];
             $oldProduct->update($newProduct);
 
             DB::commit();
-            return redirect()->route('admin.product.index')->with('success', 'Product updated successfully');
+            return redirect()->route('admin.product.index')->with('success', 'Sửa sản phẩm thành công');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('admin.product.index')->with('error', 'Product update failed: ' . $th->getMessage());
+            return redirect()->route('admin.product.index')->with('error', 'Sửa sản phẩm thất bại: ' . $th->getMessage());
         }
     }
 
@@ -116,14 +145,30 @@ class ProductController extends Controller
         try {
             $product = Product::find($id);
             if (!$product) {
-                return redirect()->route('admin.product.index')->with('error', 'Product not found');
+                return redirect()->route('admin.product.index')->with('error', 'Không tìm thấy sản phẩm');
             }
+            ProductSize::where('product_id', $id)->delete();
             $product->delete();
             DB::commit();
-            return redirect()->route('admin.product.index')->with('success', 'Product deleted successfully');
+            return redirect()->route('admin.product.index')->with('success', 'Xóa sản phẩm thành công');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('admin.product.index')->with('error', 'Product deleted failed');
+            return redirect()->route('admin.product.index')->with('error', 'Xóa sản phẩm thất bại');
         }
+    }
+
+    public function detail($id)
+    {
+        $product = Product::with('images', 'category')->findOrFail($id);
+        return view('admin.products.detail', compact('product'));
+    }
+
+    public function searchProduct(Request $request)
+    {
+        $search = $request->search;
+        $products = Product::with(['images', 'category'])
+            ->where('name', 'LIKE', "%{$search}%")
+            ->paginate(10);
+        return view('admin.products.product', compact('products'));
     }
 }

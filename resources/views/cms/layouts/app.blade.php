@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="{{asset('cms/assets/css/custom.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{asset('cms/assets/css/custom1.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/footer.css')}}">
     @stack('styles')
 </head>
 
@@ -49,40 +50,70 @@
     <div class="mobile-menu d-sm-none">
         <ul>
             <li>
-                <a href="demo3.php" class="active">
+                <a href="{{route('home')}}" class="active">
                     <i data-feather="home"></i>
-                    <span>Home</span>
+                    <span>Trang chủ</span>
                 </a>
             </li>
             <li>
                 <a href="javascript:void(0)">
                     <i data-feather="align-justify"></i>
-                    <span>Category</span>
+                    <span>Danh mục</span>
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)">
+                <a href="{{route('cart')}}">
                     <i data-feather="shopping-bag"></i>
-                    <span>Cart</span>
+                    <span>Giỏ hàng</span>
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)">
+                <a href="#">
                     <i data-feather="heart"></i>
-                    <span>Wishlist</span>
+                    <span>Yêu thích</span>
                 </a>
             </li>
             <li>
                 <a href="user-dashboard.php">
                     <i data-feather="user"></i>
-                    <span>Account</span>
+                    <span>Tài khoản</span>
                 </a>
             </li>
         </ul>
     </div>
-    <!-- main content -->
     @yield('content');
-    <!-- main content -->
+    <!--  -->
+     <section class="icon-box-section">
+    <div class="icon-box">
+      <div class="icon-feat">
+        <img src="{{asset('images/Smile-icon1.png')}}" alt="">
+      </div>
+      <h3>KHÁCH HÀNG HÀI LÒNG</h3>
+      <p>Đặt sự hài lòng của khách hàng là ưu tiên số 1 trong mọi suy nghĩ hành động</p>
+    </div>
+    <div class="icon-box">
+      <div class="icon-feat">
+        <img src="{{asset('images/945447.png')}}" alt="Medal Icon">
+      </div>
+      <h3>CHẤT LƯỢNG CAO CẤP</h3>
+      <p>Mọi sản phẩm đều được thiết kế và chế tác bởi các nghệ nhân hàng đầu</p>
+    </div>
+    <div class="icon-box">
+      <div class="icon-feat">
+        <img src="{{asset('images/return-icon.png')}}" alt="Return Icon">
+      </div>
+      <h3>ĐỔI TRẢ DỄ DÀNG</h3>
+      <p>10 ngày đổi trả (LiLi đến tận nơi nhận hàng). Hoàn tiền nếu không hài lòng</p>
+    </div>
+    <div class="icon-box">
+      <div class="icon-feat">
+        <img src="{{asset('images/support.png')}}" alt="Support Icon">
+      </div>
+      <h3>HỖ TRỢ NHIỆT TÌNH</h3>
+      <p>Tất cả câu hỏi đều được các chuyên viên của LiLi tư vấn, giải đáp kỹ càng</p>
+    </div>
+  </section>
+    <!--  -->
     <footer class="footer-sm-space mt-5">
         @include('cms.layouts.partials.footer')
     </footer>
@@ -99,11 +130,9 @@
                         <h2 class="tt-title">Sign up for our Newsletter!</h2>
                         <p class="font-light">Never miss any new updates or products we reveal, stay up to date.</p>
                         <p class="font-light">Oh, and it's free!</p>
-
                         <div class="input-group mb-3">
                             <input placeholder="Email" class="form-control" type="text">
                         </div>
-
                         <div class="cancel-button text-center">
                             <button class="btn default-theme w-100" data-bs-dismiss="modal"
                                 type="button">Submit</button>
