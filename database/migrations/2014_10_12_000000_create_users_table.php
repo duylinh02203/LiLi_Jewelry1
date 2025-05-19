@@ -15,7 +15,6 @@ return new class extends Migration
             $table->integerIncrements('id');
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('status')->default('active')->comment('active, inactive');
             $table->tinyInteger('role')->default(2)->comment('1 = admin, 2 = user');

@@ -5,9 +5,9 @@
                 <div class="main-menu">
                     <div class="menu-left">
                         <div class="brand-logo">
-                            <a href="{{route('home')}}" class="logo">
-                                <img src="{{asset('cms/assets/images/LiLi_logo.png')}}" class="h-logo img-fluid blur-up lazyload"
-                                    alt="logo">
+                            <a href="{{ route('home') }}" class="logo">
+                                <img src="{{ asset('cms/assets/images/LiLi_logo.png') }}"
+                                    class="h-logo img-fluid blur-up lazyload" alt="logo">
                             </a>
                         </div>
 
@@ -40,7 +40,8 @@
                     <div class="menu-right">
                         <ul>
                             <li style="display:flex;align-items:center;">
-                                <div class="search-box theme-bg-color" style="width:42px;height: 42px; background-color:#bd1125;">
+                                <div class="search-box theme-bg-color"
+                                    style="width:42px;height: 42px; background-color:#bd1125;">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                 </div>
                             </li>
@@ -70,13 +71,27 @@
                                 </div>
                                 <div class="onhover-div profile-dropdown">
                                     <ul>
-                                        <li>
-                                            <a href="{{route('login')}}" class="d-block">Đăng nhập</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{route('register')}}" class="d-block">Đăng ký</a>
-                                        </li>
-
+                                        @if (session()->has('userData'))
+                                            <li>
+                                                <a href="{{ route('auth.login') }}" class="d-block">Thông tin</a>
+                                            </li>
+                                            <li>
+                                                <form action="{{ route('auth.logout') }}" method="POST">
+                                                    @csrf
+                                                    <a href="" class="d-block"><button
+                                                            style="border: none; background-color: transparent; padding: 0; margin: 0">
+                                                            Đăng Xuất
+                                                        </button></a>
+                                                </form>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <a href="{{ route('auth.login') }}" class="d-block">Đăng nhập</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('auth.register') }}" class="d-block">Đăng ký</a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </li>
@@ -88,7 +103,8 @@
                                 <span class="input-group-text">
                                     <i data-feather="search" class="font-light"></i>
                                 </span>
-                                <input type="text" name="q" class="form-control search-type" placeholder="Tìm kiếm sản phẩm.." value="{{ request('search-product') }}">
+                                <input type="text" name="q" class="form-control search-type"
+                                    placeholder="Tìm kiếm sản phẩm.." value="{{ request('search-product') }}">
                                 <span class="input-group-text close-search">
                                     <i data-feather="x" class="font-light" ></i>
                                 </span>
