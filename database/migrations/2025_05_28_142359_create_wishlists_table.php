@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reviews', function (Blueprint $table) {
-            $table->integerIncrements('id');
-            $table->unsignedBigInteger('product_id');
+        Schema::create('wishlists', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedBigInteger('user_id');
-            $table->integer('rating')->default(0);
-            $table->text('comment')->nullable();
+            $table->unsignedBigInteger('product_id');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('wishlists');
     }
 };

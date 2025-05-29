@@ -66,13 +66,18 @@
 <div class="content-wrapper">
     <div class="page-header">
         <h3 class="page-title">Quản lí sản phẩm</h3>
+        <div class="link-wrap">
+            <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.product.index'))
+            <span style="color: #333; cursor: not-allowed;">Sản phẩm</span>
+            @endif
+        </div>
         @if ($message = Session::get('success'))
-        <div id="alert" class="alert alert-success" style="position: absolute; width: 80%;">
+        <div id="alert" class="alert alert-success" style="position: absolute; width: 80.5%;">
             {{ $message }}
         </div>
         @endif
-        <nav aria-label="breadcrumb">
-        </nav>
     </div>
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
@@ -80,7 +85,7 @@
                 <div class="card-body">
                     <div class="search-add-wrapper"
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <div class="search-bar col-lg-3" style="width: 250px; flex: 1;">
+                        <div class="search-bar col-lg-3" style="width: 250px; flex: 1;margin-left: -10px;">
                             <form class="nav-link mt-2 mt-md-0 d-lg-flex search" action="{{ route('admin.product.search') }}" method="GET">
                                 <input type="text" style="padding: 15;" class="form-control"
                                     placeholder="Tìm kiếm sản phẩm" name="search"
@@ -141,15 +146,14 @@
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td style="font-size: 24px; color: red" colspan="5" class="text-center">
-                                        Không có sản phẩm</td>
+                                    <td colspan="12" class="text-center">Không tìm thấy sản phẩm nào.</td>
                                 </tr>
                                 @endif
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="pagination-container" >
+                <div class="pagination-container">
                     {{ $products->links('admin.pagination.default') }}
                 </div>
             </div>

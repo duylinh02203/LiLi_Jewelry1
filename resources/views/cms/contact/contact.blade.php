@@ -32,7 +32,7 @@
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="index.htm">
+                            <a href="{{route('home')}}">
                                 <i class="fas fa-home"></i>
                             </a>
                         </li>
@@ -43,10 +43,70 @@
         </div>
     </div>
 </section>
-<section class="contact-section">
+<section class="contact-section" style="margin-bottom: 25px;">
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-7">
+                @if(session()->has('userData'))
+                <div class="materialContainer">
+                    <div class="material-details">
+                        <div class="title title1 title-effect mb-1 title-left">
+                            <h2>Liên hệ với chúng tôi</h2>
+                            <p class="ms-0 w-100">Địa chỉ email của bạn sẽ không được công bố. Các trường bắt buộc được đánh dấu *</p>
+                        </div>
+                    </div>
+                    <form action="{{route('admin.contact.create')}}" method="POST">
+                        @csrf
+                        <div class="row g-4 mt-md-1 mt-2">
+                            <div class="col-md-6">
+                                <label for="first" class="form-label">Tên
+                                    @error('first_name')
+                                    <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                                <input type="text" name="first_name" class="form-control" id="first" placeholder="Nhập tên của bạn" value="{{old('first_name')}}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="last" class="form-label">Họ
+                                    @error('last_name')
+                                    <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                                <input type="text" name="last_name" class="form-control" id="last" placeholder="Nhập họ của bạn" value="{{old('last_name')}}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email
+                                    @error('email')
+                                    <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                                <input type="text" name="email" class="form-control" id="email" placeholder="Nhập địa chỉ Email của bạn" value="{{ session('userData')['email'] ?? old('email') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email2" class="form-label">Điện thoại
+                                    @error('phone')
+                                    <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                                <input type="text" name="phone" class="form-control" id="email2" placeholder="Nhập số điện thoại của bạn" value="{{ $userData['phone'] ?? old('phone') }}">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="comment" class="form-label">Bình luận
+                                    @error('comment')
+                                    <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                                <textarea class="form-control" name="comment" id="comment" rows="8">{{old('comment')}}</textarea>
+                            </div>
+
+                            <div class="col-auto">
+                                <button class="btn btn-solid-default" type="submit">Gửi</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                @else
                 <div class="materialContainer">
                     <div class="material-details">
                         <div class="title title1 title-effect mb-1 title-left">
@@ -105,10 +165,11 @@
                         </div>
                     </form>
                 </div>
+                @endif
             </div>
 
             <div class="col-lg-5">
-                <div class="contact-details">
+                <div class="contact-details" style="background-color:rgb(236, 239, 244);">
                     <div>
                         <h2>Hãy liên lạc với chúng tôi</h2>
                         <h5 class="font-light">Chúng tôi sẵn sàng lắng nghe mọi đề xuất hoặc chỉ để trò chuyện</h5>

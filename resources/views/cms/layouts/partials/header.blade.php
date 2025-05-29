@@ -1,3 +1,40 @@
+<style>
+    .nav-link {
+        font-size: 1rem;
+    }
+
+    .nav-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-menu .menu {
+        position: relative;
+        text-decoration: none;
+        color: #333;
+        font-size: 16px;
+        display: inline-block;
+        padding: 5px 10px;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .nav-menu .menu::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        width: 0;
+        height: 2px;
+        background-color: #000;
+        transition: width 0.3s ease-in-out;
+    }
+
+
+    .nav-menu .menu:hover::after {
+        width: 50%;
+    }
+</style>
 <div class="main-header navbar-searchbar">
     <div class="container-fluid-lg">
         <div class="row">
@@ -28,8 +65,7 @@
                                     </li>
                                     <li><a href="{{route('home')}}" class="nav-link menu">Trang chủ</a></li>
                                     <li><a href="{{route('shop')}}" class="nav-link menu">Shop</a></li>
-                                    <li><a href="{{route('cart')}}" class="nav-link menu">Giỏ hàng</a></li>
-                                    <li><a href="{{route('about')}}" class="nav-link menu">Chúng tôi</a></li>
+                                    <li><a href="{{route('review')}}" class="nav-link menu">Đánh giá</a></li>
                                     <li><a href="{{route('contact')}}" class="nav-link menu">Liên hệ</a>
                                     </li>
                                     <li><a href="blog.html" class="nav-link menu">Bảng tin</a></li>
@@ -47,17 +83,31 @@
                             </li>
                             <li class="onhover-dropdown wislist-dropdown">
                                 <div class="cart-media">
-                                    <a href="wishlist/list.html">
+                                    @if(session()->has('userData'))
+                                    <a href="{{ route('wishlist') }}">
                                         <i data-feather="heart"></i>
-                                        <span id="wishlist-count" class="label label-theme rounded-pill">
+                                        @if (session()->has('userData'))
+                                        @php
+                                        $wishlistCount = \App\Models\Wishlist::where('user_id', session('userData')['id'])->count();
+                                        @endphp
+                                        @endif
+                                        <span id="header-wishlist-count" class="label label-theme rounded-pill">
+                                            {{$wishlistCount}}
+                                        </span>
+                                    </a>
+                                    @else
+                                    <a href="{{ route('auth.login') }}">
+                                        <i data-feather="heart"></i>
+                                        <span id="header-wishlist-count" class="label label-theme rounded-pill">
                                             0
                                         </span>
                                     </a>
+                                    @endif
                                 </div>
                             </li>
                             <li class="onhover-dropdown wislist-dropdown">
                                 <div class="cart-media">
-                                    <a href="cart/list.html">
+                                    <a href="{{ route('cart') }}">
                                         <i data-feather="shopping-cart"></i>
                                         <span id="cart-count" class="label label-theme rounded-pill">
                                             0
@@ -69,7 +119,7 @@
                                 <div class="cart-media name-usr " style="background-color:#bd1125;">
                                     <i class="fa-solid fa-user"></i>
                                 </div>
-                                <div class="onhover-div profile-dropdown">
+                                <div class="onhover-div profile-dropdown" style="border-radius: 10px;">
                                     <ul>
                                         @if (session()->has('userData'))
                                             <li>
@@ -106,7 +156,7 @@
                                 <input type="text" name="q" class="form-control search-type"
                                     placeholder="Tìm kiếm sản phẩm.." value="{{ request('search-product') }}">
                                 <span class="input-group-text close-search">
-                                    <i data-feather="x" class="font-light" ></i>
+                                    <i data-feather="x" class="font-light"></i>
                                 </span>
                             </div>
                         </form>

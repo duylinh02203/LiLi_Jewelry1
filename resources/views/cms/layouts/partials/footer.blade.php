@@ -1,3 +1,31 @@
+<style>
+    .menu-link {
+        position: relative;
+        text-decoration: none;
+        color: #333;
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 1;
+        display: inline-block;
+        box-sizing: border-box;
+    }
+
+    .menu-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -7px;
+        width: 0;
+        height: 2px;
+        background: #000;
+        transition: width 0.3s ease-in-out;
+        box-sizing: border-box;
+    }
+
+    .menu-link:hover::after {
+        width: 50%;
+    }
+</style>
 <div class="main-footer">
     <div class="container">
         <div class="row gy-4">
@@ -35,24 +63,24 @@
             <div class="col-lg-2 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3>Chúng tôi</h3>
+                        <h3 style="font-weight: bold;">CHÚNG TÔI</h3>
                     </div>
                     <div class="footer-content">
                         <ul>
                             <li>
-                                <a href="{{route('home')}}" class="font-dark">Trang chủ</a>
+                                <a href="{{route('home')}}" class=" menu-link">Trang chủ</a>
                             </li>
                             <li>
-                                <a href="{{route('shop')}}" class="font-dark">Shop</a>
+                                <a href="{{route('shop')}}" class=" menu-link">Shop</a>
                             </li>
                             <li>
-                                <a href="{{route('about')}}" class="font-dark">Chúng tôi</a>
+                                <a href="{{route('review')}}" class=" menu-link">Đánh giá</a>
                             </li>
                             <li>
-                                <a href="#" class="font-dark">Bảng tin</a>
+                                <a href="#" class=" menu-link">Bảng tin</a>
                             </li>
                             <li>
-                                <a href="{{route('contact')}}" class="font-dark">Liên hệ</a>
+                                <a href="{{route('contact')}}" class=" menu-link">Liên hệ</a>
                             </li>
                         </ul>
                     </div>
@@ -61,24 +89,46 @@
             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3>Danh mục mới</h3>
+                        <h3 style="font-weight: bold;">DANH MỤC MỚI</h3>
+                    </div>
+                    <div class="footer-content">
+                        @php
+                        $categories = \App\Models\Category::with('products')->orderBy('created_at', 'desc')->take(5)->get();
+                        @endphp
+                        <ul>
+                            @foreach($categories as $category)
+                            <li>
+                                <form action="{{ route('shop') }}" id="form_cate" name="category" method="GET">
+                                    <a href="javascript:void(0)" class="menu-link cate-click-1">{{$category->name}}</a>
+                                    <input type="hidden" id="category_{{$category->id}}" name="category[]" value="{{$category->slug}}"
+                                        {{ (is_array(request('category')) && in_array($category->slug, request('category'))) ? 'checked' : '' }}>
+                                </form>
+                            </li>
+                            @endforeach
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                <div class="footer-links">
+                    <div class="footer-title">
+                        <h3 style="font-weight: bold;">CỬA HÀNG</h3>
                     </div>
                     <div class="footer-content">
                         <ul>
                             <li>
-                                <a href="shop.html" class="font-dark">Latest Shoes</a>
+                                <a href="#" class="menu-link">Mới Nh</a>
                             </li>
                             <li>
-                                <a href="shop.html" class="font-dark">Branded Jeans</a>
+                                <a href="#" class="menu-link">Nam</a>
                             </li>
                             <li>
-                                <a href="shop.html" class="font-dark">New Jackets</a>
+                                <a href="#" class="menu-link">Nữ</a>
                             </li>
                             <li>
-                                <a href="shop.html" class="font-dark">Colorfull Hoodies</a>
-                            </li>
-                            <li>
-                                <a href="shop.html" class="font-dark">Shiner Goggles</a>
+                                <a href="#" class="menu-link">Cặp Đôi</a>
                             </li>
                         </ul>
                     </div>
@@ -87,34 +137,20 @@
             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3>Trợ giúp</h3>
+                        <h3 style="font-weight: bold;">TRỢ GIÚP</h3>
                     </div>
                     <div class="footer-content">
                         <ul>
                             <li>
-                                <a href="#" class="font-dark">Your Orders</a>
+                                <a href="#" class="menu-link">Your Orders</a>
                             </li>
                             <li>
-                                <a href="#" class="font-dark">Your Account</a>
+                                <a href="#" class="menu-link">Your Account</a>
                             </li>
                             <li>
-                                <a href="#" class="font-dark">Track Orders</a>
+                                <a href="#" class="menu-link">Track Orders</a>
                             </li>
                         </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-4 col-sm-6 d-none d-sm-block">
-                <div class="footer-newsletter">
-                    <h3>Chúng ta hãy giữ liên lạc nhé</h3>
-                    <div class="form-newsletter">
-                        <div class="input-group mb-4">
-                            <input type="text" class="form-control color-4" placeholder="Địa chỉ Email" style="border-radius:10px 0 0 10px;">
-                            <span class="input-group-text" id="basic-addon4" style="border-radius:0 10px 10px 0;"><i
-                                    class="fas fa-arrow-right"></i></span>
-                        </div>
-                        <p class="font-dark mb-0">Cập nhật tin tức mới nhất và các ưu đãi đặc biệt của chúng tôi.
-                        </p>
                     </div>
                 </div>
             </div>
@@ -159,3 +195,18 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const clickableLinks = document.querySelectorAll('a.cate-click-1');
+
+        clickableLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const form = this.closest('form');
+                if (form) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>

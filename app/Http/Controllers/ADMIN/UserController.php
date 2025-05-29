@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -20,7 +21,7 @@ class UserController extends Controller
 
     public function listAdmin()
     {
-        $admins = User::where('role', 1)->paginate(1);
+        $admins = User::where('role', 1)->paginate(5);
         return view('admin.users.admin', compact('admins'));
     }
 
@@ -30,13 +31,13 @@ class UserController extends Controller
     }
 
     public function store(CreateUserRequest $request)
-    {
+    {   
         DB::beginTransaction();
         try {
             $data = [
-                'username' => $request->username,
+                'name' => $request->name,
                 'email' => $request->email,
-                'password' => $request->password,
+                'password' =>Hash::make( $request->password),
                 'role' => $request->role,
             ];
             $createdUser = User::create($data);
@@ -70,7 +71,7 @@ class UserController extends Controller
                 return redirect()->route('admin.user.listUser')->with('error', 'User not found.');
             }
             $data = [
-                'username' => $request->username,
+                'name' => $request->name,
                 'email' => $request->email,
                 'role' => $request->role,
             ];
@@ -112,10 +113,10 @@ class UserController extends Controller
         $search = $request->search;
         $users = User::where('role', 2)
             ->where(function ($query) use ($search) {
-                $query->where('username', 'like', '%' . $search . '%')
+                $query->where('name', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%');
             })
-            ->get();
+            ->paginate(1);
         return view('admin.users.user', compact('users'));
     }
     
@@ -124,7 +125,7 @@ class UserController extends Controller
         $search = $request->search;
         $admins = User::where('role', 1)
             ->where(function ($query) use ($search) {
-                $query->where('username', 'like', '%' . $search . '%')
+                $query->where('name', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%');
             })
             ->get();

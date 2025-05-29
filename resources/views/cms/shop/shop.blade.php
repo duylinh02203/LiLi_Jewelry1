@@ -24,10 +24,17 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .accordion-button{
-        background-color: #e87316 !important;
-        color: #fff;
+
+    .accordion-button {
+        background-color: #fff !important;
+        color: #222222;
         border-radius: 5px !important;
+        padding-left: 2px !important;
+    }
+
+    .star {
+        color: #ccc;
+        font-size: 20px;
     }
 </style>
 @endpush
@@ -51,7 +58,7 @@
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="index.htm">
+                            <a href="{{route('home')}}">
                                 <i class="fas fa-home"></i>
                             </a>
                         </li>
@@ -65,6 +72,9 @@
 <section class="section-b-space">
     <div class="container">
         <div class="row">
+            <div class="title title1 title-effect mb-1 title-left" style="margin-bottom: 40px !important;">
+                <h2>Cửa hàng</h2>
+            </div>
             <div class="col-lg-3 category-side col-md-4">
                 <form id="filterForm" method="GET" action="{{ route('shop') }}">
 
@@ -72,20 +82,19 @@
                         <div class="button-close mb-3">
                             <button class="btn p-0"><i data-feather="arrow-left"></i> Close</button>
                         </div>
+                        <div style="display: flex; align-items: center; padding: 10px; background-color:#e87316; border-radius: 5px; height:44px;justify-content: center;">
+                            <i class="fa-solid fa-filter"></i>
+                            <h3 style="padding:10px; font-weight:bold;">BỘ LỌC TÌM KIẾM </h3>
+                        </div>
                         <div class="accordion category-name" id="accordionExample">
-                            <div class="accordion-item category-rating ">
-                                <div style="display: flex; align-items: center; padding: 10px;">
-                                    <i class="fa-solid fa-filter"></i>
-                                    <h3 style="padding:10px; font-weight:bold;">BỘ LỌC TÌM KIẾM </h3>
-                                </div>
+                            <div class="accordion-item category-rating " style="background-color:#fff;">
                                 <h2 class="accordion-header" id="headingTwo">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseTwo">
-                                        Danh mục
+                                        DANH MỤC
                                     </button>
                                 </h2>
-                                <div id="collapseTwo" class="accordion-collapse collapse show"
-                                    data-bs-parent="#accordionExample">
+                                <div id="collapseTwo" class="accordion-collapse collapse show">
                                     <div class="accordion-body category-scroll">
                                         <ul class="category-list">
                                             @foreach ($categories as $category)
@@ -97,7 +106,7 @@
                                                         value="{{$category->slug}}"
                                                         type="checkbox"
                                                         {{ (is_array(request('category')) && in_array($category->slug, request('category'))) ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="category_{{$category->slug}}">{{$category->name}}</label>
+                                                    <label style="margin-bottom: -3px;" class="form-check-label" for="category_{{$category->slug}}">{{$category->name}}</label>
                                                     <p class="font-light">({{$category->products->count()}})</p>
                                                 </div>
                                             </li>
@@ -106,12 +115,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="accordion-item category-price">
+                            <div class="accordion-item category-price" style="background-color: #fff;">
                                 <h2 class="accordion-header" id="headingFour">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">Khoảng giá</button>
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">KHOẢNG GIÁ</button>
                                 </h2>
                                 <div id="collapseFour" class="accordion-collapse collapse show"
-                                    aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                    aria-labelledby="headingFour">
                                     <div class="accordion-body">
                                         <ul class="list-unstyled" style="display: flex; flex-direction: column; padding-left: 10px;">
                                             <li>
@@ -146,14 +155,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="accordion-item category-gender">
+                            <div class="accordion-item category-gender" style="background-color: #fff;">
                                 <h2 class="accordion-header" id="headingFive">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true">
-                                        Giới tính
+                                        GIỚI TÍNH
                                     </button>
                                 </h2>
 
-                                <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingFive" data-bs-parent="#accordionExample" style="">
+                                <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingFive" style="">
                                     <div class="accordion-body">
                                         <ul class="category-list">
                                             <li>
@@ -185,7 +194,7 @@
                         <div style=" background-color: #e87316; border-radius: 5px; text-align: center;">
                             <a href="{{ route('shop') }}"
                                 style="color: black; text-decoration: none; padding: 10px 20px; font-size: 16px; font-weight: bold; display: inline-block; background-color: #e87316; border-radius: 5px; text-align: center;">
-                                Xóa tất cả bộ lọc
+                                XÓA BỘ LỌC
                             </a>
                         </div>
 
@@ -254,6 +263,11 @@
                 <div class="row g-sm-4 g-3 row-cols-lg-4 row-cols-md-3 row-cols-2 mt-1 custom-gy-5 product-style-2 ratio_asos product-list-section">
                     @if(count($products) > 0)
                     @foreach ($products as $product)
+                    @php
+                    $tbRating = \App\Models\ProductReview::where('product_id', $product->id)->avg('rating');
+                    $tbRating = round($tbRating);
+                    $countReview = \App\Models\ProductReview::where('product_id', $product->id)->count();
+                    @endphp
                     <div>
                         <div class="product-box">
                             <div class="img-wrapper">
@@ -278,12 +292,12 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0)">
+                                            <a href="{{ route('shop.product.details', ['slug' => $product->slug]) }}">
                                                 <i data-feather="eye"></i>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0)" class="wishlist">
+                                            <a href="javascript:void(0)" class="wishlist wishlistEffect" data-product-id="{{ $product->id }}">
                                                 <i data-feather="heart"></i>
                                             </a>
                                         </li>
@@ -292,26 +306,33 @@
                             </div>
                             <div class="product-details">
                                 <div class="rating-details">
-                                    <span class="font-light grid-content description">{{ $product->description }}</span>
-                                    <ul class="rating mt-0">
-                                        <li><i class="fas fa-star theme-color"></i></li>
-                                        <li><i class="fas fa-star theme-color"></i></li>
-                                        <li><i class="fas fa-star"></i></li>
-                                        <li><i class="fas fa-star"></i></li>
-                                        <li><i class="fas fa-star"></i></li>
-                                    </ul>
-                                </div>
-                                <div class="main-price">
-                                    <a href="{{ route('shop.product.details', ['slug' => $product->slug]) }}" class="font-default">
+                                    <span class="font-light grid-content description">{{ $product->category->name }}</span>
+                                    <a href="{{ route('shop.product.details', ['slug' => $product->slug]) }}" class="font-default " tabindex="0">
                                         <h5 class="ms-0">{{ $product->name }}</h5>
                                     </a>
+                                    <h3 class="theme-color">{{ number_format($product->price, 0, ',', '.') }} VNĐ</h3>
+                                    <div style="display:flex; justify-content: space-between;">
+                                        <ul class="rating mt-0">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <span class="star {{ $i <= $tbRating ? 'theme-color' : '' }} " data-value="1">★</span>
+                                                @endfor
+                                        </ul>
+                                        <p style="padding-top: 7px; color:#333;">{{$countReview}} đánh giá </p>
+                                    </div>
+                                </div>
+                                <div class="main-price">
                                     <div class="listing-content">
+                                        <span class="font-light">{{$product->category->name}}</span>
                                         <p class="font-light">{{ \Illuminate\Support\Str::limit($product->description, 100) }}</p>
                                     </div>
-                                    <h3 class="theme-color">{{ number_format($product->price, 0, ',', '.') }} VNĐ</h3>
                                     <button class="btn listing-content">Add To Cart</button>
                                 </div>
                             </div>
+                            <form id="addWishlist" class="wishlist" action="{{route('shop.wishlist.addWishlist')}}" method="post">
+                                @csrf
+                                <input type="hidden" name="product_id" id="product_id" value="{{$product->id}}">
+                            </form>
+                            <div id="wishlistMessage-{{ $product->id }}" style="display: none;"></div>
                         </div>
                     </div>
                     @endforeach
@@ -361,6 +382,68 @@
     document.querySelectorAll('#filterForm input[type="radio"]').forEach(input => {
         input.addEventListener('change', () => {
             document.getElementById('filterForm').submit();
+        });
+    });
+    // 
+    document.querySelectorAll('.wishlistEffect').forEach((element) => {
+        element.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            let productId = this.getAttribute('data-product-id');
+            let messageDiv = document.getElementById('wishlistMessage-' + productId);
+
+
+            fetch("{{ route('shop.wishlist.addWishlist') }}", {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        product_id: productId
+                    }),
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    showNotification(data.status === 'success' ? 'success' : 'error', data.message);
+
+                    if (data.status === 'success') {
+                        document.getElementById('header-wishlist-count').textContent = data.wishlist_count;
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi xảy ra:', error);
+                    showNotification('error', 'Có lỗi xảy ra!');
+                });
+
+            function showNotification(type, message) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+
+                Object.assign(notification.style, {
+                    position: 'fixed',
+                    top: '20px',
+                    right: '20px',
+                    padding: '10px 20px',
+                    borderRadius: '8px',
+                    color: 'white',
+                    backgroundColor: type === 'success' ? 'green' : type === 'error' ? 'red' : 'orange',
+                    zIndex: '1000',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                    opacity: '1',
+                    transition: 'opacity 0.5s ease-out',
+                });
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 200);
+                }, 2000);
+            }
         });
     });
 </script>

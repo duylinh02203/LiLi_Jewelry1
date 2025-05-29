@@ -3,8 +3,19 @@
 <div class="content-wrapper">
     <div class="page-header">
         <h3 class="page-title">Quản lí danh mục</h3>
-        <nav aria-label="breadcrumb">
-        </nav>
+        <div class="link-wrap">
+            <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.category.index'))
+            <span style="color: #333; cursor: not-allowed;">Danh mục</span>
+            @else
+            <a class="none-a2" href="{{route('admin.category.index')}}">Danh mục</a>
+            @endif
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.category.edit'))
+            <span style="color: #333; cursor: not-allowed;">Sửa</span>
+            @endif
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
@@ -35,7 +46,7 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                        <button class="btn btn-dark"><a href="{{ route('admin.category.index') }}"
+                        <button class="btn btn-dark" type="button"><a href="{{ url()->previous() }}"
                                 style="text-decoration: none; color:white;">Cancel</a></button>
                     </form>
                 </div>
@@ -43,4 +54,7 @@
         </div>
     </div>
 </div>
+<script>
+
+</script>
 @endsection

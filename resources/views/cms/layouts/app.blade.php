@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="MkRqEzTGuoSx6LqJUm0OAKxSgNUYt26wTT7RMUZY">
+    <!-- <meta name="csrf-token" content="MkRqEzTGuoSx6LqJUm0OAKxSgNUYt26wTT7RMUZY"> -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="assets/images/favicon.ico')}}">
     <!-- <link rel="icon" href="{{asset('cms/assets/images/favicon.ico')}}" type="image/x-icon" >
@@ -20,6 +20,7 @@
     <meta name="description" content="Surfside Media">
     <meta name="keywords" content="Surfside Media">
     <meta name="author" content="Surfside Media">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
     </style>
@@ -68,7 +69,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{route('wishlist')}}">
                     <i data-feather="heart"></i>
                     <span>Yêu thích</span>
                 </a>
@@ -81,7 +82,7 @@
             </li>
         </ul>
     </div>
-    @yield('content');
+    @yield('content')
     <!--  -->
      <section class="icon-box-section">
     <div class="icon-box">

@@ -2,9 +2,20 @@
 @section('content')
     <div class="content-wrapper">
         <div class="page-header">
-            <h3 class="page-title">Tạo mới sản phẩm</h3>
-            <nav aria-label="breadcrumb">
-            </nav>
+            <h3 class="page-title">Quản lí sản phẩm</h3>
+            <div class="link-wrap">
+                <a class="none-a" href="{{ route('admin.dashboard') }}">Thống kê </a>
+                <p class="rev">></p>
+                @if (request()->routeIs('admin.product.index'))
+                    <span style="color: #333; cursor: not-allowed;">Sản phẩm</span>
+                @else
+                    <a class="none-a2" href="{{ route('admin.product.index') }}">Sản phẩm</a>
+                @endif
+                <p class="rev">></p>
+                @if (request()->routeIs('admin.product.create'))
+                    <span style="color: #333; cursor: not-allowed;">Thêm sản phẩm</span>
+                @endif
+            </div>
         </div>
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
@@ -65,10 +76,10 @@
                                     <option value="unisex">Cặp đôi</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="display: flex; align-items: center;">
-                                <label style="">Có Freesize?</label>
-                                <input style="margin-left: 20px" type="checkbox" name="is_free_size" id="is_free_size"
-                                    value="1" {{ old('is_free_size') ? 'checked' : '' }}>
+                            <div class="form-group">
+                                <label style="margin-bottom:0px !important;">Có Freesize?</label>
+                                <input style="margin-top: -10px !important;" type="checkbox" name="is_free_size"
+                                    id="is_free_size" value="1" {{ old('is_free_size') ? 'checked' : '' }}>
                             </div>
                             <div class="form-group" id="sizes-wrapper" style="display: none;">
                                 <label>Kích thước (Nhập cách nhau dấu phẩy):
