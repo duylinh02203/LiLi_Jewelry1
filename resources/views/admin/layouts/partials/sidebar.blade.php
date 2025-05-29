@@ -1,7 +1,8 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        <a class="sidebar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{asset('cms/assets/images/LiLi_logo.png')}}"
-                alt="logo" style="height:auto;" /></a>
+        <a class="sidebar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img
+                src="{{ asset('cms/assets/images/LiLi_logo.png') }}" alt="logo" /></a>
+        <!-- <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="#" alt="" /></a> -->
     </div>
     <ul class="nav">
         <li class="nav-item profile">
@@ -56,7 +57,7 @@
         <li class="nav-item nav-category">
             <span class="nav-link">Navigation</span>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+        <li class="nav-item menu-items">
             <a class="nav-link" href="{{ route('admin.dashboard') }}">
                 <span class="menu-icon">
                     <i class="fa-solid fa-chart-simple"></i>
@@ -80,21 +81,34 @@
                 <span class="menu-title">Sản phẩm</span>
             </a>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.contact.index')||request()->routeIs('admin.contact.detail') ? 'active' : '' }}">
+        <li class="nav-item menu-items">
             <a class="nav-link" href="{{ route('admin.contact.index') }}">
                 <span class="menu-icon">
-                    <i class="fa-solid fa-address-book"></i>
+                    <i class="mdi mdi-playlist-play"></i>
                 </span>
-                <span class="menu-title">Liên hệ</span>
+                <span class="menu-title">Liên hệ</span>
             </a>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.review.ProductReview') || request()->routeIs('admin.review.detail') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.review.ProductReview') }}">
+        <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <i class="mdi mdi-file-document-box"></i>
                 </span>
-                <span class="menu-title">Quản lý đánh giá</span>
+                <span class="menu-title">Quản lí giỏ hàng</span>
+                <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="#">All</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#">Unapproved Orders</a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Approved
+                            Orders</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Orders
+                            Delete</a>
+                    </li>
+                </ul>
+            </div>
         </li>
         <li class="nav-item menu-items {{ request()->is('admin/user*') ? 'active' : '' }}">
             <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="{{ request()->is('admin/user*') ? 'true' : 'false' }}" aria-controls="auth">
@@ -106,16 +120,12 @@
             </a>
             <div class="collapse {{ request()->routeIs('admin.user.listUser', 'admin.user.listAdmin') ? 'show' : '' }}" id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.user.listUser') ? 'active' : '' }}" href="{{ route('admin.user.listUser') }}">
-                            Người dùng
-                        </a>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.user.listAdmin') ? 'active' : '' }}" href="{{ route('admin.user.listAdmin') }}">
-                            Quản trị viên
-                        </a>
-                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
                 </ul>
             </div>
 

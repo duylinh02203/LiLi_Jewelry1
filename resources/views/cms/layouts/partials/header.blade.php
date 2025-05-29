@@ -122,25 +122,25 @@
                                 <div class="onhover-div profile-dropdown" style="border-radius: 10px;">
                                     <ul>
                                         @if (session()->has('userData'))
-                                        <li>
-                                            <a href="{{ route('auth.login') }}" class="d-block">Thông tin</a>
-                                        </li>
-                                        <li>
-                                            <form action="{{ route('auth.logout') }}" method="POST">
-                                                @csrf
-                                                <a href="" class="d-block"><button
-                                                        style="border: none; background-color: transparent; padding: 0; margin: 0">
-                                                        Đăng Xuất
-                                                    </button></a>
-                                            </form>
-                                        </li>
+                                            <li>
+                                                <a href="{{ route('information') }}" class="d-block">Thông tin</a>
+                                            </li>
+                                            <li>
+                                                <form action="{{ route('logout') }}" method="POST">
+                                                    @csrf
+                                                    <a href="" class="d-block"><button
+                                                            style="border: none; background-color: transparent; padding: 0; margin: 0">
+                                                            Đăng Xuất
+                                                        </button></a>
+                                                </form>
+                                            </li>
                                         @else
-                                        <li>
-                                            <a href="{{ route('auth.login') }}" class="d-block">Đăng nhập</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('auth.register') }}" class="d-block">Đăng ký</a>
-                                        </li>
+                                            <li>
+                                                <a href="{{ route('login') }}" class="d-block">Đăng nhập</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('register') }}" class="d-block">Đăng ký</a>
+                                            </li>
                                         @endif
                                     </ul>
                                 </div>
