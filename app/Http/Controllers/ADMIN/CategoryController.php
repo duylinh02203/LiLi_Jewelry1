@@ -17,7 +17,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $cats = Category::all();
+        $cats = Category::paginate(1);
         return view('admin.categories.category', compact('cats'));
     }
 
@@ -46,10 +46,10 @@ class CategoryController extends Controller
                 return redirect()->route('admin.category.index')->with('error', 'Category creation failed.');
             }
             DB::commit();
-            return redirect()->route('admin.category.index')->with('success', 'Category created successfully.');
+            return redirect()->route('admin.category.index')->with('success', 'Thêm danh mục thành công.');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('admin.category.create')->with('error', 'Error creating category: ' . $th->getMessage());
+            return redirect()->route('admin.category.create')->with('error', 'Lỗi thêm danh mục: ' . $th->getMessage());
         }
     }
 
@@ -79,14 +79,20 @@ class CategoryController extends Controller
                 'image' => $oldCategory->image,
             ]);
             DB::commit();
-            return redirect()->route('admin.category.index')->with('success', 'Category updated successfully.');
+            return redirect()->route('admin.category.index')->with('success', 'Chỉnh sửa danh mục thành công.');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('admin.category.index')->with('error', 'Category update failed: ' . $th->getMessage());
+            return redirect()->route('admin.category.index')->with('error', 'Chỉnh sửa danh mục thất bại: ' . $th->getMessage());
         }
     }
 
-
+    public function searchCategory(Request $request)
+    {
+        dd($request->all());
+        $search = $request->input('search');
+        $cats = Category::where('name', 'like', "%$search%")->get();
+        return view('admin.categories.category', compact('cats'));
+    }
     public function destroy($id)
     {
         DB::beginTransaction();
@@ -106,5 +112,11 @@ class CategoryController extends Controller
             DB::rollBack();
             return redirect()->route('admin.category.index')->with('error', 'Không tìm thấy danh mục.');
         }
+    }
+
+    public function detail($id)
+    {
+        $cat = Category::find($id);
+        return view('admin.categories.detail', compact('cat'));
     }
 }

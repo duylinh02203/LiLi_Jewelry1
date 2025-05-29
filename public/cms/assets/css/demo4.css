@@ -3067,9 +3067,9 @@ header .profile-dropdown {
     position: relative;
     letter-spacing: 0.8px;
     line-height: 1; }
-    .category-menu .category-dropdown ul li.submenu a .according-menu {
+    .category-menu .category-dropdown ul li.submenu a  {
       right: 0; }
-      [dir="rtl"] .category-menu .category-dropdown ul li.submenu a .according-menu {
+      [dir="rtl"] .category-menu .category-dropdown ul li.submenu a  {
         right: unset;
         left: 0; }
     .category-menu .category-dropdown ul li.submenu .category-mega-menu {
@@ -3081,7 +3081,7 @@ header .profile-dropdown {
         padding: 6px 0; }
         .category-menu .category-dropdown ul li.submenu .category-mega-menu .category-childmenu .title-category h6 {
           font-weight: 400; }
-        .category-menu .category-dropdown ul li.submenu .category-mega-menu .category-childmenu .title-category .according-menu {
+        .category-menu .category-dropdown ul li.submenu .category-mega-menu .category-childmenu .title-category {
           top: 8px;
           right: 0; }
       .category-menu .category-dropdown ul li.submenu .category-mega-menu .category-childmenu ul {
@@ -3865,9 +3865,9 @@ header .main-navbar {
             content: "+";
             font-family: inherit;
             position: relative; }
-      header .main-navbar .nav-menu > li > ul li a .according-menu {
+      header .main-navbar .nav-menu > li > ul li a  {
         top: 2px; }
-      header .main-navbar .nav-menu > li > ul li ul li a .according-menu {
+      header .main-navbar .nav-menu > li > ul li ul li a  {
         top: 1px; }
       header .main-navbar .nav-menu > li .nav-submenu {
         width: 100%;
@@ -3930,7 +3930,7 @@ header .main-navbar {
               font-weight: 400;
               line-height: 1.9;
               padding: 2px 25px; }
-            header .main-navbar .nav-menu > li .mega-menu-container .mega-box .link-section .submenu-title .according-menu {
+            header .main-navbar .nav-menu > li .mega-menu-container .mega-box .link-section .submenu-title  {
               top: 7px; }
           header .main-navbar .nav-menu > li .mega-menu-container .mega-box .link-section .submenu-content {
             display: none; }
@@ -3989,13 +3989,8 @@ header .main-navbar {
   .mega-box.col {
     -ms-flex-preferred-size: unset;
         flex-basis: unset; }
-  .according-menu {
-    position: absolute;
-    right: 20px;
-    top: 10px; }
-    [dir="rtl"] .according-menu {
-      right: unset;
-      left: 20px; } }
+  
+    }
 
 /**=====================
      home section css start

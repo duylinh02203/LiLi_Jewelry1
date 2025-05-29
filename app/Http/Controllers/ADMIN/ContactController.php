@@ -5,11 +5,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ADMIN\CreateContactRequest;
 use App\Models\Contact;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
 
 class ContactController extends Controller
 {
     public function index(){
-        $contacts=Contact::all();
+        $contacts=Contact::paginate(1);
         return view('admin.contacts.contact',compact('contacts'));
     }
 
@@ -20,7 +22,7 @@ class ContactController extends Controller
             return redirect()->route('admin.contact.success');
         }
         catch(\Exception $e){
-            return redirect()->route('contact')->with('error','Failed to create contact');
+            return redirect()->route('contact')->with('error','Thêm liên hệ thất bại');
         }
         
     }
@@ -33,15 +35,29 @@ class ContactController extends Controller
         try {
             $contactDelete = Contact::find($id);
             if (!$contactDelete) {
-                return redirect()->route('admin.contact.index')->with('error', 'Contact not found.');
+                return redirect()->route('admin.contact.index')->with('error', 'Không tìm thấy liên hệ.');
             }
             $contactDelete->delete();
             DB::commit();
-            return redirect()->route('admin.contact.index')->with('success', 'Contact deleted successfully.');
+            return redirect()->route('admin.contact.index')->with('success', 'Xóa liên hệ thành công.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('admin.contact.index')->with('error', 'Contact not found.');
+            return redirect()->route('admin.contact.index')->with('error', 'Không tìm thấy liên hệ.');
         }
     }
 
+    public function searchContact(Request $request){
+        $search = $request->input('search');
+        $contacts = Contact::where('first_name', 'like', "%$search%")
+            ->orWhere('last_name', 'like', "%$search%")
+            ->orWhere('email', 'like', "%$search%")
+            ->orWhere('phone', 'like', "%$search%")
+            ->get();
+        return view('admin.contacts.contact', compact('contacts'));
+    }
+
+    public function detail($id){
+        $contact = Contact::findOrFail($id);
+        return view('admin.contacts.detail', compact('contact'));
+    }
 }

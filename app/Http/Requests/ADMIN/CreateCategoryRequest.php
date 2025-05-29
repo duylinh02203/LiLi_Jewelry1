@@ -23,7 +23,7 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:categories,name|min:6|max:32|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 
@@ -31,11 +31,14 @@ class CreateCategoryRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Name is required',
-            'name.unique' => 'Name is unique',
-            'name.min' => 'Name must be at least 6 characters',
-            'name.max' => 'Name must be at most 32 characters',
-            'name.string' => 'Name must be a string',
+            'name.required' => 'Điền tên danh mục',
+            'name.unique' => 'Danh mục đã tồn tại',
+            'name.min' => 'Độ dài tên danh mục từ 6 đến 32 ký tự',
+            'name.max' => 'Độ dài tên danh mục từ 6 đến 32 ký tự',
+            'name.string' => 'Tên danh mục không hợp lệ',
+            'image.nullable' => 'Hình ảnh không hợp lệ',
+            'image.required' => 'Hình ảnh không được để trống',
+            'image.image' => 'Hình ảnh không hợp lệ',
         ];
     }
 }

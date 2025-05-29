@@ -22,10 +22,14 @@
                             <input name="name" type="text" class="form-control" placeholder="Name" value="{{ old('name') }}">
                         </div>
                         <div class="form-group">
-                            <label>File upload</label>
+                            <label>File upload
+                                @error('image')
+                                <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                @enderror
+                            </label>
                             <input type="file" name="image" class="file-upload-default">
                             <div class="input-group col-xs-12">
-                                <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                <input type="text" class="form-control file-upload-info" name="image" disabled placeholder="Upload Image">
                                 <span class="input-group-append">
                                     <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                                 </span>

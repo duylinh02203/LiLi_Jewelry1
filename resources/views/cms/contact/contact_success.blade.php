@@ -19,6 +19,7 @@
                         <div class="success-contain">
                             <h4>Gửi thành công</h4>
                             <h5 class="font-light">Chúng tôi đã nhận được tin của bạn !</h5>
+                            <a href="{{ url()->previous() }}">Quay lại</a>
                         </div>
                     </div>
                 </div>

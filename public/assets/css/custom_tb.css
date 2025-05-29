@@ -1,9 +1,7 @@
-  /* Căn chỉnh bảng */
   .table-responsive {
       margin: 20px 0;
   }
 
-  /* Định dạng nút */
   .btn {
       border: none;
       border-radius: 5px;
@@ -13,10 +11,8 @@
       transition: all 0.3s ease;
   }
 
-  /* Nút sửa */
   .btn-edit {
       background-color: #4CAF50;
-      /* Màu xanh lá */
       color: white;
       margin-right: 5px;
   }
@@ -25,18 +21,23 @@
       background-color: #45a049;
   }
 
-  /* Nút xóa */
   .btn-delete {
       background-color: #f44336;
-      /* Màu đỏ */
       color: white;
+  }
+
+  .btn-primary {
+      margin-right: 5px;
+  }
+
+  .btn-secondary {
+      margin-left: 5px;
   }
 
   .btn-delete:hover {
       background-color: #d32f2f;
   }
 
-  /* Hình ảnh */
   .table img {
       border-radius: 5px;
       width: 50px;
@@ -50,7 +51,6 @@
       color: white;
   }
 
-  /* Giao diện chung */
   .dropdown-item {
       display: flex;
       align-items: center;
@@ -103,4 +103,3 @@
       color: white !important;
       border-radius: 5px !important;
   }
- 

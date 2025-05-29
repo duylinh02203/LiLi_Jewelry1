@@ -1,18 +1,52 @@
 @extends('cms.layouts.app')
 @section('content')
+<section class="breadcrumb-section section-b-space" style="padding-top:20px;padding-bottom:20px;">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3>Giỏ hàng</h3>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="index.htm">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="cart-section section-b-space">
     <div class="container">
         <div class="row">
+            <div class="title title1 title-effect mb-1 title-left" style="margin-bottom: 40px !important;">
+                <h2>Giỏ hàng</h2>
+            </div>
             <div class="col-md-12 text-center">
                 <table class="table cart-table">
                     <thead>
                         <tr class="table-head">
-                            <th scope="col">image</th>
-                            <th scope="col">product name</th>
-                            <th scope="col">price</th>
-                            <th scope="col">quantity</th>
-                            <th scope="col">total</th>
-                            <th scope="col">action</th>
+                            <th scope="col">Hình ảnh</th>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Giá tiền</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Tổng</th>
+                            <th scope="col">Chức năng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,21 +90,6 @@
                                         <input type="number" name="quantity" class="form-control input-number" value="1">
                                     </div>
                                 </div>
-                                <!-- <div class="qty-box" style="display: flex;">
-                                            <div class="input-group">
-                                                <span class="input-group-prepend">
-                                                    <button type="button" class="btn quantity-left-minus" onclick="updateQuantity()" data-type="minus" data-field="">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
-                                                </span>
-                                                <input type="text" name="quantity" id="quantity" class="form-control input-number" value="1">
-                                                <span class="input-group-prepend">
-                                                    <button type="button" class="btn quantity-right-plus" onclick="updateQuantity()" data-type="plus" data-field="">
-                                                        <i class="fas fa-plus"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div> -->
                             </td>
                             <td>
                                 <h5 class="td-color">$18.00</h5>
@@ -178,11 +197,11 @@
                             <div class="cart-box-details">
                                 <div class="total-details">
                                     <div class="top-details">
-                                        <h3>Cart Totals</h3>
-                                        <h6>Sub Total <span>$26.00</span></h6>
-                                        <h6>Tax <span>$5.46</span></h6>
+                                        <h3>Tổng cộng giỏ hàng</h3>
+                                        <h6>Tổng phụ <span>$26.00</span></h6>
+                                        <h6>Thuế<span>$5.46</span></h6>
 
-                                        <h6>Total <span>$31.46</span></h6>
+                                        <h6>Tổng tiền<span>$31.46</span></h6>
                                     </div>
                                     <div class="bottom-details">
                                         <a href="checkout">Process Checkout</a>

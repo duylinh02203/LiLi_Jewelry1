@@ -26,13 +26,13 @@
                                             </span>
                                         </div>
                                     </li>
-                                    <li><a href="{{ route('home') }}" class="nav-link menu-title">Trang chủ</a></li>
-                                    <li><a href="{{ route('shop') }}" class="nav-link menu-title">Shop</a></li>
-                                    <li><a href="{{ route('cart') }}" class="nav-link menu-title">Giỏ hàng</a></li>
-                                    <li><a href="{{ route('about') }}" class="nav-link menu-title">Chúng tôi</a></li>
-                                    <li><a href="{{ route('contact') }}" class="nav-link menu-title">Liên hệ</a>
+                                    <li><a href="{{route('home')}}" class="nav-link menu">Trang chủ</a></li>
+                                    <li><a href="{{route('shop')}}" class="nav-link menu">Shop</a></li>
+                                    <li><a href="{{route('cart')}}" class="nav-link menu">Giỏ hàng</a></li>
+                                    <li><a href="{{route('about')}}" class="nav-link menu">Chúng tôi</a></li>
+                                    <li><a href="{{route('contact')}}" class="nav-link menu">Liên hệ</a>
                                     </li>
-                                    <li><a href="blog.html" class="nav-link menu-title">Bảng tin</a></li>
+                                    <li><a href="blog.html" class="nav-link menu">Bảng tin</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -99,14 +99,14 @@
                     </div>
                     <div class="search-full">
                         <form method="GET" class="search-full" action="{{ route('shop') }}">
-                            <div class="input-group" style="border-radius:10px;">
+                            <div class="input-group" style="border-radius:10px; border: 1px solid #333;">
                                 <span class="input-group-text">
                                     <i data-feather="search" class="font-light"></i>
                                 </span>
                                 <input type="text" name="q" class="form-control search-type"
                                     placeholder="Tìm kiếm sản phẩm.." value="{{ request('search-product') }}">
                                 <span class="input-group-text close-search">
-                                    <i data-feather="x" class="font-light"></i>
+                                    <i data-feather="x" class="font-light" ></i>
                                 </span>
                             </div>
                         </form>
