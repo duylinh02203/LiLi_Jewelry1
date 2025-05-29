@@ -5,8 +5,10 @@ namespace App\Http\Controllers\CMS;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ProductReview;
 use App\Models\ProductSize;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
@@ -66,12 +68,21 @@ class ShopController extends Controller
     public function productDetails($slug)
     {
         $product = Product::with('images', 'category')->where('slug', $slug)->firstOrFail();
+        $productReviews = $product->reviews()->with('user')->get();
+        $reviewCount = $productReviews->count();
+        $ratings = ProductReview::where('product_id', $product->id)
+            ->select('rating', DB::raw('count(*) as total'))
+            ->groupBy('rating')
+            ->pluck('total', 'rating')
+            ->toArray();
+        $tbRating = ProductReview::where('product_id', $product->id)->avg('rating');
+        $roundTbRating = round($tbRating);
         $productSizes = ProductSize::where('product_id', $product->id)->get();
         $relatedProducts = Product::with('images')
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->limit(6)
             ->get();
-        return view('cms.show.show', compact('product', 'relatedProducts', 'productSizes'));
+        return view('cms.show.show', compact('product', 'relatedProducts', 'productSizes', 'productReviews', 'reviewCount', 'ratings','roundTbRating'));
     }
 }

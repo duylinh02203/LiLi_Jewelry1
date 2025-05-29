@@ -17,7 +17,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $cats = Category::paginate(1);
+        $cats = Category::paginate(5);
         return view('admin.categories.category', compact('cats'));
     }
 
@@ -88,7 +88,6 @@ class CategoryController extends Controller
 
     public function searchCategory(Request $request)
     {
-        dd($request->all());
         $search = $request->input('search');
         $cats = Category::where('name', 'like', "%$search%")->get();
         return view('admin.categories.category', compact('cats'));

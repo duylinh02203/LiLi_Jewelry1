@@ -103,3 +103,38 @@
       color: white !important;
       border-radius: 5px !important;
   }
+
+  tbody tr:hover {
+      background-color: black;
+  }
+
+  .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+  }
+
+  .none-a {
+      text-decoration: none !important;
+      color: gray;
+  }
+
+  .none-a2 {
+      text-decoration: none !important;
+      color: gray;
+  }
+
+  .page-title {
+      margin: 0;
+  }
+
+  .link-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+  }
+
+  .rev {
+      margin-bottom: 0px !important;
+  }

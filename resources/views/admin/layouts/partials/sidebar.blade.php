@@ -1,8 +1,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        <a class="sidebar-brand brand-logo" href="{{ route('dashboard') }}"><img src="{{asset('cms/assets/images/LiLi_logo.png')}}"
+        <a class="sidebar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{asset('cms/assets/images/LiLi_logo.png')}}"
                 alt="logo" style="height:auto;" /></a>
-        <!-- <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="#" alt="" /></a> -->
     </div>
     <ul class="nav">
         <li class="nav-item profile">
@@ -57,73 +56,70 @@
         <li class="nav-item nav-category">
             <span class="nav-link">Navigation</span>
         </li>
-        <li class="nav-item menu-items">
-            <a class="nav-link" href="{{ route('dashboard') }}">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}">
                 <span class="menu-icon">
-                    <i class="mdi mdi-speedometer"></i>
+                    <i class="fa-solid fa-chart-simple"></i>
                 </span>
                 <span class="menu-title">Thống kê</span>
             </a>
         </li>
-        <li class="nav-item menu-items">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.category.index')||request()->routeIs('admin.category.detail')||request()->routeIs('admin.category.edit')||request()->routeIs('admin.category.create') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.category.index') }}">
                 <span class="menu-icon">
-                    <i class="mdi mdi-table-large"></i>
+                    <i class="fa-solid fa-layer-group"></i>
                 </span>
                 <span class="menu-title">Danh mục</span>
             </a>
         </li>
-        <li class="nav-item menu-items">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.product.index')||request()->routeIs('admin.product.detail')||request()->routeIs('admin.product.edit')||request()->routeIs('admin.product.create') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.product.index') }}">
                 <span class="menu-icon">
-                    <i class="mdi mdi-table-large"></i>
+                    <i class="fa-solid fa-boxes-packing"></i>
                 </span>
                 <span class="menu-title">Sản phẩm</span>
             </a>
         </li>
-        <li class="nav-item menu-items">
-            <a class="nav-link" href="{{route('admin.contact.index')}}">
-              <span class="menu-icon">
-                <i class="mdi mdi-playlist-play"></i>
-              </span>
-              <span class="menu-title">Liên hệ</span>
-            </a>
-          </li>
-        <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.contact.index')||request()->routeIs('admin.contact.detail') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.contact.index') }}">
                 <span class="menu-icon">
-                    <i class="mdi mdi-laptop"></i>
+                    <i class="fa-solid fa-address-book"></i>
                 </span>
-                <span class="menu-title">Quản lí giỏ hàng</span>
+                <span class="menu-title">Liên hệ</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items {{ request()->routeIs('admin.review.ProductReview') || request()->routeIs('admin.review.detail') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.review.ProductReview') }}">
+                <span class="menu-icon">
+                    <i class="mdi mdi-file-document-box"></i>
+                </span>
+                <span class="menu-title">Quản lý đánh giá</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items {{ request()->is('admin/user*') ? 'active' : '' }}">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="{{ request()->is('admin/user*') ? 'true' : 'false' }}" aria-controls="auth">
+                <span class="menu-icon">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+                <span class="menu-title">Quản lý người dùng</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-basic">
+            <div class="collapse {{ request()->routeIs('admin.user.listUser', 'admin.user.listAdmin') ? 'show' : '' }}" id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="#">All</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#">Unapproved Orders</a>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.user.listUser') ? 'active' : '' }}" href="{{ route('admin.user.listUser') }}">
+                            Người dùng
+                        </a>
                     </li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Approved
-                            Orders</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Orders Delete</a>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.user.listAdmin') ? 'active' : '' }}" href="{{ route('admin.user.listAdmin') }}">
+                            Quản trị viên
+                        </a>
                     </li>
                 </ul>
             </div>
+
         </li>
-        <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-                <span class="menu-icon">
-                    <i class="mdi mdi-security"></i>
-                </span>
-                <span class="menu-title">Quản lí người dùng</span>
-                <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{route('admin.user.listUser')}}">Người dùng</a>
-                    </li>
-                    <li class="nav-item"> <a class="nav-link" href="{{route('admin.user.listAdmin')}}">Quản trị viên</a></li>
-                </ul>
-            </div>
-        </li>
+
     </ul>
 </nav>

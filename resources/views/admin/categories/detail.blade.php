@@ -2,9 +2,20 @@
 @section('content')
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title">Chi tiết sản phẩm</h3>
-        <nav aria-label="breadcrumb">
-        </nav>
+        <h3 class="page-title">Quản lí danh mục</h3>
+        <div class="link-wrap">
+            <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.category.index'))
+            <span style="color: #333; cursor: not-allowed;">Danh mục</span>
+            @else
+            <a class="none-a2" href="{{route('admin.category.index')}}">Danh mục</a>
+            @endif
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.category.detail'))
+            <span style="color: #333; cursor: not-allowed;">Chi tiết</span>
+            @endif
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
@@ -20,15 +31,16 @@
                                     style="width: 90%; height: auto; object-fit: cover; border-radius: 5px;">
                             </div>
                             <div class="col-md-6 " style="padding-top: 15px;">
+                                <h3>CHI TIẾT DANH MỤC</h3>
                                 <br>
                                 <div class="mb-3">
                                     <span>Tên danh mục: </span> {{ $cat->name }}
                                 </div>
                                 <div class="mb-3">
-                                    <span>Thời gian thêm: </span> {{ $cat->created_at }}
+                                    <span>Thời gian thêm: </span> {{ $cat->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}
                                 </div>
                                 <div class="mb-3">
-                                    <span>Thời gian sửa: </span> {{ $cat->updated_at }}
+                                    <span>Thời gian sửa: </span> {{ $cat->updated_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}
                                 </div>
                                 <div class="mb-3">
                                     <span>Slug: </span>{{ $cat->slug }}

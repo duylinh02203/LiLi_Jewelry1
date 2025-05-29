@@ -9,7 +9,12 @@ use App\Http\Controllers\ADMIN\ProductController;
 use App\Http\Controllers\CMS\AuthController;
 use App\Http\Controllers\CMS\ShopController;
 use App\Http\Controllers\ADMIN\DashboardController;
+use App\Http\Controllers\ADMIN\ReviewController;
 use App\Http\Controllers\ADMIN\UserController;
+use App\Http\Controllers\CMS\AccountController;
+use App\Http\Controllers\CMS\ProductReviewController;
+use App\Http\Controllers\CMS\WishlistController;
+use App\Models\ProductReview;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,17 +34,24 @@ Route::get('admin/logout', [AdminProductController::class, 'logout'])->name('adm
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::get('cart', [HomeController::class, 'cart'])->name('cart');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
-Route::get('about', [HomeController::class, 'about'])->name('about');
+Route::get('review', [HomeController::class, 'review'])->name('review');
 // Route::get('show',[HomeController::class,'show'] )->name('show');
 Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 //Shop
 Route::get('shop', [ShopController::class, 'shop'])->name('shop');
+// 
+Route::post('product-review', [ProductReviewController::class, 'create'])->name('shop.product.review');
+// 
 Route::get('product/{slug}', [ShopController::class, 'productDetails'])->name('shop.product.details');
 //success
 Route::get('/contact-us/success', [ContactController::class, 'success'])->name('admin.contact.success');
 Route::get('/danh-muc/{slug}', [HomeController::class, 'products'])->name('shop.product.category');
-
-
+// account
+Route::get('account', [AccountController::class, 'index'])->name('index');
+// wishlist
+Route::get('wishlist', [WishlistController::class, 'viewWishlist'])->name('wishlist');
+Route::post('addWishlist', [WishlistController::class, 'addWishlist'])->name('shop.wishlist.addWishlist');
+Route::get('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('shop.wishlist.remove');
 // cms
 Route::prefix('auth')->as('auth.')->group(
     function () {
@@ -66,7 +78,7 @@ Route::prefix('admin')
                 Route::put('/edit/{id}', [CategoryController::class, 'edit'])->name('edit');
                 Route::get('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
                 Route::get('/detail/{id}', [CategoryController::class, 'detail'])->name('detail');
-                Route::get('/searchCategory', [CategoryController::class, 'searchCategory'])->name('searchCategory');
+                Route::get('/searchCategory', [CategoryController::class, 'searchCategory'])->name('search');
             });
         Route::prefix('product')
             ->as('product.')
@@ -103,5 +115,14 @@ Route::prefix('admin')
                 Route::get('/searchAdmin', [UserController::class, 'searchAdmin'])->name('searchAdmin');
                 Route::get('/detail/{id}', [UserController::class, 'detail'])->name('detail');
             });
-        Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+        Route::prefix('review')
+            ->as('review.')
+            ->group(function () {
+                Route::get('ProductReview', [ReviewController::class, 'ProductReview'])->name('ProductReview');
+                Route::get('/destroy/{id}', [ReviewController::class, 'destroy'])->name('destroy');
+                Route::get('/detail/{id}', [ReviewController::class, 'detail'])->name('detail');
+                Route::get('/search', [ReviewController::class, 'searchReview'])->name('search');
+            });
     });
+
+Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');

@@ -8,17 +8,17 @@
                     <div class="row">
                         <div class="col-9">
                             <div class="d-flex align-items-center align-self-start">
-                                <h3 class="mb-0">$12.34</h3>
-                                <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
+                                <h3 class="mb-0">{{$productsCount}}</h3>
+                                <p class="text-success ml-2 mb-0 font-weight-medium"></p>
                             </div>
                         </div>
                         <div class="col-3">
-                            <div class="icon icon-box-success ">
-                                <span class="mdi mdi-arrow-top-right icon-item"></span>
+                            <div>
+                                <img src="{{asset('images/product.png')}}" alt="Sản phẩm" style="width: 50px; height: 50px;">
                             </div>
                         </div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Potential growth</h6>
+                    <h6 class="text-muted font-weight-normal">Số lượng sản phẩm</h6>
                 </div>
             </div>
         </div>
@@ -28,17 +28,16 @@
                     <div class="row">
                         <div class="col-9">
                             <div class="d-flex align-items-center align-self-start">
-                                <h3 class="mb-0">$17.34</h3>
-                                <p class="text-success ml-2 mb-0 font-weight-medium">+11%</p>
+                                <h3 class="mb-0">{{$usersCount}}</h3>
                             </div>
                         </div>
                         <div class="col-3">
-                            <div class="icon icon-box-success">
-                                <span class="mdi mdi-arrow-top-right icon-item"></span>
+                            <div>
+                                <img src="{{asset('images/User_icon_2.png')}}" alt="" style="width: 50px; height: 50px;"> 
                             </div>
                         </div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Revenue current</h6>
+                    <h6 class="text-muted font-weight-normal">Số lượng người dùng</h6>
                 </div>
             </div>
         </div>
@@ -646,4 +645,3 @@
     </div>
 </div>
 @endsection
-<!-- partial -->

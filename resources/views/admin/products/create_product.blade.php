@@ -2,9 +2,20 @@
 @section('content')
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title">Tạo mới sản phẩm</h3>
-        <nav aria-label="breadcrumb">
-        </nav>
+        <h3 class="page-title">Quản lí sản phẩm</h3>
+        <div class="link-wrap">
+            <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.product.index'))
+            <span style="color: #333; cursor: not-allowed;">Sản phẩm</span>
+            @else
+            <a class="none-a2" href="{{route('admin.product.index')}}" >Sản phẩm</a>
+            @endif
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.product.create'))
+            <span style="color: #333; cursor: not-allowed;">Thêm sản phẩm</span>
+            @endif
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
