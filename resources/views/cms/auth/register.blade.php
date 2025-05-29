@@ -3,7 +3,7 @@
     <div class="login-section">
         <div class="materialContainer">
             <div class="box">
-                <form method="POST" action="{{ route('auth.register') }}">
+                <form method="POST" action="{{ route('register') }}">
                     @csrf
                     <div class="login-title">
                         <h2>Đăng ký</h2>
@@ -63,7 +63,7 @@
                             <span>Đăng Ký</span>
                             <i class="fa fa-check"></i>
                         </button>
-                        <p><a href="{{ route('auth.login') }}" class="theme-color">Bạn đã có tài khoản?</a></p>
+                        <p><a href="{{ route('login') }}" class="theme-color">Bạn đã có tài khoản?</a></p>
                     </div>
                 </form>
             </div>

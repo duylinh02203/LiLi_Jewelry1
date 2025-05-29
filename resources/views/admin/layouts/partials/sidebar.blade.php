@@ -1,6 +1,6 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        <a class="sidebar-brand brand-logo" href="{{ route('dashboard') }}"><img src="assets/images/logo.svg"
+        <a class="sidebar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="assets/images/logo.svg"
                 alt="logo" /></a>
         <!-- <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="#" alt="" /></a> -->
     </div>
@@ -59,7 +59,7 @@
             <span class="nav-link">Navigation</span>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" href="{{ route('dashboard') }}">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}">
                 <span class="menu-icon">
                     <i class="mdi mdi-speedometer"></i>
                 </span>
@@ -83,13 +83,13 @@
             </a>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" href="{{route('admin.contact.index')}}">
-              <span class="menu-icon">
-                <i class="mdi mdi-playlist-play"></i>
-              </span>
-              <span class="menu-title">Liên hệ</span>
+            <a class="nav-link" href="{{ route('admin.contact.index') }}">
+                <span class="menu-icon">
+                    <i class="mdi mdi-playlist-play"></i>
+                </span>
+                <span class="menu-title">Liên hệ</span>
             </a>
-          </li>
+        </li>
         <li class="nav-item menu-items">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
@@ -105,7 +105,8 @@
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Approved
                             Orders</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Orders Delete</a>
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Orders
+                            Delete</a>
                     </li>
                 </ul>
             </div>
