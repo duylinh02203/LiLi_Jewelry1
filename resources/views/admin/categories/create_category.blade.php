@@ -3,8 +3,19 @@
 <div class="content-wrapper">
     <div class="page-header">
         <h3 class="page-title">Quản lí danh mục</h3>
-        <nav aria-label="breadcrumb">
-        </nav>
+        <div class="link-wrap">
+            <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.category.index'))
+            <span style="color: #333; cursor: not-allowed;">Danh mục sản phẩm</span>
+            @else
+            <a class="none-a2" href="{{route('admin.category.index')}}" >Danh mục sản phẩm</a>
+            @endif
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.category.create'))
+            <span style="color: #333; cursor: not-allowed;">Thêm danh mục</span>
+            @endif
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">

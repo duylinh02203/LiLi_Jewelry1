@@ -90,6 +90,7 @@ header .profile-dropdown ul {
     border-radius: 10px;
 }
 
+
 .r-price {
     display: flex;
     flex-direction: row;
@@ -134,7 +135,14 @@ header .profile-dropdown ul {
 
 .search-box i {
     font-size: 18px;
-}
-.product-image a image{
+    }
+    .product-image a image{
     border-radius: 10px !important;
+}
+.footer-content ul li a {
+   color: rgb(35, 35, 35) !important ;
+}
+
+#home{
+    border-bottom: solid 1px #bd1125 !important;
 }

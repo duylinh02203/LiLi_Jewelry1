@@ -22,20 +22,21 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|unique:users,username|min:6|max:32|string',
+            'name' => 'required|unique:users,name|min:6|max:32|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|max:32|string',
+            'confirm_password' => 'required|same:password',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'username.required' => 'Tên người dùng là bắt buộc',
-            'username.unique' => 'Tên người dùng đã tồn tại',
-            'username.min' => 'Tên người dùng phải có ít nhất 6 ký tự',
-            'username.max' => 'Tên người dùng không được vượt quá 32 ký tự',
-            'username.string' => 'Tên người dùng phải là chuỗi ký tự',
+            'name.required' => 'Tên người dùng là bắt buộc',
+            'name.unique' => 'Tên người dùng đã tồn tại',
+            'name.min' => 'Tên người dùng phải có ít nhất 6 ký tự',
+            'name.max' => 'Tên người dùng không được vượt quá 32 ký tự',
+            'name.string' => 'Tên người dùng phải là chuỗi ký tự',
             'email.required' => 'Hãy điền email',
             'email.email' => 'Email phải là một địa chỉ email hợp lệ',
             'email.unique' => 'Email đã tồn tại',
@@ -43,6 +44,8 @@ class CreateUserRequest extends FormRequest
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
             'password.max' => 'Mật khẩu không được vượt quá 32 ký tự',
             'password.string' => 'Mật khẩu phải là chuỗi ký tự',
+            'confirm_password.required' => 'Hãy điền mật khẩu',
+            'confirm_password.same' => 'Mật khẩu xác nhận không khớp với mật khẩu',
 
         ];
     }

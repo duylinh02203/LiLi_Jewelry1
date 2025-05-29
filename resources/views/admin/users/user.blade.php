@@ -3,10 +3,17 @@
 <div class="content-wrapper">
     <div class="page-header">
         <h3 class="page-title">Người dùng</h3>
-        <nav>
-        </nav>
+        <div class="link-wrap">
+            <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.user.listUser'))
+            <span style="color: #333; cursor: not-allowed;">Tài khoản</span>
+            @else
+            <a href="">Tài khoản</a>
+            @endif
+        </div>
         @if ($message = Session::get('success'))
-        <div id="alert" class="alert alert-success" style="position: absolute; width: 80%;">
+        <div id="alert" class="alert alert-success" style="position: absolute; width: 80.5%;">
             {{ $message }}
         </div>
         @endif
@@ -17,7 +24,7 @@
                 <div class="card-body">
                     <div class="search-add-wrapper"
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <div class="search-bar col-lg-3" style="width: 250px; flex: 1;">
+                        <div class="search-bar col-lg-3" style="width: 250px; flex: 1;margin-left: -10px;">
                             <form class="nav-link mt-2 mt-md-0 d-lg-flex search" action="{{route('admin.user.searchUser')}}" method="GET">
                                 <input type="text" style="padding: 15;" class="form-control"
                                     placeholder="Tìm kiếm người dùng" name="search" aria-label="Search" value="{{ request('search') }}">
@@ -45,7 +52,7 @@
                                 @foreach ($users as $index => $user)
                                 <tr>
                                     <td>{{ ++$index }}</td>
-                                    <td>{{ $user->username }}</td>
+                                    <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>
                                         <a href="{{ route('admin.user.edit', $user->id)}}"><button

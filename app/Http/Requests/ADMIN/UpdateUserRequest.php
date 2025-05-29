@@ -24,12 +24,12 @@ class UpdateUserRequest extends FormRequest
     {
         $id = $this->route('id');
         return [
-            'username' => [
+            'name' => [
                 'required',
                 'string',
                 'min:3',
                 'max:50',
-                Rule::unique('users', 'username')->ignore($id),
+                Rule::unique('users', 'name')->ignore($id),
             ],
             'email' => [
                 'required',
@@ -48,11 +48,11 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'username.required' => 'Điền tên người dùng.',
-            'username.string' => 'Tên người dùng phải là chuỗi ký tự.',
-            'username.min' => 'Tên người dùng phải có ít nhất :min ký tự.',
-            'username.max' => 'Tên người dùng không được vượt quá :max ký tự.',
-            'username.unique' => 'Tên người dùng này đã được sử dụng.',
+            'name.required' => 'Điền tên người dùng.',
+            'name.string' => 'Tên người dùng phải là chuỗi ký tự.',
+            'name.min' => 'Tên người dùng phải có ít nhất :min ký tự.',
+            'name.max' => 'Tên người dùng không được vượt quá :max ký tự.',
+            'name.unique' => 'Tên người dùng này đã được sử dụng.',
 
             'email.required' => 'Điền địa chỉ email.',
             'email.email' => 'Vui lòng nhập một địa chỉ email hợp lệ.',

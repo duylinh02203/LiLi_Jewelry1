@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\CMS\ProductReviewController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
@@ -46,9 +47,16 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
-
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
     public function firstImage()
     {
         return $this->hasOne(ProductImage::class)->orderBy('id');
+    }
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
     }
 }

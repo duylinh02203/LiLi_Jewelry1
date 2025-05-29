@@ -3,10 +3,17 @@
 <div class="content-wrapper">
     <div class="page-header">
         <h3 class="page-title">Quản lí danh mục</h3>
-        <nav>
-        </nav>
+        <div class="link-wrap">
+            <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.category.index'))
+            <span style="color: #333; cursor: not-allowed;">Danh mục</span>
+            @else
+            <a href="">Danh mục</a>
+            @endif
+        </div>
         @if ($message = Session::get('success'))
-        <div id="alert" class="alert alert-success" style="position: absolute; width: 80%;">
+        <div id="alert" class="alert alert-success" style="position: absolute; width: 80.5%;">
             {{ $message }}
         </div>
         @endif
@@ -17,8 +24,8 @@
                 <div class="card-body">
                     <div class="search-add-wrapper"
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <div class="search-bar col-lg-3" style="width: 250px; flex: 1;">
-                            <form class="nav-link mt-2 mt-md-0 d-lg-flex" action="{{ route('admin.category.searchCategory') }}" method="GET">
+                        <div class="search-bar col-lg-3" style="width: 250px; flex: 1; margin-left: -10px;">
+                            <form class="nav-link mt-2 mt-md-0 d-lg-flex" action="{{ route('admin.category.search') }}" method="GET">
                                 <input type="text" style="padding: 15px;" class="form-control" name="search"
                                     value="{{ request()->input('search') }}" placeholder="Tìm kiếm danh mục">
                             </form>
@@ -66,12 +73,11 @@
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="5" class="text-center">Không tìm thấy danh mục nào.</td>
+                                    <td colspan="12" class="text-center">Không tìm thấy danh mục nào.</td>
                                 </tr>
                                 @endif
                             </tbody>
                         </table>
-
                     </div>
                     <div class="pagination-container" style="display: flex; width:100%;justify-content: end; margin-bottom: -25px; padding-right: 0px !important;">
                         {{ $cats->links('admin.pagination.default') }}
@@ -92,5 +98,8 @@
             }, 500);
         }
     }, 3000);
+    document.querySelectorAll('.btn').forEach(button => {
+        button.addEventListener('click', (e) => e.stopPropagation());
+    });
 </script>
 @endsection

@@ -2,7 +2,20 @@
 @section('content')
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title"> Thêm mới </h3>
+        <h3 class="page-title">Quản lí tài khoản</h3>
+        <div class="link-wrap">
+            <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.user.index'))
+            <span style="color: #333; cursor: not-allowed;">Tài khoản</span>
+            @else
+            <a class="none-a2" href="{{route('admin.user.listUser')}}">Tài khoản</a>
+            @endif
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.user.create'))
+            <span style="color: #333; cursor: not-allowed;">Thêm</span>
+            @endif
+        </div>
     </div>
     <div class="row">
         <div class="col-12 grid-margin stretch-card">
@@ -14,11 +27,11 @@
                         @csrf
                         <div class="form-group">
                             <label>UserName
-                                @error('username')
+                                @error('name')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                 @enderror
                             </label>
-                            <input value="{{ old('username') }}" type="text" class="form-control" name="username"
+                            <input value="{{ old('name') }}" type="text" class="form-control" name="name"
                                 placeholder="Name">
                         </div>
                         <div class="form-group">
@@ -40,6 +53,15 @@
                                 placeholder="Mật khẩu" name="password">
                         </div>
                         <div class="form-group">
+                            <label>Xác nhận mật khẩu
+                                @error('confirm_password')
+                                <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                @enderror
+                            </label>
+                            <input value="{{ old('confirm_password') }}" type="password" class="form-control"
+                                placeholder="Xác nhận mật khẩu" name="confirm_password">
+                        </div>
+                        <div class="form-group">
                             <label>Vai trò
                                 @error('role')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
@@ -51,7 +73,7 @@
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                        <button class="btn btn-dark"><a href="{{ url()->previous() }}" style="text-decoration: none; color:white;">Cancel</a></button>
+                        <button class="btn btn-dark" type="button"><a href="{{ url()->previous() }}" style="text-decoration: none; color:white;">Cancel</a></button>
                     </form>
                 </div>
             </div>
