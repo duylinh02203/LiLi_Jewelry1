@@ -115,17 +115,13 @@
                 <span class="menu-icon">
                     <i class="fa-solid fa-user"></i>
                 </span>
-                <span class="menu-title">Quản lý người dùng</span>
+                <span class="menu-title">Quản lý tài khoản</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse {{ request()->routeIs('admin.user.listUser', 'admin.user.listAdmin') ? 'show' : '' }}" id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a>
-                    </li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
+                    <li class="nav-item "> <a class="nav-link" href="{{route('admin.user.listUser')}}"> Người dùng </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{route('admin.user.listAdmin')}}"> Quản trị viên </a></li>
                 </ul>
             </div>
 

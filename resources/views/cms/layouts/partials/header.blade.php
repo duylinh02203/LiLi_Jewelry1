@@ -96,7 +96,7 @@
                                         </span>
                                     </a>
                                     @else
-                                    <a href="{{ route('auth.login') }}">
+                                    <a href="{{ route('login') }}">
                                         <i data-feather="heart"></i>
                                         <span id="header-wishlist-count" class="label label-theme rounded-pill">
                                             0

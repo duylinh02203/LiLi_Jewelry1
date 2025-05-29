@@ -49,9 +49,6 @@ Route::get('/danh-muc/{slug}', [HomeController::class, 'products'])->name('shop.
 // account
 Route::get('account', [AccountController::class, 'index'])->name('index');
 // wishlist
-Route::get('wishlist', [WishlistController::class, 'viewWishlist'])->name('wishlist');
-Route::post('addWishlist', [WishlistController::class, 'addWishlist'])->name('shop.wishlist.addWishlist');
-Route::get('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('shop.wishlist.remove');
 // cms
 Route::prefix('auth')->group(
     function () {
@@ -62,6 +59,10 @@ Route::prefix('auth')->group(
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
         Route::post('forgot-password', [AuthController::class, 'forgotPasswordAction'])->name('forgot-password');
+        // wishlist
+        Route::get('wishlist', [WishlistController::class, 'viewWishlist'])->name('wishlist');
+        Route::post('addWishlist', [WishlistController::class, 'addWishlist'])->name('shop.wishlist.addWishlist');
+        Route::get('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('shop.wishlist.remove');
     }
 );
 
