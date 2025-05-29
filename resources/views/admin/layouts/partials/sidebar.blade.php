@@ -1,7 +1,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        <a class="sidebar-brand brand-logo" href="{{ route('dashboard') }}"><img src="{{asset('cms/assets/images/LiLi_logo.png')}}"
-                alt="logo" style="height:auto;" /></a>
+        <a class="sidebar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img
+                src="{{ asset('cms/assets/images/LiLi_logo.png') }}" alt="logo" /></a>
         <!-- <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="#" alt="" /></a> -->
     </div>
     <ul class="nav">
@@ -58,7 +58,7 @@
             <span class="nav-link">Navigation</span>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" href="{{ route('dashboard') }}">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}">
                 <span class="menu-icon">
                     <i class="mdi mdi-speedometer"></i>
                 </span>
@@ -82,13 +82,13 @@
             </a>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" href="{{route('admin.contact.index')}}">
-              <span class="menu-icon">
-                <i class="mdi mdi-playlist-play"></i>
-              </span>
-              <span class="menu-title">Liên hệ</span>
+            <a class="nav-link" href="{{ route('admin.contact.index') }}">
+                <span class="menu-icon">
+                    <i class="mdi mdi-playlist-play"></i>
+                </span>
+                <span class="menu-title">Liên hệ</span>
             </a>
-          </li>
+        </li>
         <li class="nav-item menu-items">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
@@ -104,7 +104,8 @@
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Approved
                             Orders</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Orders Delete</a>
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Orders
+                            Delete</a>
                     </li>
                 </ul>
             </div>
@@ -119,9 +120,12 @@
             </a>
             <div class="collapse" id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{route('admin.user.listUser')}}">Người dùng</a>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a>
                     </li>
-                    <li class="nav-item"> <a class="nav-link" href="{{route('admin.user.listAdmin')}}">Quản trị viên</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
                 </ul>
             </div>
         </li>
