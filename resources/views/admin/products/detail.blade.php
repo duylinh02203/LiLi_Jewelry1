@@ -40,13 +40,16 @@
                                 </div>
                                 <div class="mb-3">
                                     <span>Kích thước:</span>
-                                    @if ($product->is_free_size)
+                                    @if ($product->is_free_size===1)
                                     Free Size
                                     @else
                                     @foreach ($product->sizes as $mee)
                                     {{ $mee->size }}
                                     @endforeach
                                     @endif
+                                </div>
+                                <div class="mb-3">
+                                    <span>Sản phẩm dành cho:</span> {{ $product->gender === 'male' ? 'Nam' : ($product->gender === 'female' ? 'Nữ' : 'Cặp đôi') }}
                                 </div>
                                 <div class="mb-3">
                                     <span>Mô tả sản phẩm:</span> {{ $product->description ?? 'No description available' }}

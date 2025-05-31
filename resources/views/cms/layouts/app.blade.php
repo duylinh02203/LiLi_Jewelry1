@@ -84,36 +84,36 @@
     </div>
     @yield('content')
     <!--  -->
-     <section class="icon-box-section">
-    <div class="icon-box">
-      <div class="icon-feat">
-        <img src="{{asset('images/Smile-icon1.png')}}" alt="">
-      </div>
-      <h3>KHÁCH HÀNG HÀI LÒNG</h3>
-      <p>Đặt sự hài lòng của khách hàng là ưu tiên số 1 trong mọi suy nghĩ hành động</p>
-    </div>
-    <div class="icon-box">
-      <div class="icon-feat">
-        <img src="{{asset('images/945447.png')}}" alt="Medal Icon">
-      </div>
-      <h3>CHẤT LƯỢNG CAO CẤP</h3>
-      <p>Mọi sản phẩm đều được thiết kế và chế tác bởi các nghệ nhân hàng đầu</p>
-    </div>
-    <div class="icon-box">
-      <div class="icon-feat">
-        <img src="{{asset('images/return-icon.png')}}" alt="Return Icon">
-      </div>
-      <h3>ĐỔI TRẢ DỄ DÀNG</h3>
-      <p>10 ngày đổi trả (LiLi đến tận nơi nhận hàng). Hoàn tiền nếu không hài lòng</p>
-    </div>
-    <div class="icon-box">
-      <div class="icon-feat">
-        <img src="{{asset('images/support.png')}}" alt="Support Icon">
-      </div>
-      <h3>HỖ TRỢ NHIỆT TÌNH</h3>
-      <p>Tất cả câu hỏi đều được các chuyên viên của LiLi tư vấn, giải đáp kỹ càng</p>
-    </div>
-  </section>
+    <section class="icon-box-section">
+        <div class="icon-box">
+            <div class="icon-feat">
+                <img src="{{asset('images/Smile-icon1.png')}}" alt="">
+            </div>
+            <h3>KHÁCH HÀNG HÀI LÒNG</h3>
+            <p>Đặt sự hài lòng của khách hàng là ưu tiên số 1 trong mọi suy nghĩ hành động</p>
+        </div>
+        <div class="icon-box">
+            <div class="icon-feat">
+                <img src="{{asset('images/945447.png')}}" alt="Medal Icon">
+            </div>
+            <h3>CHẤT LƯỢNG CAO CẤP</h3>
+            <p>Mọi sản phẩm đều được thiết kế và chế tác bởi các nghệ nhân hàng đầu</p>
+        </div>
+        <div class="icon-box">
+            <div class="icon-feat">
+                <img src="{{asset('images/return-icon.png')}}" alt="Return Icon">
+            </div>
+            <h3>ĐỔI TRẢ DỄ DÀNG</h3>
+            <p>10 ngày đổi trả (LiLi đến tận nơi nhận hàng). Hoàn tiền nếu không hài lòng</p>
+        </div>
+        <div class="icon-box">
+            <div class="icon-feat">
+                <img src="{{asset('images/support.png')}}" alt="Support Icon">
+            </div>
+            <h3>HỖ TRỢ NHIỆT TÌNH</h3>
+            <p>Tất cả câu hỏi đều được các chuyên viên của LiLi tư vấn, giải đáp kỹ càng</p>
+        </div>
+    </section>
     <!--  -->
     <footer class="footer-sm-space mt-5">
         @include('cms.layouts.partials.footer')

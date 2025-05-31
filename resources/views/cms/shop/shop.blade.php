@@ -167,15 +167,15 @@
                                         <ul class="category-list">
                                             <li>
                                                 <div class="form-check ps-0 custom-form-check">
-                                                    <input class="checkbox_animated check-it" id="gender1" name="gender[]" type="checkbox" value="male"
-                                                        {{ (is_array(request('gender') ?? []) && in_array('male', request('gender') ?? [])) ? 'checked' : '' }}>
+                                                    <input class="checkbox_animated check-it" id="gender1" name="gender[]" type="checkbox" value="female"
+                                                        {{ (is_array(request('gender') ?? []) && in_array('female', request('gender') ?? [])) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="gender1">Nữ</label>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="form-check ps-0 custom-form-check">
-                                                    <input class="checkbox_animated check-it" id="gender2" name="gender[]" type="checkbox" value="female"
-                                                        {{ (is_array(request('gender')) && in_array('female', request('gender'))) ? 'checked' : '' }}>
+                                                    <input class="checkbox_animated check-it" id="gender2" name="gender[]" type="checkbox" value="male"
+                                                        {{ (is_array(request('gender')) && in_array('male', request('gender'))) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="gender2">Nam</label>
                                                 </div>
                                             </li>
@@ -384,7 +384,6 @@
             document.getElementById('filterForm').submit();
         });
     });
-    // 
     document.querySelectorAll('.wishlistEffect').forEach((element) => {
         element.addEventListener('click', function(event) {
             event.preventDefault();
@@ -401,10 +400,18 @@
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     }
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (response.status === 401) {
+                        window.location.href = '/auth/login';
+                        return null;
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    if (!data) return;
                     showNotification(data.status === 'success' ? 'success' : 'error', data.message);
 
                     if (data.status === 'success') {

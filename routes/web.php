@@ -40,7 +40,7 @@ Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 //Shop
 Route::get('shop', [ShopController::class, 'shop'])->name('shop');
 // 
-Route::post('product-review', [ProductReviewController::class, 'create'])->name('shop.product.review');
+
 // 
 Route::get('product/{slug}', [ShopController::class, 'productDetails'])->name('shop.product.details');
 //success
@@ -64,10 +64,14 @@ Route::prefix('auth')->group(
 
 Route::middleware('auth.login')->group(function () {
     Route::get('information', [AuthController::class, 'information'])->name('information');
+    //reviewProduct
+    Route::post('product-review', [ProductReviewController::class, 'create'])->name('shop.product.review');
+    //contactCreate
+    Route::post('/create', [ContactController::class, 'create'])->name('contact.create');
     //wishlist
     Route::get('wishlist', [WishlistController::class, 'viewWishlist'])->name('wishlist');
-        Route::post('addWishlist', [WishlistController::class, 'addWishlist'])->name('shop.wishlist.addWishlist');
-        Route::get('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('shop.wishlist.remove');
+    Route::post('addWishlist', [WishlistController::class, 'addWishlist'])->name('shop.wishlist.addWishlist');
+    Route::get('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('shop.wishlist.remove');
 });
 
 Route::prefix('admin')
@@ -107,7 +111,6 @@ Route::prefix('admin')
                 ->as('contact.')
                 ->group(function () {
                     Route::get('', [ContactController::class, 'index'])->name('index');
-                    Route::post('/create', [ContactController::class, 'create'])->name('create');
                     Route::get('/remove/{id}', [ContactController::class, 'remove'])->name('remove');
                     Route::get('/search', [ContactController::class, 'searchContact'])->name('search');
                     Route::get('/detail/{id}', [ContactController::class, 'detail'])->name('detail');

@@ -52,7 +52,7 @@
                         @if($wishlists->count()>0)
                         @foreach($wishlists as $wishlist)
 
-                        <tr>
+                        <tr id="tr-wrap-{{$wishlist->id}}">
                             <td>
                                 <a href="{{route('shop.product.details',$wishlist->product->slug)}}">
                                     <img src="{{ asset('/images/' . optional($wishlist->product->firstImage)->image ?? 'default.png') }}"
@@ -98,7 +98,7 @@
                                 <a href="javascript:void(0)" class="icon">
                                     <i class="fas fa-shopping-cart"></i>
                                 </a>
-                                <a href="{{route('shop.wishlist.remove',$wishlist->id)}}" class="icon" data-wishlist-id="{{ $wishlist->id }}">
+                                <a href="{{route('shop.wishlist.remove',$wishlist->id)}}" class="icon removeWishlist" data-wishlist-id="{{ $wishlist->id }}">
                                     @csrf
                                     @method('DELETE')
                                     <i class="fas fa-times"></i>

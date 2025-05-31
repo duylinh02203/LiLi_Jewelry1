@@ -305,12 +305,10 @@
                                 <div class="mt-2 mt-md-3 border-product">
                                     <table>
                                         <tr>
-                                            <td>Cam kết chất lượng sản phẩm</td>
-                                            <td>Đổi trả trong vòng 15 ngày</td>
+                                            <td>Cam kết chất lượng, đảm bảo từng chi tiết</td>
 
                                         </tr>
                                         <tr>
-                                            <td>Cam kết chất lượng, đảm bảo từng chi tiết</td>
                                             <td>Uy tín hàng đầu – Mua sắm không lo</td>
                                         </tr>
                                     </table>
@@ -369,7 +367,7 @@
                     </nav>
 
                     <div class="tab-content" id="nav-tabContent" style="border-bottom:1px solid #ccc;">
-                        <div class="tab-pane fade show active" id="desc">
+                        <div class="tab-pane fade show active" id="desc" style="padding-bottom: 0px !important; ">
                             <div class="shipping-chart" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
                                 @foreach($product->images as $image)
                                 <div style="margin: 10px;">
@@ -525,12 +523,15 @@
                                                 </ul>
                                                 <p class="font-light">{{$review->comment}}</p>
 
-                                                <p class="date-custo font-light">{{$review->created_at}}</p>
+                                                <p class="date-custo font-light">{{$review->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s')}}</p>
                                             </div>
                                         </div>
                                         @endforeach
                                     </div>
                                 </div>
+                                @else
+
+                                <p style="color:#333">Chưa có đánh giá nào.</p>
                                 @endif
                             </div>
                         </div>
@@ -567,14 +568,12 @@
                                 <div class="cart-wrap">
                                     <ul>
                                         <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn"
-                                                data-bs-toggle="modal" data-bs-target="#addtocart">
+                                            <a href="javascript:void(0)" class="addtocart-btn">
                                                 <i data-feather="shopping-bag"></i>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('shop.product.details', ['slug' => $product->slug]) }}" data-bs-toggle="modal"
-                                                data-bs-target="quick-view">
+                                            <a href="{{ route('shop.product.details', ['slug' => $relatedProduct->slug]) }}">
                                                 <i data-feather="eye"></i>
                                             </a>
                                         </li>
@@ -680,6 +679,65 @@
             stars[i].classList.add(type);
         }
     }
+
+    function resetHover() {
+        stars.forEach((star) => star.classList.remove('hover'));
+    }
+
+    function resetAllStars() {
+        stars.forEach((star) => star.classList.remove('hover', 'active'));
+    }
+
+    function setActiveStars(rating) {
+        resetAllStars();
+        for (let i = 0; i < rating; i++) {
+            stars[i].classList.add('active');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const alert = document.getElementById('alert');
+        if (alert) {
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 4000);
+        }
+    });
+    $(document).on('submit', '#reviewForm', function(e) {
+        e.preventDefault();
+
+        const form = $(this);
+        const url = form.attr('action');
+        const formData = form.serialize();
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    sessionStorage.setItem('notification', JSON.stringify({
+                        type: 'success',
+                        message: response.message
+                    }));
+                    location.reload();
+                } else {
+                    showNotification('error', response.message);
+                }
+            },
+            error: function(xhr) {
+                if (xhr.status === 401) {
+                    window.location.href = '/auth/login';
+                    return;
+                }
+
+                showNotification('error', 'Đã xảy ra lỗi trong quá trình xử lý!');
+            }
+        });
+    });
     commentInput.addEventListener('input', () => {
         let comment = commentInput.value.trim();
         let wordCount = 0;
@@ -733,56 +791,6 @@
         });
     }
 
-    function resetHover() {
-        stars.forEach((star) => star.classList.remove('hover'));
-    }
-
-    function resetAllStars() {
-        stars.forEach((star) => star.classList.remove('hover', 'active'));
-    }
-
-    function setActiveStars(rating) {
-        resetAllStars();
-        for (let i = 0; i < rating; i++) {
-            stars[i].classList.add('active');
-        }
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        const alert = document.getElementById('alert');
-        if (alert) {
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 4000);
-        }
-    });
-    $(document).on('submit', '#reviewForm', function(e) {
-        e.preventDefault();
-
-        const form = $(this);
-        const url = form.attr('action');
-        const formData = form.serialize();
-
-        $.ajax({
-            url: url,
-            method: 'POST',
-            data: formData,
-            success: function(response) {
-                if (response.status === 'success') {
-                    sessionStorage.setItem('notification', JSON.stringify({
-                        type: 'success',
-                        message: response.message
-                    }));
-                    location.reload();
-                } else {
-                    showNotification('error', response.message);
-                }
-            },
-            error: function() {
-                showNotification('error', 'Đã xảy ra lỗi trong quá trình xử lý!');
-            }
-        });
-    });
-
     function showNotification(type, message) {
         const notification = $(`<div class="notification ${type}">${message}</div>`);
 
@@ -835,11 +843,19 @@
                     method: 'POST',
                     body: new FormData(form),
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
                     },
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (response.status === 401) {
+                        window.location.href = '/auth/login';
+                        return null;
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    if (!data) return;
                     showNotification(data.status === 'success' ? 'success' : 'error', data.message);
 
                     if (data.status === 'success') {
@@ -882,5 +898,23 @@
         });
     });
 </script>
+@if (session('success') || session('error'))
+<div
+    id="alert-box"
+    class="fixed top-4 right-4 z-50 px-4 py-3 rounded shadow-lg 
+               {{ session('success') ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
+    {{ session('success') ?? session('error') }}
+</div>
+
+<script>
+    // Tự động ẩn thông báo sau 4 giây
+    setTimeout(() => {
+        const alertBox = document.getElementById('alert-box');
+        if (alertBox) {
+            alertBox.style.display = 'none';
+        }
+    }, 4000);
+</script>
+@endif
 
 @endpush
