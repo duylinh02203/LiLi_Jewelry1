@@ -1,6 +1,11 @@
 @extends('cms.layouts.app')
 @section('content')
-    <section class="contact-section">
+<style>
+    .btn-solid-default::before{
+        border-radius: 10px !important;
+    }
+</style>
+    <section class="contact-section" style="margin-bottom: 30px;">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-7">
@@ -10,11 +15,11 @@
                                 <h2>Thông tin tài khoản</h2>
                             </div>
                         </div>
-                        <form action="{{ route('admin.contact.create') }}" method="POST">
+                        <form action="#" method="POST">
                             @csrf
                             <div class="row g-4 mt-md-1 mt-2">
                                 <div class="col-md-12">
-                                    <label for="email" class="form-label">Email
+                                    <label for="emaibtn btn-solid-defaultl" class="form-label">Email
                                         @error('email')
                                             <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                         @enderror
@@ -41,7 +46,7 @@
                                         placeholder="Nhập số điện thoại của bạn" value="{{ $userInfor->phone }}">
                                 </div>
                                 <div class="col-auto">
-                                    <button class="btn btn-solid-default" type="submit">Chỉnh sửa thông tin</button>
+                                    <button class="btn btn-solid-default" type="submit" style="border-radius:10px;">Chỉnh sửa thông tin</button>
                                 </div>
                             </div>
                         </form>

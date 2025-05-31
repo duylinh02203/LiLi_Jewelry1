@@ -25,7 +25,7 @@
         left: 0;
         bottom: -10px;
         width: 0;
-        height: 2px;
+        height: 1.5px;
         background-color: #000;
         transition: width 0.3s ease-in-out;
     }
@@ -55,7 +55,7 @@
                                 <div class="toggle-nav">
                                     <i class="fa fa-bars sidebar-bar"></i>
                                 </div>
-                                <ul class="nav-menu">
+                                <ul class="nav-menu" style="border-radius: 10px 0px 0px 10px;">
                                     <li class="back-btn d-xl-none">
                                         <div class="close-btn">
                                             Menu

@@ -25,7 +25,7 @@
                     <form action="{{ route('admin.category.store') }}" class="forms-sample" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
-                            <label for="exampleInputName1">Name
+                            <label for="exampleInputName1">Tên danh mục
                                 @error('name')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                 @enderror
@@ -33,21 +33,21 @@
                             <input name="name" type="text" class="form-control" placeholder="Name" value="{{ old('name') }}">
                         </div>
                         <div class="form-group">
-                            <label>File upload
+                            <label>Tải lên tập tin
                                 @error('image')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                 @enderror
                             </label>
                             <input type="file" name="image" class="file-upload-default">
                             <div class="input-group col-xs-12">
-                                <input type="text" class="form-control file-upload-info" name="image" disabled placeholder="Upload Image">
+                                <input type="text" class="form-control file-upload-info" name="image" disabled placeholder="Tải hình ảnh lên">
                                 <span class="input-group-append">
-                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    <button class="file-upload-browse btn btn-primary" type="button">Tải tệp</button>
                                 </span>
                             </div>
                         </div>
-                        <button class="btn btn-primary mr-2">Submit</button>
-                        <button class="btn btn-dark"><a href="{{ route('admin.category.index') }}" style="text-decoration: none; color:white;">Cancel</a></button>
+                        <button class="btn btn-primary mr-2">Gửi</button>
+                        <button class="btn btn-dark" type="button"><a href="{{ route('admin.category.index') }}" style="text-decoration: none; color:white;">Quay lại</a></button>
                     </form>
 
                 </div>

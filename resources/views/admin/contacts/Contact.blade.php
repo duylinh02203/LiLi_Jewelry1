@@ -1,5 +1,10 @@
 @extends('admin.layouts.app')
 @section('content')
+<style>
+    td{
+        text-align: left !important;
+    }
+</style>
 <div class="content-wrapper">
     <div class="page-header">
         <h3 class="page-title">Quản lí liên hệ</h3>
@@ -61,7 +66,7 @@
                                         <a href="{{ route('admin.contact.remove', $contact->id) }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-delete">Delete</button>
+                                            <button type="button" class="btn btn-delete">Xóa</button>
                                         </a>
                                     </td>
                                 </tr>

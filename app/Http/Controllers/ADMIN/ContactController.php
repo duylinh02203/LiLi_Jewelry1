@@ -16,9 +16,6 @@ class ContactController extends Controller
     }
 
     public function create(CreateContactRequest $request){
-        if (!session()->has('userData')) {
-            return redirect()->route('auth.login')->with('error', 'Bạn cần đăng nhập để đánh giá sản phẩm.');
-        }
         try{
             $data = $request->all();
             Contact::create($data);

@@ -16,7 +16,7 @@
         left: 0;
         bottom: -7px;
         width: 0;
-        height: 2px;
+        height: 1px;
         background: #000;
         transition: width 0.3s ease-in-out;
         box-sizing: border-box;
@@ -24,6 +24,86 @@
 
     .menu-link:hover::after {
         width: 50%;
+    }
+
+    .shop-under {
+        position: relative;
+    }
+
+    .we-under {
+        position: relative;
+    }
+
+    .help-under {
+        position: relative;
+    }
+
+    .cate-under {
+        position: relative;
+    }
+
+    .shop-under::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -7px;
+        width: 0;
+        height: 1px;
+        background: #000;
+        transition: width 0.3s ease-in-out;
+        box-sizing: border-box;
+    }
+
+    .we-under::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -7px;
+        width: 0;
+        height: 1px;
+        background: #000;
+        transition: width 0.3s ease-in-out;
+        box-sizing: border-box;
+    }
+
+    .help-under::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -7px;
+        width: 0;
+        height: 1px;
+        background: #000;
+        transition: width 0.3s ease-in-out;
+        box-sizing: border-box;
+    }
+
+    .cate-under::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -7px;
+        width: 0;
+        height: 1px;
+        background: #000;
+        transition: width 0.3s ease-in-out;
+        box-sizing: border-box;
+    }
+
+    .shop-under::after {
+        width: 30%;
+    }
+
+    .we-under::after {
+        width: 30%;
+    }
+
+    .help-under::after {
+        width: 30%;
+    }
+
+    .cate-under::after {
+        width: 30%;
     }
 </style>
 <div class="main-footer">
@@ -63,7 +143,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3 style="font-weight: bold;">CHÚNG TÔI</h3>
+                        <h3 style="font-weight: bold;" class="we-under">CHÚNG TÔI</h3>
                     </div>
                     <div class="footer-content">
                         <ul>
@@ -89,7 +169,7 @@
             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3 style="font-weight: bold;">DANH MỤC MỚI</h3>
+                        <h3 style="font-weight: bold;" class="cate-under">DANH MỤC MỚI</h3>
                     </div>
                     <div class="footer-content">
                         @php
@@ -114,21 +194,21 @@
             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3 style="font-weight: bold;">CỬA HÀNG</h3>
+                        <h3 style="font-weight: bold;" class="shop-under">CỬA HÀNG</h3>
                     </div>
                     <div class="footer-content">
                         <ul>
                             <li>
-                                <a href="#" class="menu-link">Mới Nh</a>
+                                <a href="{{route('shop')}}" class="menu-link">Sản phẩm mới</a>
                             </li>
                             <li>
-                                <a href="#" class="menu-link">Nam</a>
+                                <a href="{{ route('shop', ['gender[]' => 'male']) }}" class="menu-link">Trang sức nam</a>
                             </li>
                             <li>
-                                <a href="#" class="menu-link">Nữ</a>
+                                <a href="{{ route('shop', ['gender[]' => 'female']) }}" class="menu-link">Trang sức nữ</a>
                             </li>
                             <li>
-                                <a href="#" class="menu-link">Cặp Đôi</a>
+                                <a href="{{ route('shop', ['gender[]' => 'unisex']) }}" class="menu-link">Dành cho cặp đôi</a>
                             </li>
                         </ul>
                     </div>
@@ -137,7 +217,7 @@
             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3 style="font-weight: bold;">TRỢ GIÚP</h3>
+                        <h3 style="font-weight: bold;" class="help-under">TRỢ GIÚP</h3>
                     </div>
                     <div class="footer-content">
                         <ul>
@@ -190,7 +270,7 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p class="mb-0 font-dark">© 2023, Surfside Media.</p>
+                <p class="mb-0 font-dark">LiLi Jewelry 2025</p>
             </div>
         </div>
     </div>

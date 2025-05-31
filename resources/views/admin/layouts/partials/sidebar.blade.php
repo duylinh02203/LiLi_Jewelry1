@@ -13,7 +13,7 @@
                         <span class="count bg-success"></span>
                     </div>
                     <div class="profile-name">
-                        <h5 class="mb-0 font-weight-normal">Name Amin</h5>
+                        <h5 class="mb-0 font-weight-normal">{{session('userData')->name}}</h5>
                     </div>
                 </div>
                 <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="preview-item-content">
-                            <p class="preview-subject ellipsis mb-1 text-small">Account settings</p>
+                            <p class="preview-subject ellipsis mb-1 text-small">Cài đặt tài khoản</p>
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>
@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <div class="preview-item-content">
-                            <p class="preview-subject ellipsis mb-1 text-small">Change Password</p>
+                            <p class="preview-subject ellipsis mb-1 text-small">Đổi mật khẩu</p>
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>
@@ -55,7 +55,7 @@
             </div>
         </li>
         <li class="nav-item nav-category">
-            <span class="nav-link">Navigation</span>
+            <span class="nav-link">Điều hướng</span>
         </li>
         <li class="nav-item menu-items">
             <a class="nav-link" href="{{ route('admin.dashboard') }}">
@@ -81,7 +81,7 @@
                 <span class="menu-title">Sản phẩm</span>
             </a>
         </li>
-        <li class="nav-item menu-items">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.contact.index')||request()->routeIs('admin.contact.detail') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.contact.index') }}">
                 <span class="menu-icon">
                     <i class="mdi mdi-playlist-play"></i>

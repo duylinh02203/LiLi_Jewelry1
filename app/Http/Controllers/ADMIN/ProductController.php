@@ -34,7 +34,7 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             $status = $request->quantity && $request->quantity > 0 ? 'active' : 'inactive';
-            $isFreeSize = $request->has('is_free_size') ? 1 : 0;
+            $isFreeSize = empty($request->sizes) ? 1 : 0;
             $dataProduct = [
                 'name' => $request->name,
                 'description' => $request->description,
