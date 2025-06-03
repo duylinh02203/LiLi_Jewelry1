@@ -52,7 +52,7 @@
                                     <td>{{$productReview->product->name}}</td>
                                     <td>{{$productReview->user->name}}</td>
                                     <td>{{$productReview->rating}} sao</td>
-                                    <td>{{$productReview->comment}}</td>
+                                    <td style="max-width: 30ch; word-wrap: break-word; white-space: normal; text-align: left;">{{$productReview->comment}}</td>
                                     <td>
                                         <a href="{{route('admin.review.detail',$productReview->id)}}"><button
                                                 type="button" class="btn btn-primary">Chỉnh tiết</button></a>

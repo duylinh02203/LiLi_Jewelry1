@@ -57,31 +57,23 @@
                     <form action="{{route('contact.create')}}" method="POST">
                         @csrf
                         <div class="row g-4 mt-md-1 mt-2">
-                            <div class="col-md-6">
-                                <label for="first" class="form-label">Tên
-                                    @error('first_name')
+                            <div class="col-md-10">
+                                <label for="first" class="form-label">Tên người gửi
+                                    @error('name')
                                     <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                     @enderror
                                 </label>
-                                <input type="text" name="first_name" class="form-control" id="first" placeholder="Nhập tên của bạn" value="{{old('first_name')}}">
+                                <input type="text" name="name" class="form-control" id="first" placeholder="Nhập tên của bạn" value="{{old('first_name')}}">
                             </div>
-                            <div class="col-md-6">
-                                <label for="last" class="form-label">Họ
-                                    @error('last_name')
-                                    <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
-                                    @enderror
-                                </label>
-                                <input type="text" name="last_name" class="form-control" id="last" placeholder="Nhập họ của bạn" value="{{old('last_name')}}">
-                            </div>
-                            <div class="col-md-6">
+                            <div class="col-md-10">
                                 <label for="email" class="form-label">Email
                                     @error('email')
                                     <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                     @enderror
                                 </label>
-                                <input type="text" name="email" class="form-control" id="email" placeholder="Nhập địa chỉ Email của bạn" value="{{ session('userData')['email'] ?? old('email') }}">
+                                <input type="text" name="email" class="form-control" id="email" placeholder="Nhập địa chỉ Email của bạn" value="{{ session('userData')['email'] ?? old('email') }}" disabled>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-10">
                                 <label for="email2" class="form-label">Điện thoại
                                     @error('phone')
                                     <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
@@ -99,7 +91,7 @@
                                 <textarea class="form-control" name="comment" id="comment" rows="8">{{old('comment')}}</textarea>
                             </div>
 
-                            <div class="col-auto">
+                            <div class="col-10">
                                 <button class="btn btn-solid-default" type="submit">Gửi</button>
                             </div>
                         </div>
@@ -154,5 +146,36 @@
             </div>
         </div>
     </div>
+    @if (session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notification = document.createElement('div');
+            notification.innerText = "{{ session('error') }}";
+
+            Object.assign(notification.style, {
+                position: 'fixed',
+                top: '120px',
+                right: '20px',
+                padding: '10px 20px',
+                borderRadius: '8px',
+                color: 'white',
+                backgroundColor: 'orange',
+                zIndex: '1000',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                opacity: '1',
+                transition: 'opacity 0.5s ease-out',
+            });
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    notification.remove();
+                }, 500);
+            }, 3000);
+        });
+    </script>
+    @endif
 </section>
 @endsection

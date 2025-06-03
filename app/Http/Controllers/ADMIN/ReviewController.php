@@ -18,7 +18,7 @@ class ReviewController extends Controller
     {
         $productReview = ProductReview::findOrFail($id);
         $productReview->delete();
-        return redirect()->route('admin.review.ProductReview')->with('success', 'Xóa đánh giá thành công.');
+        return redirect()->back()->with('success', 'Xóa đánh giá thành công.');
     }
 
     public function detail($id)

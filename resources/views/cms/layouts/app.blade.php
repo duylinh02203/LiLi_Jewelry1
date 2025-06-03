@@ -83,7 +83,6 @@
         </ul>
     </div>
     @yield('content')
-    <!--  -->
     <section class="icon-box-section">
         <div class="icon-box">
             <div class="icon-feat">
@@ -114,7 +113,6 @@
             <p>Tất cả câu hỏi đều được các chuyên viên của LiLi tư vấn, giải đáp kỹ càng</p>
         </div>
     </section>
-    <!--  -->
     <footer class="footer-sm-space mt-5">
         @include('cms.layouts.partials.footer')
     </footer>

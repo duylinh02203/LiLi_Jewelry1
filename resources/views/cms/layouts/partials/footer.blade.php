@@ -42,67 +42,19 @@
         position: relative;
     }
 
-    .shop-under::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -7px;
-        width: 0;
-        height: 1px;
-        background: #000;
-        transition: width 0.3s ease-in-out;
-        box-sizing: border-box;
-    }
-
-    .we-under::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -7px;
-        width: 0;
-        height: 1px;
-        background: #000;
-        transition: width 0.3s ease-in-out;
-        box-sizing: border-box;
-    }
-
-    .help-under::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -7px;
-        width: 0;
-        height: 1px;
-        background: #000;
-        transition: width 0.3s ease-in-out;
-        box-sizing: border-box;
-    }
-
-    .cate-under::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -7px;
-        width: 0;
-        height: 1px;
-        background: #000;
-        transition: width 0.3s ease-in-out;
-        box-sizing: border-box;
-    }
-
-    .shop-under::after {
+    .shop-under:hover::after {
         width: 30%;
     }
 
-    .we-under::after {
+    .we-under:hover::after {
         width: 30%;
     }
 
-    .help-under::after {
+    .help-under:hover::after {
         width: 30%;
     }
 
-    .cate-under::after {
+    .cate-under:hover::after {
         width: 30%;
     }
 </style>

@@ -36,10 +36,7 @@
                                 <h3>CHI TIẾT LIÊN HỆ</h3>
                                 <br>
                                 <div class="mb-6">
-                                    <span>Tên: </span> {{ $contact->first_name }}
-                                </div>
-                                <div class="mb-6">
-                                    <span>Họ: </span> {{ $contact->last_name }}
+                                    <span>Tên người dùng: </span> {{ $contact->name }}
                                 </div>
                                 <div class="mb-6">
                                     <span>Địa chỉ Email: </span> {{ $contact->email }}

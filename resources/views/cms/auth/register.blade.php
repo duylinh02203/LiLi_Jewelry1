@@ -1,6 +1,24 @@
 @extends('cms.layouts.app')
 @section('content')
     <div class="login-section">
+        <style>
+            .underline-input {
+        border: none;
+        border-bottom: 0.5px solid #ccc;
+        padding: 8px 4px;
+        outline: none;
+        font-size: 16px;
+    }
+    .wrap-regis{
+        display: flex;
+        flex-direction: column;
+    }
+    .wrap-regis label{
+        color: rgba(33, 37, 41, 0.4);
+        font-weight: 100;
+        font-size: 18px;
+    }
+        </style>
         <div class="materialContainer">
             <div class="box">
                 <form method="POST" action="{{ route('register') }}">
@@ -9,53 +27,53 @@
                         <h2>Đăng ký</h2>
                     </div>
 
-                    <div class="input">
-                        <label for="name" style="line-height: 60px; font-weight: 300; top: 10px;">Tên
+                    <div class="wrap-regis">
+                        <label for="name" style="line-height: 60px; font-weight: 300;">Tên
                             @error('name')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                             @enderror
                         </label>
-                        <input type="text" id="name" class="block mt-1 w-full" name="name"
+                        <input class="underline-input" type="text" id="name" class="block mt-1 w-full" name="name" 
                             value="{{ old('name') }}">
                     </div>
 
-                    <div class="input">
-                        <label for="phone" style="line-height: 60px; font-weight: 300; top: 10px;">Số điện
+                    <div class="wrap-regis">
+                        <label  style="line-height: 60px; font-weight: 300;">Số điện
                             thoại
                             @error('phone')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                             @enderror
                         </label>
-                        <input type="text" id="phone" class="block mt-1 w-full" name="phone"
+                        <input class="underline-input" type="text" id="phone" class="block mt-1 w-full" name="phone"
                             value="{{ old('phone') }}">
                     </div>
 
-                    <div class="input">
-                        <label for="emailname" style="line-height: 60px; font-weight: 300; top: 10px;">Email
+                    <div class="wrap-regis">
+                        <label style="line-height: 60px; font-weight: 300;">Email
                             @error('email')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                             @enderror
                         </label>
-                        <input type="email" id="emailname" class="block mt-1 w-full" name="email"
-                            value="{{ old('name') }}">
+                        <input class="underline-input" type="email" id="emailname" class="block mt-1 w-full" name="email"
+                            value="{{ old('email') }}">
                     </div>
 
-                    <div class="input">
-                        <label for="pass" style="line-height: 60px; font-weight: 300; top: 10px;">Mật khẩu
+                    <div class="wrap-regis">
+                        <label style="line-height: 60px; font-weight: 300;">Mật khẩu
                             @error('password')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                             @enderror
                         </label>
-                        <input type="password" id="pass" class="block mt-1 w-full" name="password">
+                        <input class="underline-input" type="password" id="pass" class="block mt-1 w-full" name="password">
                     </div>
 
-                    <div class="input">
-                        <label for="compass">Xác nhận mật khẩu
+                    <div class="wrap-regis">
+                        <label style="line-height: 60px; font-weight: 300;" >Xác nhận mật khẩu
                             @error('password_confirmation')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                             @enderror
                         </label>
-                        <input type="password" id="compass" class="block mt-1 w-full" name="password_confirmation">
+                        <input class="underline-input" type="password" id="compass" class="block mt-1 w-full" name="password_confirmation">
                     </div>
 
                     <div class="button login">

@@ -16,13 +16,13 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!session()->has('userData')) {
-        if ($request->expectsJson()) {
-            return response()->json([
-                'message' => 'Chưa đăng nhập'
-            ], 401);
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Chưa đăng nhập'
+                ], 401);
+            }
+            return redirect()->route('login');
         }
-        return redirect()->route('login');
-    }
         return $next($request);
     }
 }

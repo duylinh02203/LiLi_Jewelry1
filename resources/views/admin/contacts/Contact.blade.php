@@ -1,10 +1,5 @@
 @extends('admin.layouts.app')
 @section('content')
-<style>
-    td{
-        text-align: left !important;
-    }
-</style>
 <div class="content-wrapper">
     <div class="page-header">
         <h3 class="page-title">Quản lí liên hệ</h3>
@@ -41,8 +36,7 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Tên</th>
-                                    <th>Họ</th>
+                                    <th>Tên người dùng</th>
                                     <th>Email</th>
                                     <th>Số điện thoại</th>
                                     <th>Bình luận</th>
@@ -54,8 +48,7 @@
                                 @foreach ($contacts as $index => $contact)
                                 <tr>
                                     <td>{{ ++$index }}</td>
-                                    <td>{{ $contact->first_name }}</td>
-                                    <td>{{ $contact->last_name }}</td>
+                                    <td>{{$contact->name}}</td>
                                     <td>{{ $contact->email }}</td>
                                     <td>{{ $contact->phone }}</td>
                                     <td>{{ $contact->comment }}</td>

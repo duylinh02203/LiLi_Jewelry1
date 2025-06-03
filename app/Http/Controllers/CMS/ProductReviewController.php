@@ -18,12 +18,32 @@ class ProductReviewController extends Controller
     public function create(Request $request)
     {
         DB::beginTransaction();
+
         try {
+            $userData = session('userData');
+            $validated = $request->validate([
+                'product_id' => 'required|integer|exists:products,id',
+                'rating' => 'required|integer|min:1|max:5',
+                'comment' => 'required|string|min:10',
+            ]);
+
+            $userId = $userData->id;
+            $isReview = ProductReview::where('user_id', $userId)
+                ->where('product_id', $validated['product_id'])
+                ->first();
+
+            if ($isReview) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Bạn đã đánh giá sản phẩm này rồi!',
+                ]);
+            }
+
             $data = [
-                'product_id' => $request->product_id,
-                'user_id' => session('userData')->id,
-                'comment' => $request->comment,
-                'rating' => $request->rating,
+                'user_id' => $userId,
+                'product_id' => $validated['product_id'],
+                'comment' => $validated['comment'],
+                'rating' => $validated['rating'],
             ];
 
             ProductReview::create($data);
@@ -33,20 +53,12 @@ class ProductReviewController extends Controller
                 'status' => 'success',
                 'message' => 'Đánh giá đã được thêm thành công!',
             ]);
-        } catch (QueryException $e) {
-            DB::rollBack();
-
-            if ($e->getCode() === '23000') {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Bạn đã đánh giá sản phẩm này rồi!',
-                ]);
-            }
-
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Đã xảy ra lỗi khi tạo đánh giá!',
-            ]);
+                'message' => 'Dữ liệu không hợp lệ.',
+                'errors' => $e->errors(),
+            ], 422);
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json([
@@ -56,9 +68,15 @@ class ProductReviewController extends Controller
         }
     }
 
-
     public function edit($id)
     {
         return view('cms.product-review.edit', compact('id'));
+    }
+
+    public function destroy($id)
+    {
+        $productReview = ProductReview::findOrFail($id);
+        $productReview->delete();
+        return redirect()->back()->with('success', 'Xóa thành công bình luận của bạn !');
     }
 }

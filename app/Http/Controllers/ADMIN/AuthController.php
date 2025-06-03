@@ -32,7 +32,7 @@ class AuthController extends Controller
             return redirect()->route('admin.dashboard');
         } else {
             return back()->withErrors([
-                'infor' => 'thông tin đăng nhập không chính xác',
+                'infor' => 'Thông tin đăng nhập không chính xác',
             ])->withInput();
         }
     }

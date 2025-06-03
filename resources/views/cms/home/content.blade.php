@@ -230,7 +230,6 @@
                                     class="bg-img blur-up lazyload"
                                     alt="{{ $productSale->name }}">
                             </a>
-                            <span class="background-text">Fashion</span>
                             <div class="label-block">
                                 <span class="price-sale label label-theme">{{round((($productSale->listed_price - $productSale->price)/$productSale->listed_price) * 100)}} % off</span>
                             </div>
@@ -307,7 +306,6 @@
             event.preventDefault();
 
             let productId = this.getAttribute('data-product-id');
-            // let form = document.querySelector(`#addWishlist-${productId}`);
             let messageDiv = document.getElementById('wishlistMessage-' + productId);
 
             fetch("{{ route('shop.wishlist.addWishlist') }}", {

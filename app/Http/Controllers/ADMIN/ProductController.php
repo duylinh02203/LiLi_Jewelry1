@@ -8,7 +8,9 @@ use App\Http\Requests\ADMIN\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductReview;
 use App\Models\ProductSize;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -17,7 +19,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['images', 'category', 'sizes'])->paginate(2);
+        $products = Product::with(['images', 'category', 'sizes'])->paginate(5);
         return view('admin.products.product', compact('products'));
     }
 
@@ -148,6 +150,8 @@ class ProductController extends Controller
                 return redirect()->route('admin.product.index')->with('error', 'Không tìm thấy sản phẩm');
             }
             ProductSize::where('product_id', $id)->delete();
+            Wishlist::where('product_id',$id)->delete();
+            ProductReview::where('product_id',$id)->delete();
             $product->delete();
             DB::commit();
             return redirect()->route('admin.product.index')->with('success', 'Xóa sản phẩm thành công');
