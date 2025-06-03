@@ -22,6 +22,11 @@
             background-color: #bd1125;
         }
 
+        .price-sale {
+            background-color: #bd1125;
+            border-radius: 10px !important;
+        }
+
         .price-color {
             color: #767676;
         }
@@ -65,11 +70,6 @@
                                     <img src="{{ asset('images/categories/' . $newCat->image ?? 'default.png') }}"
                                         class="bg-img blur-up lazyload" alt="">
                                 </a>
-                                <div class="banner-detail">
-                                    <a href="javacript:void(0)" class="heart-wishlist cate-click">
-                                        <i class="far fa-heart"></i>
-                                    </a>
-                                </div>
                                 <a href="javacript:void(0)" class="contain-banner cate-click">
                                     <div class="banner-content with-big" style="border-radius: 10px;">
                                         <h2 class="mb-2">{{ $newCat->name }}</h2>
@@ -107,19 +107,15 @@
                                     <img src="{{ asset('images/' . $product->images->first()->image) }}"
                                         class="bg-img blur-up lazyload" alt="{{ $product->name }}">
                                 </a>
-                                <div class="circle-shape"></div>
                                 <div class="label-block">
                                     <span
-                                        class="price-sale label label-theme">{{ round((($product->listed_price - $product->price) / $product->listed_price) * 100) }}
-                                        % off</span>
+                                        class="price-sale label label-theme">{{ max(0, round((($product->listed_price - $product->price) / $product->listed_price) * 100)) }}%
+                                        off</span>
                                 </div>
                                 <div class="cart-wrap">
                                     <ul>
                                         <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn addToCart"
-                                                data-product-id="{{ $product->id }}"
-                                                data-has-size="{{ $product->sizes->count() > 0 ? 1 : 0 }}"
-                                                data-sizes='@json($product->sizes->pluck('size'))'>
+                                            <a href="javascript:void(0)" class="addtocart-btn">
                                                 <i data-feather="shopping-cart"></i>
                                             </a>
                                         </li>
@@ -145,7 +141,7 @@
                                     </a>
                                     <div class="r-price">
                                         <div class="theme-color price-color" style="padding-top: 3.5px;">
-                                            {{ $product->price }} VNĐ</div>
+                                            {{ number_format($product->price, 0, ',', '.') }} VNĐ</div>
                                     </div>
                                     <div class="main-price" style="display:flex;justify-content: space-between;">
                                         <ul class="rating mb-1 mt-0">
@@ -157,16 +153,11 @@
                                         <p style="padding-top: 7px;">{{ $countReview }} đánh giá</p>
                                     </div>
 
-                                    <form id="addWishlist" class="wishlist"
+                                    <form id="addWishlist-{{ $product->id }}" class="wishlist"
                                         action="{{ route('shop.wishlist.addWishlist') }}" method="post">
                                         @csrf
                                         <input type="hidden" name="product_id" id="product_id"
                                             value="{{ $product->id }}">
-                                    </form>
-                                    <form id="addToCart{{ $product->id }}" class="cart" method="POST"
-                                        action="{{ route('cart.addToCart') }}">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     </form>
                                     <div id="wishlistMessage-{{ $product->id }}" style="display: none;"></div>
                                 </div>
@@ -177,70 +168,7 @@
             </div>
         </div>
     </section>
-    <!-- Css chọn size -->
-    @push('styles')
-        <style>
-            /* Overlay phủ mờ */
-            .size-overlay {
-                display: none;
-                /* Mặc định ẩn */
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 9999;
-                justify-content: center;
-                align-items: flex-end;
-            }
 
-            /* Modal chọn size nổi ở dưới */
-            .size-modal {
-                width: 100%;
-                max-height: 33vh;
-                background-color: white;
-                border-top-left-radius: 15px;
-                border-top-right-radius: 15px;
-                padding: 20px;
-                box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
-                animation: slideUp 0.3s ease-out;
-            }
-
-            .size-title {
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 15px;
-                color: #e87316;
-            }
-
-            /* Animation xuất hiện mượt */
-            @keyframes slideUp {
-                from {
-                    transform: translateY(100%);
-                }
-
-                to {
-                    transform: translateY(0%);
-                }
-            }
-        </style>
-    @endpush
-    <!-- Modal chọn size -->
-    <div id="sizeOverlay" class="size-overlay" style="display:none;">
-        <div class="size-modal">
-            <h4 class="size-title">Chọn size</h4>
-            <select id="selectedSize" class="form-select mb-3">
-                <option value="">-- Chọn size --</option>
-                <!-- Các option sẽ được JS chèn vào -->
-            </select>
-            <div class="d-flex justify-content-between">
-                <button id="cancelSize" type="button" class="btn btn-outline-dark">Hủy</button>
-                <button id="confirmSize" type="button" class="btn"
-                    style="background-color: #e87316; color: black; font-weight: bold;">Xác nhận</button>
-            </div>
-        </div>
-    </div>
     <section class="category-section ratio_40">
         <div class="container-fluid">
             <div class="row">
@@ -286,581 +214,6 @@
             </div>
         </div>
     </section>
-    <section class="product-slider overflow-hidden">
-        <div>
-            <div class="container">
-                <div class="row g-3">
-                    <div class="col-lg-4">
-                        <div class="title-3 pb-4 title-border">
-                            <h2>Most Popular</h2>
-                            <h5 class="theme-color">Our Collection</h5>
-                        </div>
-
-                        <div class="product-slider round-arrow">
-                            <div>
-                                <div class="row g-3">
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <div>
-                                                <a href="product/details.html">
-                                                    <img src="{{ asset('cms/assets/images/furniture-images/product/1.jpg') }}"
-                                                        class="blur-up lazyload" alt="">
-                                                </a>
-                                            </div>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/2.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/3.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/4.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="title-3 pb-4 title-border">
-                            <h2>Recent Popular</h2>
-                            <h5 class="theme-color">Our Collection</h5>
-                        </div>
-
-                        <div class="product-slider round-arrow">
-                            <div>
-                                <div class="row g-3">
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/1.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/2.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/3.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/4.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="title-3 pb-4 title-border">
-                            <h2>Most Popular</h2>
-                            <h5 class="theme-color">Our Collection</h5>
-                        </div>
-
-                        <div class="product-slider round-arrow">
-                            <div>
-                                <div class="row g-3">
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/1.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/2.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/3.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-6 col-12">
-                                        <div class="product-image">
-                                            <a href="product/details.html">
-                                                <img src="{{ asset('cms/assets/images/furniture-images/product/4.jpg') }}"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-                                            <div class="product-details">
-                                                <a href="product/details.html">
-                                                    <h6 class="font-light">Fully Confirtable</h6>
-                                                    <h3>Latest wood handle chair 7854</h3>
-                                                    <h4 class="font-light mt-1"><del>$49.00</del> <span
-                                                            class="theme-color">$35.50</span>
-                                                    </h4>
-                                                    <div class="cart-wrap">
-                                                        <ul>
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Buy">
-                                                                <a href="javascript:void(0)" class="addtocart-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                    <i data-feather="shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Quick View">
-                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view">
-                                                                    <i data-feather="eye"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="Wishlist">
-                                                                <a href="wishlist.php" class="wishlist">
-                                                                    <i data-feather="heart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <style>
         .products-c .bg-size {
             background-position: center 0 !important;
@@ -876,737 +229,216 @@
                         <h5 class="theme-color">Our Collection</h5>
                     </div>
                 </div>
+                <section class="ratio_asos overflow-hidden pb-5">
+                    <div class="px-0 container-fluid p-sm-0">
+                        <div class="row m-0">
+                            <div class="col-12 p-0">
+                                <div class="title-3 text-center">
+                                    <h2>Ưu đãi đến 45 %</h2>
+                                    <h5 class="theme-color">Mua ngay</h5>
+                                </div>
+                            </div>
+                            @php
+                                $productSales = \App\Models\Product::whereRaw(
+                                    'ROUND((CAST(listed_price AS SIGNED) - CAST(price AS SIGNED)) / listed_price * 100) BETWEEN 30 AND 45',
+                                )->get();
+                            @endphp
 
-                <div class="our-product products-c">
-                    <div>
-                        <div class="product-box">
-                            <div class="img-wrapper">
-                                <a href="product/details.html">
-                                    <img src="{{ asset('cms/assets/images/fashion/product/front/25.jpg') }}"
-                                        class="w-100 bg-img blur-up lazyload" alt="">
-                                </a>
-                                <div class="circle-shape"></div>
-                                <span class="background-text">Fashion</span>
-                                <div class="label-block">
-                                    <span class="label label-theme">30% Off</span>
-                                </div>
-                                <div class="cart-wrap">
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn" data-bs-toggle="modal"
-                                                data-bs-target="#addtocart">
-                                                <i data-feather="shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#quick-view">
-                                                <i data-feather="eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="wishlist.php" class="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-style-3 product-style-chair">
-                                <div class="product-title d-block mb-0">
-                                    <div class="r-price">
-                                        <div class="theme-color">$21</div>
-                                        <div class="main-price">
-                                            <ul class="rating mb-1 mt-0">
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p class="font-light mb-sm-2 mb-0">Multicolor Dress</p>
-                                    <a href="product/details.html" class="font-default">
-                                        <h5>Skater Multicolor Dress</h5>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-box">
-                            <div class="img-wrapper">
-                                <a href="product/details.html">
-                                    <img src="{{ asset('cms/assets/images/fashion/product/front/26.jpg') }}"
-                                        class="w-100 bg-img blur-up lazyload" alt="">
-                                </a>
-                                <div class="circle-shape"></div>
-                                <span class="background-text">Fashion</span>
-                                <div class="label-block">
-                                    <span class="label label-theme">30% Off</span>
-                                </div>
-                                <div class="cart-wrap">
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn" data-bs-toggle="modal"
-                                                data-bs-target="#addtocart">
-                                                <i data-feather="shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#quick-view">
-                                                <i data-feather="eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="wishlist.php" class="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-style-3 product-style-chair">
-                                <div class="product-title d-block mb-0">
-                                    <div class="r-price">
-                                        <div class="theme-color">$21</div>
-                                        <div class="main-price">
-                                            <ul class="rating mb-1 mt-0">
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p class="font-light mb-sm-2 mb-0">Multicolor Dress</p>
-                                    <a href="product/details.html" class="font-default">
-                                        <h5>Skater Multicolor Dress</h5>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-box">
-                            <div class="img-wrapper">
-                                <a href="product/details.html">
-                                    <img src="{{ asset('cms/assets/images/fashion/product/front/27.jpg') }}"
-                                        class="w-100 bg-img blur-up lazyload" alt="">
-                                </a>
-                                <div class="circle-shape"></div>
-                                <span class="background-text">Fashion</span>
-                                <div class="label-block">
-                                    <span class="label label-theme">30% Off</span>
-                                </div>
-                                <div class="cart-wrap">
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn" data-bs-toggle="modal"
-                                                data-bs-target="#addtocart">
-                                                <i data-feather="shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#quick-view">
-                                                <i data-feather="eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="wishlist.php" class="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-style-3 product-style-chair">
-                                <div class="product-title d-block mb-0">
-                                    <div class="r-price">
-                                        <div class="theme-color">$21</div>
-                                        <div class="main-price">
-                                            <ul class="rating mb-1 mt-0">
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p class="font-light mb-sm-2 mb-0">Multicolor Dress</p>
-                                    <a href="product/details.html" class="font-default">
-                                        <h5>Skater Multicolor Dress</h5>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-box">
-                            <div class="img-wrapper">
-                                <a href="product/details.html">
-                                    <img src="{{ asset('cms/assets/images/fashion/product/front/28.jpg') }}"
-                                        class="w-100 bg-img blur-up lazyload" alt="">
-                                </a>
-                                <div class="circle-shape"></div>
-                                <span class="background-text">Fashion</span>
-                                <div class="label-block">
-                                    <span class="label label-theme">30% Off</span>
-                                </div>
-                                <div class="cart-wrap">
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn" data-bs-toggle="modal"
-                                                data-bs-target="#addtocart">
-                                                <i data-feather="shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#quick-view">
-                                                <i data-feather="eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="wishlist.php" class="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-style-3 product-style-chair">
-                                <div class="product-title d-block mb-0">
-                                    <div class="r-price">
-                                        <div class="theme-color">$21</div>
-                                        <div class="main-price">
-                                            <ul class="rating mb-1 mt-0">
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p class="font-light mb-sm-2 mb-0">Multicolor Dress</p>
-                                    <a href="product/details.html" class="font-default">
-                                        <h5>Skater Multicolor Dress</h5>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-box">
-                            <div class="img-wrapper">
-                                <a href="product/details.html">
-                                    <img src="{{ asset('cms/assets/images/fashion/product/front/29.jpg') }}"
-                                        class="w-100 bg-img blur-up lazyload" alt="">
-                                </a>
-                                <div class="circle-shape"></div>
-                                <span class="background-text">Fashion</span>
-                                <div class="label-block">
-                                    <span class="label label-theme">30% Off</span>
-                                </div>
-                                <div class="cart-wrap">
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn" data-bs-toggle="modal"
-                                                data-bs-target="#addtocart">
-                                                <i data-feather="shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#quick-view">
-                                                <i data-feather="eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="wishlist.php" class="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-style-3 product-style-chair">
-                                <div class="product-title d-block mb-0">
-                                    <div class="r-price">
-                                        <div class="theme-color">$21</div>
-                                        <div class="main-price">
-                                            <ul class="rating mb-1 mt-0">
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p class="font-light mb-sm-2 mb-0">Multicolor Dress</p>
-                                    <a href="product/details.html" class="font-default">
-                                        <h5>Skater Multicolor Dress</h5>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-box">
-                            <div class="img-wrapper">
-                                <a href="product/details.html">
-                                    <img src="{{ asset('cms/assets/images/fashion/product/front/30.jpg') }}"
-                                        class="w-100 bg-img blur-up lazyload" alt="">
-                                </a>
-                                <div class="circle-shape"></div>
-                                <span class="background-text">Fashion</span>
-                                <div class="label-block">
-                                    <span class="label label-theme">30% Off</span>
-                                </div>
-                                <div class="cart-wrap">
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn" data-bs-toggle="modal"
-                                                data-bs-target="#addtocart">
-                                                <i data-feather="shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#quick-view">
-                                                <i data-feather="eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="wishlist.php" class="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-style-3 product-style-chair">
-                                <div class="product-title d-block mb-0">
-                                    <div class="r-price">
-                                        <div class="theme-color">$21</div>
-                                        <div class="main-price">
-                                            <ul class="rating mb-1 mt-0">
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p class="font-light mb-sm-2 mb-0">Multicolor Dress</p>
-                                    <a href="product/details.html" class="font-default">
-                                        <h5>Skater Multicolor Dress</h5>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-box">
-                            <div class="img-wrapper">
-                                <a href="product/details.html">
-                                    <img src="{{ asset('cms/assets/images/fashion/product/front/31.jpg') }}"
-                                        class="w-100 bg-img blur-up lazyload" alt="">
-                                </a>
-                                <div class="circle-shape"></div>
-                                <span class="background-text">Fashion</span>
-                                <div class="label-block">
-                                    <span class="label label-theme">30% Off</span>
-                                </div>
-                                <div class="cart-wrap">
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn" data-bs-toggle="modal"
-                                                data-bs-target="#addtocart">
-                                                <i data-feather="shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#quick-view">
-                                                <i data-feather="eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="wishlist.php" class="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-style-3 product-style-chair">
-                                <div class="product-title d-block mb-0">
-                                    <div class="r-price">
-                                        <div class="theme-color">$21</div>
-                                        <div class="main-price">
-                                            <ul class="rating mb-1 mt-0">
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p class="font-light mb-sm-2 mb-0">Multicolor Dress</p>
-                                    <a href="product/details.html" class="font-default">
-                                        <h5>Skater Multicolor Dress</h5>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-box">
-                            <div class="img-wrapper">
-                                <a href="product/details.html">
-                                    <img src="{{ asset('cms/assets/images/fashion/product/front/32.jpg') }}"
-                                        class="w-100 bg-img blur-up lazyload" alt="">
-                                </a>
-                                <div class="circle-shape"></div>
-                                <span class="background-text">Fashion</span>
-                                <div class="label-block">
-                                    <span class="label label-theme">30% Off</span>
-                                </div>
-                                <div class="cart-wrap">
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn" data-bs-toggle="modal"
-                                                data-bs-target="#addtocart">
-                                                <i data-feather="shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#quick-view">
-                                                <i data-feather="eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="wishlist.php" class="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-style-3 product-style-chair">
-                                <div class="product-title d-block mb-0">
-                                    <div class="r-price">
-                                        <div class="theme-color">$21</div>
-                                        <div class="main-price">
-                                            <ul class="rating mb-1 mt-0">
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star theme-color"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p class="font-light mb-sm-2 mb-0">Multicolor Dress</p>
-                                    <a href="product/details.html" class="font-default">
-                                        <h5>Skater Multicolor Dress</h5>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            <div class="our-product products-c">
+                                @foreach ($productSales as $productSale)
+                                    <div>
+                                        @php
+                                            $tbRating = \App\Models\ProductReview::where(
+                                                'product_id',
+                                                $productSale->id,
+                                            )->avg('rating');
+                                            $tbRating = round($tbRating);
+                                            $countReview = \App\Models\ProductReview::where(
+                                                'product_id',
+                                                $productSale->id,
+                                            )->count();
+                                        @endphp
+                                        <div class="product-box">
+                                            <div class="img-wrapper">
+                                                <a
+                                                    href="{{ route('shop.product.details', ['slug' => $productSale->slug]) }}">
+                                                    <img src="{{ asset('images/' . $productSale->images->first()->image) }}"
+                                                        class="bg-img blur-up lazyload" alt="{{ $productSale->name }}">
+                                                </a>
+                                                <span class="background-text">Fashion</span>
+                                                <div class="label-block">
+                                                    <span
+                                                        class="price-sale label label-theme">{{ round((($productSale->listed_price - $productSale->price) / $productSale->listed_price) * 100) }}
+                                                        % off</span>
+                                                </div>
+                                                <div class="cart-wrap">
+                                                    <ul>
+                                                        <li>
+                                                            <a href="javascript:void(0)" class="addtocart-btn"
+                                                                data-bs-toggle="modal" data-bs-target="#addtocart">
+                                                                <i data-feather="shopping-cart"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a
+                                                                href="{{ route('shop.product.details', ['slug' => $productSale->slug]) }}">
+                                                                <i data-feather="eye"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0)" class="wishlist wishlistEffect"
+                                                                data-product-id="{{ $productSale->id }}">
+                                                                <i data-feather="heart"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="product-style-3 product-style-chair">
+                                                <div class="product-title d-block mb-0">
+                                                    <a href="{{ route('shop.product.details', ['slug' => $productSale->slug]) }}"
+                                                        class="font-default">
+                                                        <h5>{{ $productSale->name }}</h5>
+                                                    </a>
+                                                    <div class="r-price">
+                                                        <div class="theme-color price-color" style="padding-top: 3.5px;">
+                                                            {{ number_format($productSale->price, 0, ',', '.') }} VNĐ</div>
+                                                    </div>
+                                                    <div class="main-price"
+                                                        style="display:flex;justify-content: space-between;">
+                                                        <ul class="rating mb-1 mt-0">
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                <span
+                                                                    class="star {{ $i <= $tbRating ? 'theme-color' : '' }} "
+                                                                    data-value="1">★</span>
+                                                            @endfor
+                                                        </ul>
+                                                        <p style="padding-top: 7px;">{{ $countReview }} đánh giá</p>
+                                                    </div>
 
-                </div>
-            </div>
-        </div>
-    </section>
-    <div id="qvmodal"></div>
+                                                    <form id="addWishlist-{{ $productSale->id }}" class="wishlist"
+                                                        action="{{ route('shop.wishlist.addWishlist') }}" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="product_id" id="product_id"
+                                                            value="{{ $productSale->id }}">
+                                                    </form>
+                                                    <div id="wishlistMessage-{{ $productSale->id }}"
+                                                        style="display: none;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div id="qvmodal"></div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const clickableLinks = document.querySelectorAll('a.cate-click');
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let currentProductId = null;
-            document.querySelectorAll('.addToCart').forEach(function(btn) {
-                btn.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const hasSize = this.dataset.hasSize === '1';
-                    currentProductId = this.dataset.productId;
-                    const form = document.getElementById('addToCart' + currentProductId);
-                    if (hasSize) {
-                        // Lấy danh sách size từ data attribute
-                        const sizes = JSON.parse(this.dataset.sizes);
-                        const sizeSelect = document.getElementById('selectedSize');
-                        // Xóa các option size cũ (ngoại trừ option mặc định)
-                        sizeSelect.innerHTML = '<option value="">-- Chọn size --</option>';
-                        // Thêm các option size từ database
-                        sizes.forEach(function(size) {
-                            const option = document.createElement('option');
-                            option.value = size;
-                            option.textContent = size;
-                            sizeSelect.appendChild(option);
+                        clickableLinks.forEach(link => {
+                            link.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                const form = this.closest('form');
+                                if (form) {
+                                    form.submit();
+                                }
+                            });
                         });
-                        // Reset chọn size
-                        sizeSelect.value = "";
-                        // Hiện modal chọn size
-                        document.getElementById('sizeOverlay').style.display = 'flex';
-                    } else {
-                        submitForm(form);
-                    }
-                });
-            });
-
-            document.getElementById('confirmSize').addEventListener('click', function(e) {
-                e.preventDefault();
-                const size = document.getElementById('selectedSize').value;
-
-                if (!size) {
-                    alert("Vui lòng chọn size.");
-                    return;
-                }
-
-                const form = document.getElementById('addToCart' + currentProductId);
-                let input = form.querySelector('input[name="size"]');
-
-                if (!input) {
-                    input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = 'size';
-                    form.appendChild(input);
-                }
-
-                input.value = size;
-                document.getElementById('sizeOverlay').style.display = 'none';
-                submitForm(form);
-            });
-
-            document.getElementById('cancelSize').addEventListener('click', function() {
-                document.getElementById('sizeOverlay').style.display = 'none';
-            });
-
-            document.getElementById('sizeOverlay').addEventListener('click', function(e) {
-                if (e.target.id === 'sizeOverlay') {
-                    document.getElementById('sizeOverlay').style.display = 'none';
-                }
-            });
-
-            function submitForm(form) {
-                let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                const formData = new FormData(form);
-                fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        showNotification(data.status === 'success' ? 'success' : 'error', data.message);
-                        if (data.status === 'success') {
-                            document.getElementById('cart-count').textContent = data.cart_count;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Lỗi xảy ra:', error);
-                        showNotification('error', 'Không thêm được vào giỏ hàng!');
-                    });
-            }
-
-            function showNotification(type, message) {
-                const notification = document.createElement('div');
-                notification.className = `notification ${type}`;
-                notification.textContent = message;
-                Object.assign(notification.style, {
-                    position: 'fixed',
-                    top: '20px',
-                    right: '20px',
-                    padding: '10px 20px',
-                    borderRadius: '8px',
-                    color: 'white',
-                    backgroundColor: type === 'success' ? 'green' : 'red',
-                    zIndex: '1000',
-                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                    opacity: '1',
-                    transition: 'opacity 0.5s ease-out',
-                });
-                document.body.appendChild(notification);
-                setTimeout(() => {
-                    notification.style.opacity = '0';
-                    setTimeout(() => {
-                        notification.remove();
-                    }, 200);
-                }, 2000);
-            }
-        });
-
-        // cate link
-        document.addEventListener('DOMContentLoaded', function() {
-            const clickableLinks = document.querySelectorAll('a.cate-click');
-
-            clickableLinks.forEach(link => {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const form = this.closest('form');
-                    if (form) {
-                        form.submit();
-                    }
-                });
-            });
-        });
-
-        document.querySelectorAll('.wishlistEffect').forEach((element) => {
-            element.addEventListener('click', function(event) {
-                event.preventDefault();
-
-                let productId = this.getAttribute('data-product-id');
-                let messageDiv = document.getElementById('wishlistMessage-' + productId);
-
-                fetch("{{ route('shop.wishlist.addWishlist') }}", {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            product_id: productId
-                        }),
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content'),
-                            'Content-Type': 'application/json',
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        showNotification(data.status === 'success' ? 'success' : 'error', data.message);
-
-                        if (data.status === 'success') {
-                            document.getElementById('header-wishlist-count').textContent = data
-                                .wishlist_count;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Lỗi xảy ra:', error);
-                        showNotification('error', 'Có lỗi xảy ra!');
                     });
 
-                function showNotification(type, message) {
-                    const notification = document.createElement('div');
-                    notification.className = `notification ${type}`;
-                    notification.textContent = message;
+                    document.querySelectorAll('.wishlistEffect').forEach((element) => {
+                                element.addEventListener('click', function(event) {
+                                    event.preventDefault();
 
-                    Object.assign(notification.style, {
-                        position: 'fixed',
-                        top: '20px',
-                        right: '20px',
-                        padding: '10px 20px',
-                        borderRadius: '8px',
-                        color: 'white',
-                        backgroundColor: type === 'success' ? 'green' : type === 'error' ? 'red' :
-                            'orange',
-                        zIndex: '1000',
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                        opacity: '1',
-                        transition: 'opacity 0.5s ease-out',
-                    });
+                                    let productId = this.getAttribute('data-product-id');
+                                    let messageDiv = document.getElementById('wishlistMessage-' + productId);
+                                    let productId = this.getAttribute('data-product-id');
+                                    // let form = document.querySelector(`#addWishlist-${productId}`);
+                                    let messageDiv = document.getElementById('wishlistMessage-' + productId);
 
-                    document.body.appendChild(notification);
+                                    fetch("{{ route('shop.wishlist.addWishlist') }}", {
+                                            method: 'POST',
+                                            body: JSON.stringify({
+                                                product_id: productId
+                                            }),
+                                            headers: {
+                                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                                    .getAttribute('content'),
+                                                'Content-Type': 'application/json',
+                                            }
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            showNotification(data.status === 'success' ? 'success' : 'error', data.message);
+                                            fetch("{{ route('shop.wishlist.addWishlist') }}", {
+                                                    method: 'POST',
+                                                    body: JSON.stringify({
+                                                        product_id: productId
+                                                    }),
+                                                    headers: {
+                                                        'X-CSRF-TOKEN': document.querySelector(
+                                                            'meta[name="csrf-token"]').content,
+                                                        'Content-Type': 'application/json',
+                                                        'Accept': 'application/json'
+                                                    }
+                                                })
+                                                .then(response => {
+                                                    if (response.status === 401) {
+                                                        window.location.href = '/auth/login';
+                                                        return null;
+                                                    }
+                                                    return response.json();
+                                                })
+                                                .then(data => {
+                                                    if (!data) return;
+                                                    showNotification(data.status === 'success' ? 'success' : 'error',
+                                                        data.message);
 
-                    setTimeout(() => {
-                        notification.style.opacity = '0';
-                        setTimeout(() => {
-                            notification.remove();
-                        }, 500);
-                    }, 2000);
-                }
+                                                    if (data.status === 'success') {
+                                                        document.getElementById('header-wishlist-count').textContent =
+                                                            data
+                                                            .wishlist_count;
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    console.error('Lỗi xảy ra:', error);
+                                                    showNotification('error', 'Có lỗi xảy ra!');
+                                                });
 
-            });
-        });
-    </script>
-@endsection
+                                            function showNotification(type, message) {
+                                                const notification = document.createElement('div');
+                                                notification.className = `notification ${type}`;
+                                                notification.textContent = message;
+
+                                                Object.assign(notification.style, {
+                                                    position: 'fixed',
+                                                    top: '20px',
+                                                    right: '20px',
+                                                    padding: '10px 20px',
+                                                    borderRadius: '8px',
+                                                    color: 'white',
+                                                    backgroundColor: type === 'success' ? 'green' : type ===
+                                                        'error' ? 'red' : 'orange',
+                                                    zIndex: '1000',
+                                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                                                    opacity: '1',
+                                                    transition: 'opacity 0.5s ease-out',
+                                                });
+
+                                                document.body.appendChild(notification);
+
+                                                setTimeout(() => {
+                                                    notification.style.opacity = '0';
+                                                    setTimeout(() => {
+                                                        notification.remove();
+                                                    }, 500);
+                                                }, 2000);
+                                            }
+
+                                        });
+                                });
+                </script>
+            @endsection

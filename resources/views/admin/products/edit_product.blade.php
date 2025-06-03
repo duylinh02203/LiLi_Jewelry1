@@ -26,7 +26,7 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label>Name
+                            <label>Tên sản phẩm
                                 @error('name')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                 @enderror
@@ -35,7 +35,7 @@
                                 placeholder="Name">
                         </div>
                         <div class="form-group">
-                            <label>Price
+                            <label>Giá tiền
                                 @error('price')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                 @enderror
@@ -44,7 +44,7 @@
                                 name="price" placeholder="Price">
                         </div>
                         <div class="form-group">
-                            <label>Listed price
+                            <label>Giá niêm yết
                                 @error('listed_price')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                 @enderror
@@ -53,7 +53,7 @@
                                 placeholder="Listed price" name="listed_price">
                         </div>
                         <div class="form-group">
-                            <label>Category
+                            <label>Danh mục
                             </label>
                             <select class="form-control" name="category_id">
                                 <option value="" hidden>Chọn danh mục sản phẩm</option>
@@ -63,23 +63,18 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Gender
+                            <label>Giới tính
                                 @error('gender')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                 @enderror
                             </label>
                             <select class="form-control" name="gender">
-                                <option value="unisex" {{ $productUpdate->gender == 'unisex' ? 'selected' : '' }}>Unisex</option>
-                                <option value="male" {{ $productUpdate->gender == 'male' ? 'selected' : '' }}>Male</option>
-                                <option value="female" {{ $productUpdate->gender == 'female' ? 'selected' : '' }}>Female</option>
+                                <option value="unisex" {{ $productUpdate->gender == 'unisex' ? 'selected' : '' }}>Cặp đôi</option>
+                                <option value="male" {{ $productUpdate->gender == 'male' ? 'selected' : '' }}>Nam</option>
+                                <option value="female" {{ $productUpdate->gender == 'female' ? 'selected' : '' }}>Nữ</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label style="margin-bottom:0px !important;">Có Freesize?</label>
-                            <input style="margin-top: -10px !important;" type="checkbox" name="is_free_size" id="is_free_size" value="1"
-                                {{ $productUpdate->is_free_size == 1 ? 'checked' : '' }}>
-                        </div>
-                        <div class="form-group" id="sizes-wrapper" style="display: none;">
+                        <div class="form-group" id="sizes-wrapper">
                             <label>Kích thước (Nhập cách nhau dấu phẩy):
                                 @error('sizes')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
@@ -90,52 +85,38 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Images
+                            <label>Hình ảnh sản phẩm
                             </label>
                             <input type="file" name="image[]" class="file-upload-default" multiple
                                 style="display: none;">
                             <div class="input-group col-xs-12">
                                 <input type="text" class="form-control file-upload-info" disabled
-                                    placeholder="Upload Image">
+                                    placeholder="Tải hình ảnh">
                                 <span class="input-group-append">
-                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    <button class="file-upload-browse btn btn-primary" type="button">Tải lên</button>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Quantity</label>
+                            <label>Số lượng</label>
                             <input type="text" class="form-control" placeholder="Quantity" name="quantity"
                                 value="{{ $productUpdate->quantity }}">
                         </div>
                         <div class="form-group">
-                            <label>Description
+                            <label>Mô tả sản phẩm
                                 @error('description')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                 @enderror
                             </label>
                             <textarea class="form-control" id="exampleTextarea1" rows="4" name="description">{{ $productUpdate->description }}</textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                        <button class="btn btn-dark" type="button"><a href="{{ url()->previous() }}"
-                                style="text-decoration: none; color:white;">Cancel</a></button>
+                        <button type="submit" class="btn btn-primary mr-2">Gửi</button>
+                        <button class="btn btn-dark" type="button"><a href="{{route('admin.product.index')}}"
+                                style="text-decoration: none; color:white;">Quay lại</a></button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script>
-    const isFreeSizeCheckbox = document.getElementById('is_free_size');
-    const sizesWrapper = document.getElementById('sizes-wrapper');
-
-    function toggleSizesInput() {
-        if (isFreeSizeCheckbox.checked) {
-            sizesWrapper.style.display = 'none';
-        } else {
-            sizesWrapper.style.display = 'block';
-        }
-    }
-    isFreeSizeCheckbox.addEventListener('change', toggleSizesInput);
-    toggleSizesInput();
-</script>
 @endsection

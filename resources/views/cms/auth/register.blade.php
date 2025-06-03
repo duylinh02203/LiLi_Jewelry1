@@ -16,7 +16,7 @@
                             @enderror
                         </label>
                         <input type="text" id="name" class="block mt-1 w-full" name="name"
-                            :value="old('name')">
+                            value="{{ old('name') }}">
                     </div>
 
                     <div class="input">
@@ -27,7 +27,7 @@
                             @enderror
                         </label>
                         <input type="text" id="phone" class="block mt-1 w-full" name="phone"
-                            :value="old('phone')">
+                            value="{{ old('phone') }}">
                     </div>
 
                     <div class="input">
@@ -37,7 +37,7 @@
                             @enderror
                         </label>
                         <input type="email" id="emailname" class="block mt-1 w-full" name="email"
-                            :value="old('email')">
+                            value="{{ old('name') }}">
                     </div>
 
                     <div class="input">

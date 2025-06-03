@@ -27,9 +27,6 @@ class WishlistController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
         ]);
-        if (!session()->has('userData')) {
-            return response()->json(['status' => 'error', 'message' => 'Bạn cần đăng nhập để yêu thích']);
-        }
         $userId = session('userData')->id;
         $productId = $request->product_id;
 

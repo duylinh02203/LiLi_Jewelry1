@@ -76,12 +76,7 @@
                                     <option value="unisex">Cặp đôi</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label style="margin-bottom:0px !important;">Có Freesize?</label>
-                                <input style="margin-top: -10px !important;" type="checkbox" name="is_free_size"
-                                    id="is_free_size" value="1" {{ old('is_free_size') ? 'checked' : '' }}>
-                            </div>
-                            <div class="form-group" id="sizes-wrapper" style="display: none;">
+                            <div class="form-group" id="sizes-wrapper">
                                 <label>Kích thước (Nhập cách nhau dấu phẩy):
                                     @error('sizes')
                                         <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
@@ -127,21 +122,4 @@
             </div>
         </div>
     </div>
-    <script>
-        const isFreeSizeCheckbox = document.getElementById('is_free_size');
-        const sizesWrapper = document.getElementById('sizes-wrapper');
-
-        function toggleSizesInput() {
-            if (isFreeSizeCheckbox.checked) {
-                sizesWrapper.style.display = 'none';
-            } else {
-                sizesWrapper.style.display = 'block';
-            }
-        }
-
-        isFreeSizeCheckbox.addEventListener('change', toggleSizesInput);
-
-        // Hiển thị ban đầu (nếu checkbox được chọn)
-        toggleSizesInput();
-    </script>
 @endsection
