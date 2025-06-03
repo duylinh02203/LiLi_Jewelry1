@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CMS;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ChangeUserInforRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\ForgotPasswordRequest;
@@ -50,11 +51,11 @@ class AuthController extends Controller
                     'phone' => $request->phone,
                 ]);
                 DB::commit();
-                return redirect()->route('login')->with('success', 'Register success');
+                return redirect()->route('login')->with('success', 'Đăng kí tài khoản thành công !');
             }
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Register failed');
+            return redirect()->back()->with('error', 'Đăng kí tài khoản thất bại !');
         }
     }
 
@@ -70,7 +71,7 @@ class AuthController extends Controller
             return redirect()->route('home');
         } else {
             return back()->withErrors([
-                'infor' => 'thông tin đăng nhập không chính xác',
+                'infor' => 'Thông tin đăng nhập không chính xác',
             ])->withInput();
         }
     }
@@ -83,13 +84,6 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    public function information()
-    {
-        $user = session()->get('userData');
-        $userInfor = $user->userInfor;
-        return view('cms.user.information_user', compact('user', 'userInfor'));
-    }
-
     public function forgotPassword()
     {
         return view('cms.auth.forgot_password');
@@ -99,13 +93,13 @@ class AuthController extends Controller
     {
         $user = User::where('email', $request->email)->first();
         if (!$user) {
-            return redirect()->back()->withErrors('infor', 'Email not found');
+            return redirect()->back()->withErrors(['infor' => 'Email không tồn tại !']);
         }
         $password = random_int(100000, 999999);
         $user->update([
             'password' => Hash::make($password),
         ]);
         ForgotPassword::dispatch($user, $password);
-        return redirect()->route('login')->with('success', 'Password has been sent to your email');
+        return redirect()->route('login')->with('success', 'Mật khẩu mới đã được gửi qua Email của bạn');
     }
 }

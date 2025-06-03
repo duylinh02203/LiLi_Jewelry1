@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Http\Controllers\ADMIN;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ADMIN\ChangeAdInforRequest;
+use App\Http\Requests\ADMIN\ChangePassRequest;
+use App\Models\User;
+use App\Models\UserInfor;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+class AccountADController extends Controller
+{
+    public function information()
+    {
+        $user = session()->get('userData');
+        $userInfor = $user->userInfor;
+        return view('admin.account.changeInfor', compact('user', 'userInfor'));
+    }
+
+    public function changeInforAccount(ChangeAdInforRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $user = session('userData');
+            $userChange = User::find($user->id);
+            if (Hash::check($request->password_confirmation, $user->password)) {
+                $userChange->update([
+                    'name' => $request->name,
+                ]);
+                $userInfor = UserInfor::where('user_id', $userChange->id)->first();
+                $userInfor->update([
+                    'phone' => $request->phone,
+                ]);
+                DB::commit();
+                session(['userData' => $userChange->load('userInfor')]);
+                return redirect()->back()->with('success', 'Chỉnh sửa thông tin thành công !');
+            } else {
+                return back()->withErrors([
+                    'infor' => 'Mật khẩu không chính xác !',
+                ])->withInput();
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Thay đổi thông tin thất bại');
+        }
+    }
+
+    public function formChangePass()
+    {
+        return view('admin.account.change_password');
+    }
+
+    public function changePass(ChangePassRequest $request)
+    {
+
+        DB::beginTransaction();
+        try {
+            $user = session('userData');
+            $userChange = User::find($user->id);
+            $userChange->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+            DB::commit();
+            session(['userData' => $userChange->load('userInfor')]);
+            return redirect()->back()->with('success', 'Đổi mật khẩu thành công !');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Thay đổi thông tin thất bại');
+        }
+    }
+}

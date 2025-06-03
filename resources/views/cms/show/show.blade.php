@@ -170,6 +170,71 @@
     .notification.error {
         background-color: #dc3545;
     }
+
+    .dot-menu {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        padding: 4px;
+    }
+
+    .dot-menu .dot {
+        width: 4px;
+        height: 4px;
+        background-color: #555;
+        border-radius: 50%;
+        margin: 2px auto;
+    }
+
+    .menu-options {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 6px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        display: none;
+        min-width: 100px;
+        z-index: 100;
+    }
+
+    .menu-options.show {
+        display: block;
+    }
+
+    .menu-options a {
+        display: block;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .menu-options a:hover {
+        background-color: #f2f2f2;
+    }
+
+    .product-details-table {
+        margin: 20px auto;
+        width: 80%;
+        text-align: left;
+        padding-top: 15px;
+
+    }
+
+    .product-details-table table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .product-details-table td {
+        padding: 10px 15px;
+        vertical-align: top;
+        text-align: left !important;
+    }
 </style>
 @endpush
 @section('content')
@@ -238,8 +303,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="col-md-6">
                             <div class="cloth-details-size">
                                 <div class="details-image-concept">
@@ -259,7 +322,6 @@
                                 <div>
                                     <p><strong>Lưu ý: </strong>{{$product->is_free_size === 1 ? 'Sản phẩm Free Size có thể điều chỉnh kích thước tùy ý. Nếu bạn yêu cầu khắc tên, vui lòng ấn liên hệ (góc phải) để được hỗ trợ' : 'Nếu bạn yêu cầu khắc tên, thắc mắc về size số vui lòng ấn liên hệ (góc phải) để được hỗ trợ !'}}</p>
                                 </div>
-                                <!--  -->
                                 <div class="size-selector">
                                     <strong><span>Kích thước: </span></strong>
                                     @foreach($productSizes as $size)
@@ -292,7 +354,7 @@
                                     </a>
                                 </div>
                                 <div class="col-6" class="mt-2 mt-md-3">
-                                    <a href="#" style="display:flex; width:fit-content;" class="wishlist wishlistEffect love-icon" data-product-id="{{ $product->id }}">
+                                    <a href="javascript:void(0)" style="display:flex; width:fit-content;" class="wishlist wishlistEffect love-icon" data-product-id="{{ $product->id }}">
                                         <i class="fa-regular fa-heart" style="font-size: 20px;"></i>
                                         <p style="margin-left: 10px;">Yêu thích</p>
                                         <form id="addWishlist-{{ $product->id }}" class="wishlist" action="{{route('shop.wishlist.addWishlist')}}" method="post">
@@ -306,7 +368,6 @@
                                     <table>
                                         <tr>
                                             <td>Cam kết chất lượng, đảm bảo từng chi tiết</td>
-
                                         </tr>
                                         <tr>
                                             <td>Uy tín hàng đầu – Mua sắm không lo</td>
@@ -381,26 +442,6 @@
                             <hr>
                             <h2 style="text-align: center;">THÔNG SỐ SẢN PHẨM</h2>
                             <div class="product-details-table">
-                                <style>
-                                    .product-details-table {
-                                        margin: 20px auto;
-                                        width: 80%;
-                                        text-align: left;
-                                        padding-top: 15px;
-
-                                    }
-
-                                    .product-details-table table {
-                                        width: 100%;
-                                        border-collapse: collapse;
-                                    }
-
-                                    .product-details-table td {
-                                        padding: 10px 15px;
-                                        vertical-align: top;
-                                        text-align: left !important;
-                                    }
-                                </style>
                                 <table>
                                     <tr>
                                         <td>Loại:</td>
@@ -432,6 +473,11 @@
                         </div>
                         <div class="tab-pane fade" id="review">
                             <div class="row g-4">
+                                @if ($message = Session::get('success'))
+                                <div id="alert" class="alert alert-success" style="position: absolute; width: 80.5%;">
+                                    {{ $message }}
+                                </div>
+                                @endif
                                 <div class="col-lg-4">
                                     <div class="customer-rating">
                                         <h2>Đánh giá của khách hàng</h2>
@@ -478,7 +524,7 @@
                                             <span class="star" data-value="4">★</span>
                                             <span class="star" data-value="5">★</span>
                                         </div>
-                                        <span id="message" style="margin-left:15px; color: red; display: none;">Bạn cần chọn sao</span>
+                                        <div id="ratingMessage" style="margin-left:15px; color: red; display: none;">Bạn cần chọn sao</div>
                                     </div>
                                     <div class="review-box">
                                         <form id="reviewForm" class="row g-4" action="{{ route('shop.product.review') }}" method="post">
@@ -487,7 +533,7 @@
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                                             <div class="col-12">
                                                 <label class="mb-1" for="comments">Bình luận
-                                                    <span id="comment-message" style="margin-left:15px; color: red; display: none;">Bạn cần bình luận</span>
+                                                    <div id="commentMessage" style="margin-left:15px; color: red; display: none;">Bạn cần bình luận</div>
                                                 </label>
                                                 <textarea class="form-control" name="comment" placeholder="Để lại bình luận ở đây" id="comments" style="height: 100px"></textarea>
                                             </div>
@@ -515,14 +561,34 @@
                                             </div>
 
                                             <div class="customer-details">
-                                                <h5>{{$review->user->name}}</h5>
+                                                <div class="wrap-name" style="display:flex; justify-content: space-between;">
+                                                    <h5>{{$review->user->name}}</h5>
+                                                    @if(session()->has('userData'))
+                                                    @if(session('userData')->id === $review->user->id)
+                                                    <div class="dot-menu" onclick="toggleMenu(event)">
+                                                        <div class="dot"></div>
+                                                        <div class="dot"></div>
+                                                        <div class="dot"></div>
+
+                                                        <div class="menu-options">
+                                                            <a href="#">Sửa</a>
+                                                            <a href="{{ route('shop.productReview.destroy', $review->id) }}"
+                                                                class="delete-review"
+                                                                data-id="{{ $review->id }}">
+                                                                Xoá
+                                                            </a>
+
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    @endif
+                                                </div>
                                                 <ul class="rating my-2 d-inline-block">
                                                     @for ($i = 1; $i <= 5; $i++)
                                                         <span class="star1 {{ $i <= $review->rating ? 'theme-color' : '' }} " data-value="1">★</span>
                                                         @endfor
                                                 </ul>
                                                 <p class="font-light">{{$review->comment}}</p>
-
                                                 <p class="date-custo font-light">{{$review->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s')}}</p>
                                             </div>
                                         </div>
@@ -594,6 +660,7 @@
                                 @endphp
                                 <div class="wrap-retail">
                                     <span class="reatail-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $relatedProduct->name }}</span>
+
                                     <h3 class="theme-color">{{ number_format($product->price, 0, ',', '.') }} VNĐ</h3>
                                     <div class="wrap-rating" style="display:flex; justify-content: space-between;">
                                         <ul class="rating mt-0">
@@ -620,8 +687,42 @@
                     @endif
                 </div>
             </div>
+            @if(session()->has('userData'))
+            <input type="hidden" class="check-login" name="check-login" value="hehe">
+            @endif
         </div>
     </div>
+    @if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notification = document.createElement('div');
+            notification.innerText = "{{ session('success') }}";
+
+            Object.assign(notification.style, {
+                position: 'fixed',
+                top: '120px',
+                right: '20px',
+                padding: '10px 20px',
+                borderRadius: '8px',
+                color: 'white',
+                backgroundColor: 'green',
+                zIndex: '1000',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                opacity: '1',
+                transition: 'opacity 0.5s ease-out',
+            });
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    notification.remove();
+                }, 500);
+            }, 3000);
+        });
+    </script>
+    @endif
 </section>
 @endsection
 @push('scripts')
@@ -644,193 +745,6 @@
             input.value = parseInt(input.value) - 1;
         }
     }
-    let selectedRating = 0;
-
-    const stars = document.querySelectorAll('.star');
-    const message = document.getElementById('message');
-    const ratingInput = document.getElementById('rating-value');
-    const form = document.querySelector('.review-box form');
-    const commentInput = document.getElementById('comments');
-    const commentMessage = document.getElementById('comment-message');
-    stars.forEach((star, index) => {
-        star.addEventListener('mouseover', () => {
-            highlightStars(index + 1, 'hover');
-        });
-
-        star.addEventListener('mouseout', () => {
-            resetHover();
-            highlightStars(selectedRating, 'active');
-        });
-
-
-        star.addEventListener('click', () => {
-            selectedRating = index + 1;
-            message.style.display = 'none';
-            ratingInput.value = selectedRating;
-            setActiveStars(selectedRating);
-            console.log(`Bạn đã chọn ${selectedRating} sao!`);
-        });
-    });
-
-
-    function highlightStars(rating, type) {
-        resetAllStars();
-        for (let i = 0; i < rating; i++) {
-            stars[i].classList.add(type);
-        }
-    }
-
-    function resetHover() {
-        stars.forEach((star) => star.classList.remove('hover'));
-    }
-
-    function resetAllStars() {
-        stars.forEach((star) => star.classList.remove('hover', 'active'));
-    }
-
-    function setActiveStars(rating) {
-        resetAllStars();
-        for (let i = 0; i < rating; i++) {
-            stars[i].classList.add('active');
-        }
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        const alert = document.getElementById('alert');
-        if (alert) {
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 4000);
-        }
-    });
-    $(document).on('submit', '#reviewForm', function(e) {
-        e.preventDefault();
-
-        const form = $(this);
-        const url = form.attr('action');
-        const formData = form.serialize();
-
-        $.ajax({
-            url: url,
-            method: 'POST',
-            data: formData,
-            headers: {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            success: function(response) {
-                if (response.status === 'success') {
-                    sessionStorage.setItem('notification', JSON.stringify({
-                        type: 'success',
-                        message: response.message
-                    }));
-                    location.reload();
-                } else {
-                    showNotification('error', response.message);
-                }
-            },
-            error: function(xhr) {
-                if (xhr.status === 401) {
-                    window.location.href = '/auth/login';
-                    return;
-                }
-
-                showNotification('error', 'Đã xảy ra lỗi trong quá trình xử lý!');
-            }
-        });
-    });
-    commentInput.addEventListener('input', () => {
-        let comment = commentInput.value.trim();
-        let wordCount = 0;
-        if (comment === '') {
-            commentMessage.innerText = 'Bạn cần bình luận.';
-            commentMessage.style.display = 'inline';
-        } else {
-            commentMessage.style.display = 'none';
-        }
-        for (let i = 0; i < comment.length; i++) {
-            if (comment[i] === ' ') {
-                wordCount++;
-            }
-        }
-        wordCount++;
-
-        console.log("Word count:", wordCount);
-
-        if (wordCount >= 10) {
-            commentMessage.style.display = 'none';
-        } else {
-            commentMessage.innerText = 'Bình luận phải có ít nhất 10 từ.';
-            commentMessage.style.display = 'inline';
-        }
-    });
-    if (form) {
-        form.addEventListener('submit', (e) => {
-            if (selectedRating === 0) {
-                e.preventDefault();
-                if (message) message.style.display = 'block';
-            } else {
-                if (message) message.style.display = 'none';
-            }
-            let comment = commentInput.value.trim();
-            let wordCount = comment.split(/\s+/).filter(word => word.length > 0).length;
-
-            if (comment === '') {
-                isValid = false;
-                commentMessage.innerText = 'Bạn cần bình luận.';
-                commentMessage.style.display = 'inline';
-            } else if (wordCount < 10) {
-                isValid = false;
-                commentMessage.innerText = 'Bình luận phải có ít nhất 10 từ.';
-                commentMessage.style.display = 'inline';
-            } else {
-                commentMessage.style.display = 'none';
-            }
-            if (!isValid) {
-                e.preventDefault();
-            }
-        });
-    }
-
-    function showNotification(type, message) {
-        const notification = $(`<div class="notification ${type}">${message}</div>`);
-
-        notification.css({
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            padding: '10px 20px',
-            borderRadius: '8px',
-            color: '#fff',
-            backgroundColor: type === 'success' ? 'green' : 'red',
-            zIndex: 1000,
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-            opacity: 1,
-            transition: 'opacity 0.5s ease-out',
-        });
-
-        $('body').append(notification);
-
-        setTimeout(() => {
-            notification.fadeOut(500, function() {
-                $(this).remove();
-            });
-        }, 4000);
-    }
-
-    $(document).ready(function() {
-        const notificationData = sessionStorage.getItem('notification');
-        if (notificationData) {
-            const {
-                type,
-                message
-            } = JSON.parse(notificationData);
-            showNotification(type, message);
-
-            sessionStorage.removeItem('notification');
-        }
-    });
-
-
     document.querySelectorAll('.wishlistEffect').forEach((element) => {
         element.addEventListener('click', function(event) {
             event.preventDefault();
@@ -897,24 +811,180 @@
             }
         });
     });
-</script>
-@if (session('success') || session('error'))
-<div
-    id="alert-box"
-    class="fixed top-4 right-4 z-50 px-4 py-3 rounded shadow-lg 
-               {{ session('success') ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
-    {{ session('success') ?? session('error') }}
-</div>
+    let checkLogin = document.querySelector('.check-login').value;
+    if (checkLogin != null) {
+        document.addEventListener('DOMContentLoaded', () => {
+            let selectedRating = 0;
+            const stars = document.querySelectorAll('.star');
+            const message = document.getElementById('ratingMessage');
+            const ratingInput = document.getElementById('rating-value');
+            const form = document.getElementById('reviewForm');
+            const commentInput = document.getElementById('comments');
+            const commentMessage = document.getElementById('commentMessage');
+            stars.forEach((star, index) => {
+                star.addEventListener('mouseover', () => {
+                    highlightStars(index + 1, 'hover');
+                });
 
-<script>
-    // Tự động ẩn thông báo sau 4 giây
-    setTimeout(() => {
-        const alertBox = document.getElementById('alert-box');
-        if (alertBox) {
-            alertBox.style.display = 'none';
+                star.addEventListener('mouseout', () => {
+                    resetHover();
+                    highlightStars(selectedRating, 'active');
+                });
+
+                star.addEventListener('click', () => {
+                    selectedRating = index + 1;
+                    ratingInput.value = selectedRating;
+                    setActiveStars(selectedRating);
+                    message.style.display = 'none';
+                    console.log(`Bạn đã chọn ${selectedRating} sao!`);
+                });
+            });
+
+            function highlightStars(count, type) {
+                stars.forEach((star, i) => {
+                    star.classList.toggle(type, i < count);
+                });
+            }
+
+            function resetHover() {
+                stars.forEach(star => star.classList.remove('hover'));
+            }
+
+            function setActiveStars(count) {
+                stars.forEach((star, i) => {
+                    star.classList.toggle('active', i < count);
+                });
+            }
+            commentInput.addEventListener('input', () => {
+                const comment = commentInput.value.trim();
+                const wordCount = comment.split(/\s+/).filter(word => word.length > 0).length;
+
+                if (comment === '') {
+                    commentMessage.innerText = 'Bạn cần bình luận.';
+                    commentMessage.style.display = 'inline';
+                } else if (wordCount < 10) {
+                    commentMessage.innerText = 'Bình luận phải có ít nhất 10 từ.';
+                    commentMessage.style.display = 'inline';
+                } else {
+                    commentMessage.style.display = 'none';
+                }
+            });
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    let isValid = true;
+                    const rating = parseInt(ratingInput.value || '0');
+                    const comment = commentInput.value.trim();
+                    const wordCount = comment.split(/\s+/).filter(word => word.length > 0).length;
+                    if (rating === 0) {
+                        message.style.display = 'inline';
+                        isValid = false;
+                    } else {
+                        message.style.display = 'none';
+                    }
+                    if (comment === '') {
+                        commentMessage.innerText = 'Bạn cần bình luận.';
+                        commentMessage.style.display = 'inline';
+                        isValid = false;
+                    } else if (wordCount < 10) {
+                        commentMessage.innerText = 'Bình luận phải có ít nhất 10 từ.';
+                        commentMessage.style.display = 'inline';
+                        isValid = false;
+                    } else {
+                        commentMessage.style.display = 'none';
+                    }
+                    if (!isValid) return;
+                    const formData = new FormData(form);
+
+                    fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                            }
+                        })
+                        .then(response => {
+                            if (response.status === 401) {
+                                window.location.href = '/auth/login';
+                                return null;
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (!data) return;
+                            showNotification(data.status === 'success' ? 'success' : 'error', data.message);
+                            if (data.status === 'success') {
+                                sessionStorage.setItem('notification', JSON.stringify({
+                                    type: 'success',
+                                    message: data.message
+                                }));
+                                location.reload();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Lỗi:', error);
+                            showNotification('error', 'Có lỗi xảy ra!');
+                        });
+                });
+            }
+
+            function showNotification(type, message) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+
+                Object.assign(notification.style, {
+                    position: 'fixed',
+                    top: '20px',
+                    right: '20px',
+                    padding: '10px 20px',
+                    borderRadius: '8px',
+                    color: 'white',
+                    backgroundColor: type === 'success' ? 'green' : 'red',
+                    zIndex: '1000',
+                    opacity: '1',
+                    transition: 'opacity 0.5s ease-out',
+                });
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+        });
+    }
+
+    function toggleMenu(event) {
+        event.stopPropagation();
+        document.querySelectorAll('.menu-options').forEach(menu => {
+            if (menu !== event.currentTarget.querySelector('.menu-options')) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = event.currentTarget.querySelector('.menu-options');
+        menu.classList.toggle('show');
+    }
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.menu-options').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    });
+    setTimeout(function() {
+        let alert = document.getElementById('alert');
+        if (alert) {
+            alert.style.transition = 'opacity 0.5s ease';
+            alert.style.opacity = '0';
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 500);
         }
-    }, 4000);
+    }, 3000);
+    document.querySelectorAll('.btn').forEach(button => {
+        button.addEventListener('click', (e) => e.stopPropagation());
+    });
 </script>
-@endif
-
 @endpush

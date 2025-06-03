@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ADMIN\AccountADController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\CMS\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -63,9 +64,14 @@ Route::prefix('auth')->group(
 );
 
 Route::middleware('auth.login')->group(function () {
-    Route::get('information', [AuthController::class, 'information'])->name('information');
+    // UserInfor
+    Route::get('information', [AccountController::class, 'information'])->name('information');
+    Route::put('changeUserInfor', [AccountController::class, 'changeUserInfor'])->name('changeUserInfor');
+    Route::put('changePassword', [AccountController::class, 'changePassword'])->name('changePassword');
+    Route::get('nguoi-dung/doi-mat-khau', [AccountController::class, 'formChangePassword'])->name('formChangePassword');
     //reviewProduct
     Route::post('product-review', [ProductReviewController::class, 'create'])->name('shop.product.review');
+    Route::get('destroy/{id}',[ProductReviewController::class,'destroy'])->name('shop.productReview.destroy');
     //contactCreate
     Route::post('/create', [ContactController::class, 'create'])->name('contact.create');
     //wishlist
@@ -147,6 +153,14 @@ Route::prefix('admin')
                     Route::get('/destroy/{id}', [ReviewController::class, 'destroy'])->name('destroy');
                     Route::get('/detail/{id}', [ReviewController::class, 'detail'])->name('detail');
                     Route::get('/search', [ReviewController::class, 'searchReview'])->name('search');
+                });
+            Route::prefix('account')
+                ->as('account.')
+                ->group(function () {
+                    Route::get('infomation', [AccountADController::class, 'information'])->name('information');
+                    Route::put('changeInforAccount', [AccountADController::class, 'changeInforAccount'])->name('changeInforAccount');
+                    Route::get('formChangePass', [AccountADController::class, 'formChangePass'])->name('formChangePass');
+                    Route::put('changePass', [AccountADController::class, 'changePass'])->name('changePass');
                 });
         });
     });

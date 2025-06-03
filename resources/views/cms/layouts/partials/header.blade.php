@@ -148,7 +148,7 @@
                                     <ul>
                                         @if (session()->has('userData'))
                                             <li>
-                                                <a href="{{ route('information') }}" class="d-block">Thông tin</a>
+                                                <a href="{{ route('information') }}" class="d-block">Thông Tin</a>
                                             </li>
                                             <li>
                                                 <form action="{{ route('logout') }}" method="POST">

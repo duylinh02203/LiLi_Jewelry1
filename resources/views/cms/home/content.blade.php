@@ -244,77 +244,61 @@
                                 )->get();
                             @endphp
 
-                            <div class="our-product products-c">
-                                @foreach ($productSales as $productSale)
-                                    <div>
-                                        @php
-                                            $tbRating = \App\Models\ProductReview::where(
-                                                'product_id',
-                                                $productSale->id,
-                                            )->avg('rating');
-                                            $tbRating = round($tbRating);
-                                            $countReview = \App\Models\ProductReview::where(
-                                                'product_id',
-                                                $productSale->id,
-                                            )->count();
-                                        @endphp
-                                        <div class="product-box">
-                                            <div class="img-wrapper">
-                                                <a
-                                                    href="{{ route('shop.product.details', ['slug' => $productSale->slug]) }}">
-                                                    <img src="{{ asset('images/' . $productSale->images->first()->image) }}"
-                                                        class="bg-img blur-up lazyload" alt="{{ $productSale->name }}">
-                                                </a>
-                                                <span class="background-text">Fashion</span>
-                                                <div class="label-block">
-                                                    <span
-                                                        class="price-sale label label-theme">{{ round((($productSale->listed_price - $productSale->price) / $productSale->listed_price) * 100) }}
-                                                        % off</span>
-                                                </div>
-                                                <div class="cart-wrap">
-                                                    <ul>
-                                                        <li>
-                                                            <a href="javascript:void(0)" class="addtocart-btn"
-                                                                data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                                <i data-feather="shopping-cart"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a
-                                                                href="{{ route('shop.product.details', ['slug' => $productSale->slug]) }}">
-                                                                <i data-feather="eye"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0)" class="wishlist wishlistEffect"
-                                                                data-product-id="{{ $productSale->id }}">
-                                                                <i data-feather="heart"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="product-style-3 product-style-chair">
-                                                <div class="product-title d-block mb-0">
-                                                    <a href="{{ route('shop.product.details', ['slug' => $productSale->slug]) }}"
-                                                        class="font-default">
-                                                        <h5>{{ $productSale->name }}</h5>
-                                                    </a>
-                                                    <div class="r-price">
-                                                        <div class="theme-color price-color" style="padding-top: 3.5px;">
-                                                            {{ number_format($productSale->price, 0, ',', '.') }} VNĐ</div>
-                                                    </div>
-                                                    <div class="main-price"
-                                                        style="display:flex;justify-content: space-between;">
-                                                        <ul class="rating mb-1 mt-0">
-                                                            @for ($i = 1; $i <= 5; $i++)
-                                                                <span
-                                                                    class="star {{ $i <= $tbRating ? 'theme-color' : '' }} "
-                                                                    data-value="1">★</span>
-                                                            @endfor
-                                                        </ul>
-                                                        <p style="padding-top: 7px;">{{ $countReview }} đánh giá</p>
-                                                    </div>
+            <div class="our-product products-c">
+                @foreach($productSales as $productSale)
+                <div>
+                    @php
+                    $tbRating = \App\Models\ProductReview::where('product_id', $productSale->id)->avg('rating');
+                    $tbRating = round($tbRating);
+                    $countReview = \App\Models\ProductReview::where('product_id', $productSale->id)->count();
+                    @endphp
+                    <div class="product-box">
+                        <div class="img-wrapper">
+                            <a href="{{ route('shop.product.details', ['slug' => $productSale->slug]) }}">
+                                <img src="{{ asset('images/' . $productSale->images->first()->image) }}"
+                                    class="bg-img blur-up lazyload"
+                                    alt="{{ $productSale->name }}">
+                            </a>
+                            <div class="label-block">
+                                <span class="price-sale label label-theme">{{round((($productSale->listed_price - $productSale->price)/$productSale->listed_price) * 100)}} % off</span>
+                            </div>
+                            <div class="cart-wrap">
+                                <ul>
+                                    <li>
+                                        <a href="javascript:void(0)" class="addtocart-btn" data-bs-toggle="modal"
+                                            data-bs-target="#addtocart">
+                                            <i data-feather="shopping-cart"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('shop.product.details', ['slug' => $productSale->slug]) }}">
+                                        <i data-feather="eye"></i>
+                                    </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)" class="wishlist wishlistEffect" data-product-id="{{ $productSale->id }}">
+                                            <i data-feather="heart"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="product-style-3 product-style-chair">
+                            <div class="product-title d-block mb-0">
+                                <a href="{{ route('shop.product.details', ['slug' => $productSale->slug]) }}" class="font-default">
+                                    <h5>{{$productSale->name}}</h5>
+                                </a>
+                                <div class="r-price">
+                                    <div class="theme-color price-color" style="padding-top: 3.5px;">{{ number_format($productSale->price, 0, ',', '.') }} VNĐ</div>
+                                </div>
+                                <div class="main-price" style="display:flex;justify-content: space-between;">
+                                    <ul class="rating mb-1 mt-0">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <span class="star {{ $i <= $tbRating ? 'theme-color' : '' }} " data-value="1">★</span>
+                                            @endfor
+                                    </ul>
+                                    <p style="padding-top: 7px;">{{$countReview}} đánh giá</p>
+                                </div>
 
                                                     <form id="addWishlist-{{ $productSale->id }}" class="wishlist"
                                                         action="{{ route('shop.wishlist.addWishlist') }}" method="post">
@@ -353,11 +337,8 @@
                                 element.addEventListener('click', function(event) {
                                     event.preventDefault();
 
-                                    let productId = this.getAttribute('data-product-id');
-                                    let messageDiv = document.getElementById('wishlistMessage-' + productId);
-                                    let productId = this.getAttribute('data-product-id');
-                                    // let form = document.querySelector(`#addWishlist-${productId}`);
-                                    let messageDiv = document.getElementById('wishlistMessage-' + productId);
+            let productId = this.getAttribute('data-product-id');
+            let messageDiv = document.getElementById('wishlistMessage-' + productId);
 
                                     fetch("{{ route('shop.wishlist.addWishlist') }}", {
                                             method: 'POST',

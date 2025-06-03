@@ -127,8 +127,14 @@
                                             style="width: 80px; height: 100px; object-fit: cover; border-radius: 5px;">
                                     </td>
                                     <td>{{ $product->category->name ?? 'null' }}</td>
-                                    <td>{{ $product->gender ?? 'null' }}</td>
-                                    <td style="word-wrap: break-word; max-width: 20ch; white-space: pre-wrap; text-align:left !important;">{{ $product->description ?? 'null' }}</td>
+                                    <td>
+                                        {{
+                                            $product->gender === 'male' ? 'Nam' :
+                                            ($product->gender === 'female' ? 'Nữ' :
+                                            ($product->gender === 'unisex' ? 'Cặp đôi' : 'Không xác định'))
+                                        }}
+                                    </td>
+                                    <td>{{ Str::limit($product->description ?? 'null', 60) }}</td>
                                     <td>{{ $product->listed_price ?? 'null' }}</td>
                                     <td>{{ $product->price ?? 'null' }}</td>
                                     <td>{{ $product->quantity ?? 'null' }}</td>

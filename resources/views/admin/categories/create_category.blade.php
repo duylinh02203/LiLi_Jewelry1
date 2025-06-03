@@ -30,7 +30,7 @@
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                 @enderror
                             </label>
-                            <input name="name" type="text" class="form-control" placeholder="Name" value="{{ old('name') }}">
+                            <input name="name" type="text" class="form-control" placeholder="Tên danh mục" value="{{ old('name') }}">
                         </div>
                         <div class="form-group">
                             <label>Tải lên tập tin
