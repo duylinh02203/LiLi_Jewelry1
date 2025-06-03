@@ -13,6 +13,7 @@ use App\Http\Controllers\ADMIN\DashboardController;
 use App\Http\Controllers\ADMIN\ReviewController;
 use App\Http\Controllers\ADMIN\UserController;
 use App\Http\Controllers\CMS\AccountController;
+use App\Http\Controllers\CMS\CartController;
 use App\Http\Controllers\CMS\ProductReviewController;
 use App\Http\Controllers\CMS\WishlistController;
 use App\Models\ProductReview;
@@ -32,7 +33,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('product', [HomeController::class, 'product'])->name('product');
 Route::get('home', [HomeController::class, 'index'])->name('home');
-Route::get('cart', [HomeController::class, 'cart'])->name('cart');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('about', [HomeController::class, 'about'])->name('about');
 Route::get('review', [HomeController::class, 'review'])->name('review');
@@ -66,8 +66,17 @@ Route::middleware('auth.login')->group(function () {
     Route::get('information', [AuthController::class, 'information'])->name('information');
     //wishlist
     Route::get('wishlist', [WishlistController::class, 'viewWishlist'])->name('wishlist');
-        Route::post('addWishlist', [WishlistController::class, 'addWishlist'])->name('shop.wishlist.addWishlist');
-        Route::get('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('shop.wishlist.remove');
+    Route::post('addWishlist', [WishlistController::class, 'addWishlist'])->name('shop.wishlist.addWishlist');
+    Route::get('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('shop.wishlist.remove');
+    //cart
+    Route::get('cart', [CartController::class, 'cart'])->name('cart');
+    Route::prefix('cart')
+        ->as('cart.')
+        ->group(function () {
+            Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('addToCart');
+            Route::post('remove-cart-item', [CartController::class, 'removeCartItem'])->name('removeCartItem');
+            Route::post('remove-all-cart-item', [CartController::class, 'removeAllCartItem'])->name('removeAllCartItem');
+        });
 });
 
 Route::prefix('admin')
@@ -77,7 +86,7 @@ Route::prefix('admin')
         Route::post('/login', [AuthAdminController::class, 'loginAction'])->name('login');
         Route::middleware('auth.admin.login')->group(function () {
             Route::get('logout', [AuthAdminController::class, 'logout'])->name('logout');
-            Route::get('/', [HomeController::class, 'dashboard'])->name('dashboard');
+            Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
             Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
             Route::prefix('category')
                 ->as('category.')

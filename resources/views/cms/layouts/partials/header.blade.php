@@ -63,10 +63,10 @@
                                             </span>
                                         </div>
                                     </li>
-                                    <li><a href="{{route('home')}}" class="nav-link menu">Trang chủ</a></li>
-                                    <li><a href="{{route('shop')}}" class="nav-link menu">Shop</a></li>
-                                    <li><a href="{{route('review')}}" class="nav-link menu">Đánh giá</a></li>
-                                    <li><a href="{{route('contact')}}" class="nav-link menu">Liên hệ</a>
+                                    <li><a href="{{ route('home') }}" class="nav-link menu">Trang chủ</a></li>
+                                    <li><a href="{{ route('shop') }}" class="nav-link menu">Shop</a></li>
+                                    <li><a href="{{ route('review') }}" class="nav-link menu">Đánh giá</a></li>
+                                    <li><a href="{{ route('contact') }}" class="nav-link menu">Liên hệ</a>
                                     </li>
                                     <li><a href="blog.html" class="nav-link menu">Bảng tin</a></li>
                                 </ul>
@@ -83,38 +83,63 @@
                             </li>
                             <li class="onhover-dropdown wislist-dropdown">
                                 <div class="cart-media">
-                                    @if(session()->has('userData'))
-                                    <a href="{{ route('wishlist') }}">
-                                        <i data-feather="heart"></i>
-                                        @if (session()->has('userData'))
-                                        @php
-                                        $wishlistCount = \App\Models\Wishlist::where('user_id', session('userData')['id'])->count();
-                                        @endphp
-                                        @endif
-                                        <span id="header-wishlist-count" class="label label-theme rounded-pill">
-                                            {{$wishlistCount}}
-                                        </span>
-                                    </a>
+                                    @if (session()->has('userData'))
+                                        <a href="{{ route('wishlist') }}">
+                                            <i data-feather="heart"></i>
+                                            @if (session()->has('userData'))
+                                                @php
+                                                    $wishlistCount = \App\Models\Wishlist::where(
+                                                        'user_id',
+                                                        session('userData')['id'],
+                                                    )->count();
+                                                @endphp
+                                            @endif
+                                            <span id="header-wishlist-count" class="label label-theme rounded-pill">
+                                                {{ $wishlistCount }}
+                                            </span>
+                                        </a>
                                     @else
-                                    <a href="{{ route('login') }}">
-                                        <i data-feather="heart"></i>
-                                        <span id="header-wishlist-count" class="label label-theme rounded-pill">
-                                            0
-                                        </span>
-                                    </a>
+                                        <a href="{{ route('login') }}">
+                                            <i data-feather="heart"></i>
+                                            <span id="header-wishlist-count" class="label label-theme rounded-pill">
+                                                0
+                                            </span>
+                                        </a>
                                     @endif
                                 </div>
                             </li>
                             <li class="onhover-dropdown wislist-dropdown">
                                 <div class="cart-media">
-                                    <a href="{{ route('cart') }}">
-                                        <i data-feather="shopping-cart"></i>
-                                        <span id="cart-count" class="label label-theme rounded-pill">
-                                            0
-                                        </span>
-                                    </a>
+                                    @if (session()->has('userData'))
+                                        <a href="{{ route('cart') }}">
+                                            <i data-feather="shopping-cart"></i>
+                                            @php
+                                                $cart = \App\Models\Cart::where(
+                                                    'user_id',
+                                                    session('userData')['id'],
+                                                )->first();
+                                                $cartCount = 0;
+                                                if ($cart) {
+                                                    $cartCount = \App\Models\CartItem::where('cart_id', $cart->id)->sum(
+                                                        'quantity',
+                                                    );
+                                                }
+                                            @endphp
+                                            <span id="cart-count" class="label label-theme rounded-pill">
+                                                {{ $cartCount }}
+                                            </span>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('login') }}">
+                                            <i data-feather="shopping-cart"></i>
+                                            <span id="cart-count" class="label label-theme rounded-pill">
+                                                0
+                                            </span>
+                                        </a>
+                                    @endif
                                 </div>
                             </li>
+
                             <li class="onhover-dropdown">
                                 <div class="cart-media name-usr " style="background-color:#bd1125;">
                                     <i class="fa-solid fa-user"></i>
