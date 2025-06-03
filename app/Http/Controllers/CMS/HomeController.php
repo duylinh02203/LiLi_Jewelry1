@@ -15,7 +15,7 @@ class HomeController extends Controller
     {
         $user = session('userData');
         $categories = Category::with('products')->orderBy('created_at', 'desc')->get();
-        $newCategories =Category::withCount('products')->orderBy('products_count', 'desc')->take(3)->get();
+        $newCategories = Category::withCount('products')->orderBy('products_count', 'desc')->take(3)->get();
         $products = Product::with('images')->where('status', 'active')->orderBy('created_at', 'desc')->take(12)->get();
         return view('cms.home.content', compact('categories', 'products', 'newCategories'));
     }
@@ -30,14 +30,9 @@ class HomeController extends Controller
         return view('cms.shop.shop', compact('products'));
     }
 
-    public function cart()
-    {
-        return view('cms.cart.cart');
-    }
-
     public function contact()
-    {   
-         $userData = null;
+    {
+        $userData = null;
 
         if (session()->has('userData')) {
             $sessionUserData = session('userData');
@@ -49,17 +44,12 @@ class HomeController extends Controller
                 'phone' => $userInfor->phone ?? null,
             ];
         }
-        return view('cms.contact.contact',compact('userData'));
+        return view('cms.contact.contact', compact('userData'));
     }
 
     public function review()
     {
         return view('cms.review.review_shop');
-    }
-
-    public function dashboard()
-    {
-        return view('cms.user.dashboard');
     }
 
     public function checkout()
