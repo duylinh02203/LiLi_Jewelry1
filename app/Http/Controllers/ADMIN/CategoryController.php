@@ -89,6 +89,7 @@ class CategoryController extends Controller
     public function searchCategory(Request $request)
     {
         $search = $request->input('search');
+        dd($search);
         $cats = Category::where('name', 'like', "%$search%")->get();
         return view('admin.categories.category', compact('cats'));
     }
@@ -107,9 +108,9 @@ class CategoryController extends Controller
             $categoryDelete->delete();
             DB::commit();
             return redirect()->route('admin.category.index')->with('success', 'Xóa danh mục thành công.');
-        } catch (\Exception $e) {
+        } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('admin.category.index')->with('error', 'Không tìm thấy danh mục.');
+            return redirect()->route('admin.category.index')->with('error', 'Xóa danh mục không thành công.');
         }
     }
 
