@@ -19,6 +19,7 @@ class ContactController extends Controller
 
     public function create(CreateContactRequest $request)
     {
+        DB::beginTransaction();
         try {
             $user = session('userData');
             $findContact = Contact::where('user_id', $user->id)->first();
@@ -33,9 +34,11 @@ class ContactController extends Controller
                     'phone' => $request->phone,
                 ];
                 Contact::create($data);
+                DB::commit();
                 return redirect()->route('admin.contact.success');
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $th) {
+            DB::rollBack();
             return redirect()->route('contact')->with('error', 'Thêm liên hệ thất bại');
         }
     }
@@ -55,7 +58,7 @@ class ContactController extends Controller
             $contactDelete->delete();
             DB::commit();
             return redirect()->route('admin.contact.index')->with('success', 'Xóa liên hệ thành công.');
-        } catch (\Exception $e) {
+        } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->route('admin.contact.index')->with('error', 'Không tìm thấy liên hệ.');
         }
@@ -75,6 +78,9 @@ class ContactController extends Controller
     public function detail($id)
     {
         $contact = Contact::findOrFail($id);
+        $contact->update([
+            'status' => 'inactive',
+        ]);
         return view('admin.contacts.detail', compact('contact'));
     }
 }

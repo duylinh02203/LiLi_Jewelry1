@@ -10,102 +10,38 @@
             <span class="mdi mdi-menu"></span>
         </button>
         <ul class="navbar-nav navbar-nav-right">
-
-            <li class="nav-item nav-settings d-none d-lg-block">
-                <a class="nav-link" href="#">
-                    <i class="mdi mdi-view-grid"></i>
-                </a>
-            </li>
-            <li class="nav-item dropdown border-left">
-                <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#"
-                    data-toggle="dropdown" aria-expanded="false">
-                    <i class="mdi mdi-email"></i>
-                    <span class="count bg-success"></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                    aria-labelledby="messageDropdown">
-                    <h6 class="p-3 mb-0">Messages</h6>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <img src="assets/images/faces/face4.jpg" alt="image" class="rounded-circle profile-pic">
-                        </div>
-                        <div class="preview-item-content">
-                            <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
-                            <p class="text-muted mb-0"> 1 Minutes ago </p>
-                        </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <img src="assets/images/faces/face2.jpg" alt="image" class="rounded-circle profile-pic">
-                        </div>
-                        <div class="preview-item-content">
-                            <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
-                            <p class="text-muted mb-0"> 15 Minutes ago </p>
-                        </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <img src="assets/images/faces/face3.jpg" alt="image" class="rounded-circle profile-pic">
-                        </div>
-                        <div class="preview-item-content">
-                            <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
-                            <p class="text-muted mb-0"> 18 Minutes ago </p>
-                        </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <p class="p-3 mb-0 text-center">4 new messages</p>
-                </div>
-            </li>
             <li class="nav-item dropdown border-left">
                 <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
                     data-toggle="dropdown">
+                    @php
+                    $contacts = \App\Models\Contact::where('status','active')->count();
+                    $contactUsers = \App\Models\Contact::where('status','active')->orderBy('created_at','desc')->get();
+                    @endphp
                     <i class="mdi mdi-bell"></i>
-                    <span class="count bg-danger"></span>
+                    <strong><span class="count" style="color:red; margin-top:-7px;">{{$contacts}}</span></strong>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                     aria-labelledby="notificationDropdown">
-                    <h6 class="p-3 mb-0">Notifications</h6>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <div class="preview-icon bg-dark rounded-circle">
-                                <i class="mdi mdi-calendar text-success"></i>
+                    <h6 class="p-3 mb-0">Tất cả thông báo</h6>
+                    @if($contacts > 0)
+                    <div style="max-height: 200px; overflow-y: auto;">
+                        @foreach($contactUsers as $contactUser)
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item preview-item" href="{{ route('admin.contact.detail', $contactUser->id) }}">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="mdi mdi-calendar text-success"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="preview-item-content">
-                            <p class="preview-subject mb-1">Event today</p>
-                            <p class="text-muted ellipsis mb-0"> Just a reminder that you have an event today </p>
-                        </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <div class="preview-icon bg-dark rounded-circle">
-                                <i class="mdi mdi-settings text-danger"></i>
+                            <div class="preview-item-content">
+                                <p class="preview-subject mb-1">Liên hệ</p>
+                                <p class="text-muted ellipsis mb-0"> {{$contactUser->name}} đã gửi liên hệ !</p>
                             </div>
-                        </div>
-                        <div class="preview-item-content">
-                            <p class="preview-subject mb-1 ">Settings</p>
-                            <p class="text-muted ellipsis mb-0"> Update dashboard </p>
-                        </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <div class="preview-icon bg-dark rounded-circle">
-                                <i class="mdi mdi-link-variant text-warning"></i>
-                            </div>
-                        </div>
-                        <div class="preview-item-content">
-                            <p class="preview-subject mb-1">Launch Admin</p>
-                            <p class="text-muted ellipsis mb-0"> New admin wow! </p>
-                        </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <p class="p-3 mb-0 text-center">See all notifications</p>
+                        </a>
+                        @endforeach
+                    </div>
+                    @endif
+
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -118,19 +54,8 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                     aria-labelledby="profileDropdown">
-                    <h6 class="p-3 mb-0">Hồ sơ</h6>
+                    <h6 class="p-3 mb-0" style="text-align: center;">Chức năng</h6>
                     <div class="dropdown-divider"></div>
-
-                    <a class="dropdown-item preview-item" href="#">
-                        <div class="preview-thumbnail">
-                            <div class="preview-icon bg-dark rounded-circle">
-                                <i class="mdi mdi-settings text-success"></i>
-                            </div>
-                        </div>
-                        <div class="preview-item-content" style="display: flex; justify-content: center;">
-                            <p class="preview-subject mb-1">Cài đặt</p>
-                        </div>
-                    </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item preview-item" href="{{ route('admin.logout') }}">
                         <div class="preview-thumbnail">
@@ -142,8 +67,6 @@
                             <p class="preview-subject mb-1">Đăng xuất</p>
                         </div>
                     </a>
-                    <div class="dropdown-divider"></div>
-                    <p class="p-3 mb-0 text-center">Cài đặt nâng cao</p>
                 </div>
             </li>
         </ul>

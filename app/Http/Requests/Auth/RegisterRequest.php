@@ -48,6 +48,7 @@ class RegisterRequest extends FormRequest
             'phone.min' => 'Số điện thoại phải có ít nhất 10 ký tự',
             'phone.max' => 'Số điện thoại không được vượt quá 15 ký tự',
             'phone.unique'=>'Số điện thoại đã được sử dụng',
+            'password_confirmation.required'=>'Điền lại mật khẩu xác nhận',
         ];
     }
 }

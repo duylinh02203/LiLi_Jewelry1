@@ -53,9 +53,18 @@
                                     <td>{{ $contact->phone }}</td>
                                     <td>{{ $contact->comment }}</td>
                                     <td>
+                                        @if($contact->status == 'active')
                                         <a href="{{ route('admin.contact.detail', $contact->id) }}">
                                             <button type="button" class="btn btn-edit">Chi tiết</button>
                                         </a>
+                                        @else
+                                        <a href="{{ route('admin.contact.detail', $contact->id) }}">
+                                            <button type="button" class="btn btn-edit" style="background-color: gray; border-color: gray;">
+                                                Chi tiết
+                                            </button>
+                                        </a>
+                                        @endif
+
                                         <a href="{{ route('admin.contact.remove', $contact->id) }}">
                                             @csrf
                                             @method('DELETE')

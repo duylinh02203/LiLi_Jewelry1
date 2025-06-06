@@ -62,6 +62,11 @@
         color: #666;
         cursor: not-allowed;
     }
+
+    .form-select {
+        border-radius: 5px;
+        background-color: #ccc;
+    }
 </style>
 <div class="content-wrapper">
     <div class="page-header">
@@ -83,6 +88,12 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
+                    <a href="{{ route('admin.product.create') }}" style="text-decoration: none; display: flex; justify-content: end;">
+                        <button class="btn btn-primary"
+                            style="border-radius: 20px; font-size: 14px; padding: 10px 20px; display: flex; align-items: center;">
+                            <span style="margin-right: 5px;">+</span>Thêm mới
+                        </button>
+                    </a>
                     <div class="search-add-wrapper"
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <div class="search-bar col-lg-3" style="width: 250px; flex: 1;margin-left: -10px;">
@@ -92,12 +103,17 @@
                                     value="{{ request()->input('search') }}">
                             </form>
                         </div>
-                        <a href="{{ route('admin.product.create') }}" style="text-decoration: none;">
-                            <button class="btn btn-primary"
-                                style="border-radius: 20px; font-size: 14px; padding: 10px 20px; display: flex; align-items: center;">
-                                <span style="margin-right: 5px;">+</span>Thêm mới
-                            </button>
-                        </a>
+                        <form method="GET" action="{{ route('admin.product.index') }}">
+                            <select name="category" onchange="this.form.submit()" class="form-select w-auto">
+                                <option value="">--Danh mục--</option>
+                                @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </form>
+
                     </div>
                     <div class="table-responsive">
                         <table class="table">
@@ -160,7 +176,7 @@
                     </div>
                 </div>
                 <div class="pagination-container">
-                    {{ $products->links('admin.pagination.default') }}
+                    {{ $products->appends(request()->query())->links('admin.pagination.default') }}
                 </div>
             </div>
         </div>

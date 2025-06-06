@@ -17,10 +17,16 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['images', 'category', 'sizes'])->paginate(5);
-        return view('admin.products.product', compact('products'));
+        $query = Product::with(['images', 'category', 'sizes']);
+        $categories = Category::all();
+        if ($request->has('category') && $request->category != '') {
+            $query->where('category_id', $request->category);
+        }
+        $query->orderBy('created_at', 'desc');
+        $products = $query->paginate(5);
+        return view('admin.products.product', compact('products', 'categories'));
     }
 
 
@@ -51,7 +57,7 @@ class ProductController extends Controller
             ];
             $createdProduct = Product::create($dataProduct);
             if (!$createdProduct) {
-                return redirect()->route('product.index')->with('error', 'Product created failed');
+                return redirect()->route('product.index')->with('error', 'Thêm sản phẩm thất bại !');
             }
             if ($request->hasFile('image')) {
                 foreach ($request->image as $key =>  $image) {
@@ -150,8 +156,8 @@ class ProductController extends Controller
                 return redirect()->route('admin.product.index')->with('error', 'Không tìm thấy sản phẩm');
             }
             ProductSize::where('product_id', $id)->delete();
-            Wishlist::where('product_id',$id)->delete();
-            ProductReview::where('product_id',$id)->delete();
+            Wishlist::where('product_id', $id)->delete();
+            ProductReview::where('product_id', $id)->delete();
             $product->delete();
             DB::commit();
             return redirect()->route('admin.product.index')->with('success', 'Xóa sản phẩm thành công');
@@ -172,7 +178,8 @@ class ProductController extends Controller
         $search = $request->search;
         $products = Product::with(['images', 'category'])
             ->where('name', 'LIKE', "%{$search}%")
-            ->paginate(10);
-        return view('admin.products.product', compact('products'));
+            ->paginate(5);
+        $categories = Category::all();
+        return view('admin.products.product', compact('products','categories'));
     }
 }
