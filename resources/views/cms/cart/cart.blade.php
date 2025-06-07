@@ -1,5 +1,45 @@
 @extends('cms.layouts.app')
 @section('content')
+    @push('styles')
+        <style>
+            .quantity-control {
+                display: flex;
+                align-items: center;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                overflow: hidden;
+                width: fit-content;
+                /* Thêm để chắc chắn không bị bung */
+                gap: 4px;
+                /* hoặc margin giữa các phần tử */
+            }
+
+            .quantity-control button {
+                background-color: #f0f0f0;
+                border: none;
+                padding: 6px 12px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+                flex-shrink: 0;
+                /* tránh button bị co nhỏ */
+                height: 36px;
+                /* cố định chiều cao */
+            }
+
+            .quantity-control input.quantity-input {
+                width: 50px;
+                text-align: center;
+                font-size: 16px;
+                border: none;
+                outline: none;
+                padding: 6px 0;
+                height: 36px;
+                /* chiều cao bằng button */
+                flex-shrink: 0;
+            }
+        </style>
+    @endpush
     <section class="breadcrumb-section section-b-space" style="padding-top:20px;padding-bottom:20px;">
         <ul class="circles">
             <li></li>
@@ -93,18 +133,35 @@
                                         <span>{{ number_format($item->product->price, 0, ',', '.') }} VNĐ</span>
                                     </td>
                                     <td>
-                                        <div class="qty-box">
-                                            <div class="input-group">
-                                                <input type="text" name="quantity" class="form-control input-number"
-                                                    value="{{ $item->quantity }}" readonly>
-                                            </div>
+                                        <div class="input-group input-group-sm justify-content-center"
+                                            style="max-width: 120px;">
+                                            <button type="button" class="btn btn-outline-secondary qty-decrease"
+                                                data-cart-item-id="{{ $item->id }}">−</button>
+
+                                            <input type="text" name="quantity"
+                                                class="form-control text-center input-number" value="{{ $item->quantity }}"
+                                                data-cart-item-id="{{ $item->id }}" style="max-width: 50px;" />
+
+                                            <button type="button" class="btn btn-outline-secondary qty-increase"
+                                                data-cart-item-id="{{ $item->id }}">+</button>
                                         </div>
                                     </td>
+
                                     <td>
-                                        <h5 class="td-color">
-                                            {{ $item->size == null ? 'Không có kích thước' : $item->size }}
-                                        </h5>
+                                        @if ($item->product && $item->product->sizes && $item->product->sizes->count() > 0)
+                                            <select class="form-select select-size" data-cart-item-id="{{ $item->id }}">
+                                                @foreach ($item->product->sizes as $size)
+                                                    <option value="{{ $size->size }}"
+                                                        {{ $item->size == $size->size ? 'selected' : '' }}>
+                                                        {{ $size->size }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        @else
+                                            <span>Không có kích thước</span>
+                                        @endif
                                     </td>
+
                                     <td>
                                         <a href="javascript:void(0)" class="remove-cart-item"
                                             data-cart-item-id="{{ $item->id }}">
@@ -168,7 +225,7 @@
     </section>
     <script>
         //  Popup Confirm 
-        function showConfirmPopup(message, onConfirm) {
+        function showConfirmPopup(message, onConfirm, onCancel = null) {
             const overlay = document.createElement('div');
             overlay.classList.add('popup-overlay');
             overlay.innerHTML = `
@@ -188,6 +245,9 @@
             });
 
             overlay.querySelector('.popup-cancel').addEventListener('click', () => {
+                if (typeof onCancel === 'function') {
+                    onCancel();
+                }
                 overlay.remove();
             });
         }
@@ -267,7 +327,9 @@
                     .then(res => res.json())
                     .then(data => {
                         showNotification(data.status === 'success' ? 'success' : 'error', data.message);
-                        if (data.status === 'success') location.reload();
+                        if (data.status === 'success') {
+                            location.reload();
+                        }
                     })
                     .catch(err => {
                         console.error(err);
@@ -322,5 +384,154 @@
             }
         `;
         document.head.appendChild(style);
+
+        // update cart item quantity
+        function updateCartItemQuantity(cartItemId, quantity) {
+            quantity = parseInt(quantity);
+            if (isNaN(quantity) || quantity < 0) return;
+
+            if (quantity === 0) return; // Không xử lý tại đây nữa (handled riêng khi nhập = 0)
+
+            fetch("{{ route('cart.updateCart') }}", {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: cartItemId,
+                        quantity: quantity
+                    }),
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    showNotification(data.status === 'success' ? 'success' : 'error', data.message);
+                    if (data.status === 'success') location.reload();
+                })
+                .catch(() => showNotification('error', 'Đã có lỗi xảy ra!'));
+        }
+
+        // Xử lý nút +
+        document.querySelectorAll('.qty-increase').forEach(button => {
+            button.addEventListener('click', () => {
+                const cartItemId = button.getAttribute('data-cart-item-id');
+                const input = document.querySelector(
+                    `input[name="quantity"][data-cart-item-id="${cartItemId}"]`);
+                let quantity = parseInt(input.value) || 0;
+                quantity++;
+                input.value = quantity;
+                updateCartItemQuantity(cartItemId, quantity);
+            });
+        });
+
+        // Xử lý nút -
+        document.querySelectorAll('.qty-decrease').forEach(button => {
+            button.addEventListener('click', () => {
+                const cartItemId = button.getAttribute('data-cart-item-id');
+                const input = document.querySelector(
+                    `input[name="quantity"][data-cart-item-id="${cartItemId}"]`);
+                let quantity = parseInt(input.value) || 0;
+                const oldValue = quantity;
+                quantity--;
+                if (quantity <= 0) {
+                    input.value = 0;
+                    showConfirmPopup('Bạn có chắc chắn muốn xoá sản phẩm này khỏi giỏ hàng?', () => {
+                        fetch("{{ route('cart.removeCartItem') }}", {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    id: cartItemId
+                                }),
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').getAttribute('content'),
+                                    'Content-Type': 'application/json',
+                                }
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                showNotification(data.status === 'success' ? 'success' :
+                                    'error', data.message);
+                                if (data.status === 'success') location.reload();
+                            })
+                            .catch(() => showNotification('error', 'Đã có lỗi xảy ra!'));
+                    }, () => {
+                        input.value = oldValue;
+                    });
+                } else {
+                    input.value = quantity;
+                    updateCartItemQuantity(cartItemId, quantity);
+                }
+            });
+        });
+
+        // Xử lý nhập số trực tiếp
+        document.querySelectorAll('input[name="quantity"]').forEach(input => {
+            let oldValue = input.value;
+
+            input.addEventListener('focus', () => {
+                oldValue = input.value;
+            });
+
+            input.addEventListener('change', () => {
+                const cartItemId = input.getAttribute('data-cart-item-id');
+                let quantity = parseInt(input.value) || 0;
+                if (quantity < 0) quantity = 0;
+                input.value = quantity;
+
+                if (quantity === 0) {
+                    showConfirmPopup('Bạn có chắc chắn muốn xoá sản phẩm này khỏi giỏ hàng?', () => {
+                        fetch("{{ route('cart.removeCartItem') }}", {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    id: cartItemId
+                                }),
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').getAttribute('content'),
+                                    'Content-Type': 'application/json',
+                                }
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                showNotification(data.status === 'success' ? 'success' :
+                                    'error', data.message);
+                                if (data.status === 'success') location.reload();
+                            })
+                            .catch(() => showNotification('error', 'Đã có lỗi xảy ra!'));
+                    }, () => {
+                        input.value = oldValue;
+                    });
+                } else {
+                    updateCartItemQuantity(cartItemId, quantity);
+                }
+            });
+        });
+
+        // Cập nhật size
+        document.querySelectorAll('.select-size').forEach(select => {
+            select.addEventListener('change', function() {
+                const cartItemId = this.getAttribute('data-cart-item-id');
+                const newSize = this.value;
+
+                fetch("{{ route('cart.updateCart') }}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content'),
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id: cartItemId,
+                            size: newSize
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        showNotification(data.status === 'success' ? 'success' : 'error', data.message);
+                        if (data.status === 'success') location.reload();
+                    })
+                    .catch(() => showNotification('error', 'Đã có lỗi xảy ra khi cập nhật size!'));
+            });
+        });
     </script>
 @endsection
