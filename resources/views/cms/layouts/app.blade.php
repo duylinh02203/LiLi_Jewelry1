@@ -7,13 +7,13 @@
     <!-- <meta name="csrf-token" content="MkRqEzTGuoSx6LqJUm0OAKxSgNUYt26wTT7RMUZY"> -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="assets/images/favicon.ico')}}">
-    <!-- <link rel="icon" href="{{asset('cms/assets/images/favicon.ico')}}" type="image/x-icon" >
-    <link rel="icon" href="{{asset('cms/assets/images/favicon.ico')}}" type="image/x-icon" > -->
+    <!-- <link rel="icon" href="{{ asset('cms/assets/images/favicon.ico') }}" type="image/x-icon" >
+    <link rel="icon" href="{{ asset('cms/assets/images/favicon.ico') }}" type="image/x-icon" > -->
     <meta name="theme-color" content="#e87316">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Surfside Media">
-    <meta name="msapplication-TileImage" content="{{asset('cms/assets/images/favicon.ico')}}">
+    <meta name="msapplication-TileImage" content="{{ asset('cms/assets/images/favicon.ico') }}">
     <meta name="msapplication-TileColor" content="#FFFFFF">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,20 +27,43 @@
 
     <title>LiLi</title>
 
-    <link id="rtl-link" rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{asset('cms/assets/css/vendors/ion.rangeSlider.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/font-awesome.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/feather-icon.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/animate.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/slick/slick.css')}}">
+    <link id="rtl-link" rel="stylesheet" type="text/css" href="{{ asset('cms/assets/css/vendors/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/assets/css/vendors/ion.rangeSlider.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('cms/assets/css/vendors/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('cms/assets/css/vendors/feather-icon.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('cms/assets/css/vendors/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('cms/assets/css/vendors/slick/slick.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/vendors/slick/slick-theme.css')}}">
-    <link id="color-link" rel="stylesheet" type="text/css" href="{{asset('cms/assets/css/demo4.css')}}">
-    <link rel="stylesheet" href="{{asset('cms/assets/css/custom.css')}}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{{asset('cms/assets/css/custom1.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/css/footer.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('cms/assets/css/vendors/slick/slick-theme.css') }}">
+    <link id="color-link" rel="stylesheet" type="text/css" href="{{ asset('cms/assets/css/demo4.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/assets/css/custom.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ asset('cms/assets/css/custom1.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/footer.css') }}">
     @stack('styles')
+
+    <script>
+        (function() {
+            var script = document.createElement('script');
+            script.dataset.bot = "6841cd5e5270993762ec5034";
+            script.dataset.zindex = "99999";
+            script.src = "https://panel.chatfuel.com/widgets/chat-widget/chat-widget.js";
+            script.async = true;
+            script.defer = true;
+            document.getElementsByTagName('head')[0].appendChild(script);
+        })()
+    </script>
+    <style>
+        .svelte-1xehvd1 {
+            display: none !important;
+        }
+
+        .cfplt-widget__create-logo {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body class="theme-color4 light ltr">
@@ -51,7 +74,7 @@
     <div class="mobile-menu d-sm-none">
         <ul>
             <li>
-                <a href="{{route('home')}}" class="active">
+                <a href="{{ route('home') }}" class="active">
                     <i data-feather="home"></i>
                     <span>Trang chủ</span>
                 </a>
@@ -63,13 +86,13 @@
                 </a>
             </li>
             <li>
-                <a href="{{route('cart')}}">
+                <a href="{{ route('cart') }}">
                     <i data-feather="shopping-bag"></i>
                     <span>Giỏ hàng</span>
                 </a>
             </li>
             <li>
-                <a href="{{route('wishlist')}}">
+                <a href="{{ route('wishlist') }}">
                     <i data-feather="heart"></i>
                     <span>Yêu thích</span>
                 </a>
@@ -86,28 +109,28 @@
     <section class="icon-box-section">
         <div class="icon-box">
             <div class="icon-feat">
-                <img src="{{asset('images/Smile-icon1.png')}}" alt="">
+                <img src="{{ asset('images/Smile-icon1.png') }}" alt="">
             </div>
             <h3>KHÁCH HÀNG HÀI LÒNG</h3>
             <p>Đặt sự hài lòng của khách hàng là ưu tiên số 1 trong mọi suy nghĩ hành động</p>
         </div>
         <div class="icon-box">
             <div class="icon-feat">
-                <img src="{{asset('images/945447.png')}}" alt="Medal Icon">
+                <img src="{{ asset('images/945447.png') }}" alt="Medal Icon">
             </div>
             <h3>CHẤT LƯỢNG CAO CẤP</h3>
             <p>Mọi sản phẩm đều được thiết kế và chế tác bởi các nghệ nhân hàng đầu</p>
         </div>
         <div class="icon-box">
             <div class="icon-feat">
-                <img src="{{asset('images/return-icon.png')}}" alt="Return Icon">
+                <img src="{{ asset('images/return-icon.png') }}" alt="Return Icon">
             </div>
             <h3>ĐỔI TRẢ DỄ DÀNG</h3>
             <p>10 ngày đổi trả (LiLi đến tận nơi nhận hàng). Hoàn tiền nếu không hài lòng</p>
         </div>
         <div class="icon-box">
             <div class="icon-feat">
-                <img src="{{asset('images/support.png')}}" alt="Support Icon">
+                <img src="{{ asset('images/support.png') }}" alt="Support Icon">
             </div>
             <h3>HỖ TRỢ NHIỆT TÌNH</h3>
             <p>Tất cả câu hỏi đều được các chuyên viên của LiLi tư vấn, giải đáp kỹ càng</p>
@@ -124,7 +147,8 @@
                 </div>
 
                 <div class="modal-body">
-                    <img src="{{asset('cms/assets/images/newletter-icon.png')}}" class="img-fluid blur-up lazyload" alt="">
+                    <img src="{{ asset('cms/assets/images/newletter-icon.png') }}" class="img-fluid blur-up lazyload"
+                        alt="">
                     <div class="modal-title">
                         <h2 class="tt-title">Sign up for our Newsletter!</h2>
                         <p class="font-light">Never miss any new updates or products we reveal, stay up to date.</p>
@@ -159,8 +183,8 @@
                             </div>
                             <div class="modal-product">
                                 <div class="modal-contain-img">
-                                    <img src="{{asset('cms/assets/images/fashion/instagram/4.jpg')}}" class="img-fluid blur-up lazyload"
-                                        alt="">
+                                    <img src="{{ asset('cms/assets/images/fashion/instagram/4.jpg') }}"
+                                        class="img-fluid blur-up lazyload" alt="">
                                 </div>
                                 <div class="modal-contain-details">
                                     <h4>Premier Cropped Skinny Jean</h4>
@@ -192,7 +216,7 @@
                                                 <div class="img-wrapper">
                                                     <div class="front">
                                                         <a href="product/details.html">
-                                                            <img src="{{asset('cms/assets/images/fashion/product/front/1.jpg')}}"
+                                                            <img src="{{ asset('cms/assets/images/fashion/product/front/1.jpg') }}"
                                                                 class="bg-img blur-up lazyload" alt="">
                                                         </a>
                                                     </div>
@@ -213,7 +237,7 @@
                                                 <div class="img-wrapper">
                                                     <div class="front">
                                                         <a href="product/details.html">
-                                                            <img src="{{asset('cms/assets/images/fashion/product/front/2.jpg')}}"
+                                                            <img src="{{ asset('cms/assets/images/fashion/product/front/2.jpg') }}"
                                                                 class="bg-img blur-up lazyload" alt="">
                                                         </a>
                                                     </div>
@@ -234,7 +258,7 @@
                                                 <div class="img-wrapper">
                                                     <div class="front">
                                                         <a href="product/details.html">
-                                                            <img src="{{asset('cms/assets/images/fashion/product/front/3.jpg')}}"
+                                                            <img src="{{ asset('cms/assets/images/fashion/product/front/3.jpg') }}"
                                                                 class="bg-img blur-up lazyload" alt="">
                                                         </a>
                                                     </div>
@@ -255,7 +279,7 @@
                                                 <div class="img-wrapper">
                                                     <div class="front">
                                                         <a href="product/details.html">
-                                                            <img src="{{asset('cms/assets/images/fashion/product/front/4.jpg')}}"
+                                                            <img src="{{ asset('cms/assets/images/fashion/product/front/4.jpg') }}"
                                                                 class="bg-img blur-up lazyload" alt="">
                                                         </a>
                                                     </div>
@@ -285,21 +309,21 @@
         </a>
     </div>
     <div class="bg-overlay"></div>
-    <script src="{{asset('cms/assets/js/jquery-3.5.1.min.js')}}"></script>
-    <script src="{{asset('cms/assets/js/bootstrap/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{asset('cms/assets/js/feather/feather.min.js')}}"></script>
-    <script src="{{asset('cms/assets/js/lazysizes.min.js')}}"></script>
-    <script src="{{asset('cms/assets/js/slick/slick.js')}}"></script>
-    <script src="{{asset('cms/assets/js/slick/slick-animation.min.js')}}"></script>
-    <script src="{{asset('cms/assets/js/slick/custom_slick.js')}}"></script>
-    <script src="{{asset('cms/assets/js/price-filter.js')}}"></script>
-    <script src="{{asset('cms/assets/js/ion.rangeSlider.min.js')}}"></script>
-    <script src="{{asset('cms/assets/js/filter.js')}}"></script>
-    <script src="{{asset('cms/assets/js/newsletter.js')}}"></script>
-    <script src="{{asset('cms/assets/js/cart_modal_resize.js')}}"></script>
-    <script src="{{asset('cms/assets/js/bootstrap/bootstrap-notify.min.js')}}"></script>
-    <script src="{{asset('cms/assets/js/theme-setting.js')}}"></script>
-    <script src="{{asset('cms/assets/js/script.js')}}"></script>
+    <script src="{{ asset('cms/assets/js/jquery-3.5.1.min.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/feather/feather.min.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/lazysizes.min.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/slick/slick.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/slick/slick-animation.min.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/slick/custom_slick.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/price-filter.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/ion.rangeSlider.min.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/filter.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/newsletter.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/cart_modal_resize.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/bootstrap/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/theme-setting.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/script.js') }}"></script>
     <script>
         $(function() {
             $('[data-bs-toggle="tooltip"]').tooltip()

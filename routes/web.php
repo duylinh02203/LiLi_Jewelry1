@@ -71,7 +71,7 @@ Route::middleware('auth.login')->group(function () {
     Route::get('nguoi-dung/doi-mat-khau', [AccountController::class, 'formChangePassword'])->name('formChangePassword');
     //reviewProduct
     Route::post('product-review', [ProductReviewController::class, 'create'])->name('shop.product.review');
-    Route::get('destroy/{id}',[ProductReviewController::class,'destroy'])->name('shop.productReview.destroy');
+    Route::get('destroy/{id}', [ProductReviewController::class, 'destroy'])->name('shop.productReview.destroy');
     //contactCreate
     Route::post('/create', [ContactController::class, 'create'])->name('contact.create');
     //wishlist
@@ -86,6 +86,7 @@ Route::middleware('auth.login')->group(function () {
         ->as('cart.')
         ->group(function () {
             Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('addToCart');
+            Route::post('update-cart', [CartController::class, 'updateCart'])->name('updateCart');
             Route::post('remove-cart-item', [CartController::class, 'removeCartItem'])->name('removeCartItem');
             Route::post('remove-all-cart-item', [CartController::class, 'removeAllCartItem'])->name('removeAllCartItem');
         });

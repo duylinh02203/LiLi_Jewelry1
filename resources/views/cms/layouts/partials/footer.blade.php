@@ -65,28 +65,31 @@
                 <div class="footer-contact">
                     <div class="brand-logo">
                         <a href="index.htm" class="footer-logo float-start">
-                            <img src="{{asset('cms/assets/images/LiLi_logo.png')}}" class="f-logo img-fluid blur-up lazyload"
-                                alt="logo">
+                            <img src="{{ asset('cms/assets/images/LiLi_logo.png') }}"
+                                class="f-logo img-fluid blur-up lazyload" alt="logo">
                         </a>
                     </div>
                     <ul class="contact-lists" style="clear:both;">
                         <li>
                             <div>
                                 <i class="fa-solid fa-phone-volume"></i>
-                                <span style="margin-left: 5px;"><b>Điện thoại:</b> <span class="font-light">+84 97326211</span></span>
+                                <span style="margin-left: 5px;"><b>Điện thoại:</b> <span class="font-light">+84
+                                        97326211</span></span>
                             </div>
                         </li>
                         <li>
                             <div>
                                 <i class="fa-solid fa-location-dot"></i>
-                                <span style="margin-left: 5px;"><b>Địa chỉ:</b><span class="font-light"> NIT, Faridabad, Haryana,
+                                <span style="margin-left: 5px;"><b>Địa chỉ:</b><span class="font-light"> NIT,
+                                        Faridabad, Haryana,
                                         India</span></span>
                             </div>
                         </li>
                         <li>
                             <div>
                                 <i class="fa-solid fa-envelope"></i>
-                                <span style="margin-left: 5px;"><b>Email:</b><span class="font-light"> contact@surfsidemedia.in</span></span>
+                                <span style="margin-left: 5px;"><b>Email:</b><span class="font-light">
+                                        contact@surfsidemedia.in</span></span>
                             </div>
                         </li>
                     </ul>
@@ -100,19 +103,19 @@
                     <div class="footer-content">
                         <ul>
                             <li>
-                                <a href="{{route('home')}}" class=" menu-link">Trang chủ</a>
+                                <a href="{{ route('home') }}" class=" menu-link">Trang chủ</a>
                             </li>
                             <li>
-                                <a href="{{route('shop')}}" class=" menu-link">Shop</a>
+                                <a href="{{ route('shop') }}" class=" menu-link">Shop</a>
                             </li>
                             <li>
-                                <a href="{{route('review')}}" class=" menu-link">Đánh giá</a>
+                                <a href="{{ route('review') }}" class=" menu-link">Đánh giá</a>
                             </li>
                             <li>
                                 <a href="#" class=" menu-link">Bảng tin</a>
                             </li>
                             <li>
-                                <a href="{{route('contact')}}" class=" menu-link">Liên hệ</a>
+                                <a href="{{ route('contact') }}" class=" menu-link">Liên hệ</a>
                             </li>
                         </ul>
                     </div>
@@ -125,17 +128,22 @@
                     </div>
                     <div class="footer-content">
                         @php
-                        $categories = \App\Models\Category::with('products')->orderBy('created_at', 'desc')->take(5)->get();
+                            $categories = \App\Models\Category::with('products')
+                                ->orderBy('created_at', 'desc')
+                                ->take(5)
+                                ->get();
                         @endphp
                         <ul>
-                            @foreach($categories as $category)
-                            <li>
-                                <form action="{{ route('shop') }}" id="form_cate" name="category" method="GET">
-                                    <a href="javascript:void(0)" class="menu-link cate-click-1">{{$category->name}}</a>
-                                    <input type="hidden" id="category_{{$category->id}}" name="category[]" value="{{$category->slug}}"
-                                        {{ (is_array(request('category')) && in_array($category->slug, request('category'))) ? 'checked' : '' }}>
-                                </form>
-                            </li>
+                            @foreach ($categories as $category)
+                                <li>
+                                    <form action="{{ route('shop') }}" id="form_cate" name="category" method="GET">
+                                        <a href="javascript:void(0)"
+                                            class="menu-link cate-click-1">{{ $category->name }}</a>
+                                        <input type="hidden" id="category_{{ $category->id }}" name="category[]"
+                                            value="{{ $category->slug }}"
+                                            {{ is_array(request('category')) && in_array($category->slug, request('category')) ? 'checked' : '' }}>
+                                    </form>
+                                </li>
                             @endforeach
 
                         </ul>
@@ -151,16 +159,19 @@
                     <div class="footer-content">
                         <ul>
                             <li>
-                                <a href="{{route('shop')}}" class="menu-link">Sản phẩm mới</a>
+                                <a href="{{ route('shop') }}" class="menu-link">Sản phẩm mới</a>
                             </li>
                             <li>
-                                <a href="{{ route('shop', ['gender[]' => 'male']) }}" class="menu-link">Trang sức nam</a>
+                                <a href="{{ route('shop', ['gender[]' => 'male']) }}" class="menu-link">Trang sức
+                                    nam</a>
                             </li>
                             <li>
-                                <a href="{{ route('shop', ['gender[]' => 'female']) }}" class="menu-link">Trang sức nữ</a>
+                                <a href="{{ route('shop', ['gender[]' => 'female']) }}" class="menu-link">Trang sức
+                                    nữ</a>
                             </li>
                             <li>
-                                <a href="{{ route('shop', ['gender[]' => 'unisex']) }}" class="menu-link">Dành cho cặp đôi</a>
+                                <a href="{{ route('shop', ['gender[]' => 'unisex']) }}" class="menu-link">Dành cho
+                                    cặp đôi</a>
                             </li>
                         </ul>
                     </div>
@@ -197,26 +208,26 @@
                     <li class="font-dark">Chúng tôi chấp nhận:</li>
                     <li>
                         <a href="javascript:void(0)">
-                            <img src="{{asset('cms/assets/images/payment-icon/1.jpg')}}" class="img-fluid blur-up lazyload"
-                                alt="payment icon">
+                            <img src="{{ asset('cms/assets/images/payment-icon/1.jpg') }}"
+                                class="img-fluid blur-up lazyload" alt="payment icon">
                         </a>
                     </li>
                     <li>
                         <a href="javascript:void(0)">
-                            <img src="{{asset('cms/assets/images/payment-icon/2.jpg')}}" class="img-fluid blur-up lazyload"
-                                alt="payment icon">
+                            <img src="{{ asset('cms/assets/images/payment-icon/2.jpg') }}"
+                                class="img-fluid blur-up lazyload" alt="payment icon">
                         </a>
                     </li>
                     <li>
                         <a href="javascript:void(0)">
-                            <img src="{{asset('cms/assets/images/payment-icon/3.jpg')}}" class="img-fluid blur-up lazyload"
-                                alt="payment icon">
+                            <img src="{{ asset('cms/assets/images/payment-icon/3.jpg') }}"
+                                class="img-fluid blur-up lazyload" alt="payment icon">
                         </a>
                     </li>
                     <li>
                         <a href="javascript:void(0)">
-                            <img src="{{asset('cms/assets/images/payment-icon/4.jpg')}}" class="img-fluid blur-up lazyload"
-                                alt="payment icon">
+                            <img src="{{ asset('cms/assets/images/payment-icon/4.jpg') }}"
+                                class="img-fluid blur-up lazyload" alt="payment icon">
                         </a>
                     </li>
                 </ul>

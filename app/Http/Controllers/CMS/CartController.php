@@ -56,6 +56,34 @@ class CartController extends Controller
         }
     }
 
+    public function updateCart(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $size = $request->size ?? '';
+            $quantity = $request->quantity ?? '';
+            $cartItem = CartItem::find($request->id);
+            $cartItem->update([
+                'quantity' => $quantity == '' ? $cartItem->quantity : $quantity,
+                'size' => $size == '' ? $cartItem->size : $size,
+            ]);
+            DB::commit();
+            $cartCount = CartItem::where('cart_id', $cartItem->cart_id)->sum('quantity');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật thành công',
+                'cart_count' => $cartCount,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Không cập nhật được',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function cart()
     {
         $cartId = Cart::where('user_id', session('userData')->id)->first()->id;
