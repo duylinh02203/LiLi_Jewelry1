@@ -74,22 +74,20 @@
                             <div>
                                 <i class="fa-solid fa-phone-volume"></i>
                                 <span style="margin-left: 5px;"><b>Điện thoại:</b> <span class="font-light">+84
-                                        97326211</span></span>
+                                        97326216</span></span>
                             </div>
                         </li>
                         <li>
                             <div>
                                 <i class="fa-solid fa-location-dot"></i>
-                                <span style="margin-left: 5px;"><b>Địa chỉ:</b><span class="font-light"> NIT,
-                                        Faridabad, Haryana,
-                                        India</span></span>
+                                <span style="margin-left: 5px;"><b>Địa chỉ:</b><span class="font-light"> 149 Khương Thượng, Đống Đa, Hà Nội</span></span>
                             </div>
                         </li>
                         <li>
                             <div>
                                 <i class="fa-solid fa-envelope"></i>
                                 <span style="margin-left: 5px;"><b>Email:</b><span class="font-light">
-                                        contact@surfsidemedia.in</span></span>
+                                        dangduylinh@gmail.com</span></span>
                             </div>
                         </li>
                     </ul>
@@ -106,10 +104,7 @@
                                 <a href="{{ route('home') }}" class=" menu-link">Trang chủ</a>
                             </li>
                             <li>
-                                <a href="{{ route('shop') }}" class=" menu-link">Shop</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('review') }}" class=" menu-link">Đánh giá</a>
+                                <a href="{{ route('shop') }}" class=" menu-link">Cửa hàng</a>
                             </li>
                             <li>
                                 <a href="#" class=" menu-link">Bảng tin</a>
@@ -180,18 +175,21 @@
             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div class="footer-links">
                     <div class="footer-title">
-                        <h3 style="font-weight: bold;" class="help-under">TRỢ GIÚP</h3>
+                        <h3 style="font-weight: bold;" class="help-under">CẨM NANG SỬ DỤNG</h3>
                     </div>
                     <div class="footer-content">
                         <ul>
                             <li>
-                                <a href="#" class="menu-link">Your Orders</a>
+                                <a href="{{route('shop.handbook.hb_2')}}" class="menu-link">Tại sao nên chọn bạc ?</a>
                             </li>
                             <li>
-                                <a href="#" class="menu-link">Your Account</a>
+                                <a href="{{route('shop.handbook.hb_4')}}" class="menu-link">Tác dụng của bạc</a>
                             </li>
                             <li>
-                                <a href="#" class="menu-link">Track Orders</a>
+                                <a href="{{route('shop.handbook.hb_3')}}" class="menu-link">Cách làm trắng bạc tại nhà</a>
+                            </li>
+                            <li>
+                                <a href="{{route('shop.handbook.hb_1')}}" class="menu-link">Cách bảo quản trang sức bạc</a>
                             </li>
                         </ul>
                     </div>

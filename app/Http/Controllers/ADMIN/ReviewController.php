@@ -33,6 +33,9 @@ class ReviewController extends Controller
     public function detail($id)
     {
         $productReview = ProductReview::with('user', 'product')->findOrFail($id);
+        $productReview->update([
+            'status' => 'inactive',
+        ]);
         return view('admin.reviews.product_review_detail', compact('productReview'));
     }
 

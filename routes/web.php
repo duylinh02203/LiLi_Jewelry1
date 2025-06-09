@@ -49,7 +49,11 @@ Route::get('/contact-us/success', [ContactController::class, 'success'])->name('
 Route::get('/danh-muc/{slug}', [HomeController::class, 'products'])->name('shop.product.category');
 // account
 Route::get('account', [AccountController::class, 'index'])->name('index');
-// wishlist
+// Handbook
+Route::get('cach-bao-quan-bac',[HomeController::class,'handbook_1'])->name('shop.handbook.hb_1');
+Route::get('tai-sao-su-dung-bac',[HomeController::class,'handbook_2'])->name('shop.handbook.hb_2');
+Route::get('lam-sang-tai-nha',[HomeController::class,'handbook_3'])->name('shop.handbook.hb_3');
+Route::get('tac-dung-cua-bac',[HomeController::class,'handbook_4'])->name('shop.handbook.hb_4');
 // cms
 Route::prefix('auth')->group(
     function () {

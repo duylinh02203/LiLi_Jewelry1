@@ -94,10 +94,6 @@
                                 @endif
                             </td>
                             <td>
-
-                                <a href="javascript:void(0)" class="icon">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </a>
                                 <a href="{{route('shop.wishlist.remove',$wishlist->id)}}" class="icon removeWishlist" data-wishlist-id="{{ $wishlist->id }}">
                                     @csrf
                                     @method('DELETE')

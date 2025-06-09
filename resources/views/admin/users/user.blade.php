@@ -44,6 +44,7 @@
                                     <th>No</th>
                                     <th>Tên người dùng</th>
                                     <th>Email</th>
+                                    <th>Số điện thoại</th>
                                     <th>Chức năng</th>
                                 </tr>
                             </thead>
@@ -54,6 +55,7 @@
                                     <td>{{ ++$index }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->userInfor->phone }}</td>
                                     <td>
                                         <a href="{{ route('admin.user.edit', $user->id)}}"><button
                                                 type="button" class="btn btn-edit">Sửa</button></a>

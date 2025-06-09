@@ -86,7 +86,13 @@ class CartController extends Controller
 
     public function cart()
     {
-        $cartId = Cart::where('user_id', session('userData')->id)->first()->id;
+        $cart = Cart::where('user_id', session('userData')->id)->first();
+        if (!$cart) {
+            $cart = Cart::create([
+                'user_id' => session('userData')->id
+            ]);
+        }
+        $cartId = $cart->id;
         $cartItems = CartItem::with([
             'product.images',
             'product.sizes',

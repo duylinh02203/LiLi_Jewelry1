@@ -54,8 +54,13 @@
                                     <td>{{$productReview->rating}} sao</td>
                                     <td style="max-width: 30ch; word-wrap: break-word; white-space: normal; text-align: left;">{{$productReview->comment}}</td>
                                     <td>
+                                        @if($productReview->status == 'active')
                                         <a href="{{route('admin.review.detail',$productReview->id)}}"><button
                                                 type="button" class="btn btn-primary">Chỉnh tiết</button></a>
+                                        @else
+                                        <a href="{{route('admin.review.detail',$productReview->id)}}"><button
+                                                type="button" class="btn btn-primary" style="background-color: gray; border-color: gray;">Chỉnh tiết</button></a>
+                                        @endif
                                         <a href="{{ route('admin.review.destroy', $productReview->id) }}">
                                             @csrf
                                             @method('DELETE')
@@ -66,7 +71,7 @@
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="12" class="text-center">Không tìm thấy danh mục nào.</td>
+                                    <td colspan="12" class="text-center">Không có đánh giá nào.</td>
                                 </tr>
                                 @endif
                             </tbody>

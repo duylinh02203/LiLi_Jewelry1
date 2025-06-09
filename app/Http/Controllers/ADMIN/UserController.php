@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ADMIN\CreateUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
+use App\Models\UserInfor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -31,25 +32,30 @@ class UserController extends Controller
     }
 
     public function store(CreateUserRequest $request)
-    {   
+    {
         DB::beginTransaction();
         try {
             $data = [
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' =>Hash::make( $request->password),
+                'password' => Hash::make($request->password),
                 'role' => $request->role,
             ];
             $createdUser = User::create($data);
             if (!$createdUser) {
                 DB::rollBack();
                 return redirect()->route('admin.user.create')->with('error', 'User creation failed.');
-            }
-            DB::commit();
-           if ($request->role == 1) {
-                return redirect()->route('admin.user.listAdmin')->with('success', 'Thêm quản trị viên thành công.');
             } else {
-                return redirect()->route('admin.user.listUser')->with('success', 'Thêm người dùng thành công.');
+                UserInfor::create([
+                    'user_id' => $createdUser->id,
+                    'phone' => $request->phone,
+                ]);
+                DB::commit();
+                if ($request->role == 1) {
+                    return redirect()->route('admin.user.listAdmin')->with('success', 'Thêm quản trị viên thành công.');
+                } else {
+                    return redirect()->route('admin.user.listUser')->with('success', 'Thêm người dùng thành công.');
+                }
             }
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -79,6 +85,10 @@ class UserController extends Controller
                 $data['password'] = $request->password;
             }
             $user->update($data);
+            $user->userInfor()->update([
+                'phone' => $request->phone,
+            ]);
+
             DB::commit();
             if ($request->role == 1) {
                 return redirect()->route('admin.user.listAdmin')->with('success', 'Chỉnh sửa quản trị viên thành công.');
@@ -100,6 +110,8 @@ class UserController extends Controller
                 return redirect()->route('admin.user.listUser')->with('error', 'User not found.');
             }
             $user->delete();
+            $userInfor = UserInfor::where('user_id',$user->id)->first();
+            $userInfor->delete();
             DB::commit();
             return redirect()->back()->with('success', 'User deleted successfully.');
         } catch (\Throwable $th) {
@@ -116,10 +128,10 @@ class UserController extends Controller
                 $query->where('name', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%');
             })
-            ->paginate(1);
+            ->paginate(5);
         return view('admin.users.user', compact('users'));
     }
-    
+
     public function searchAdmin(Request $request)
     {
         $search = $request->search;
@@ -128,7 +140,7 @@ class UserController extends Controller
                 $query->where('name', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%');
             })
-            ->get();
+            ->paginate(5);
         return view('admin.users.admin', compact('admins'));
     }
     public function detail($id)

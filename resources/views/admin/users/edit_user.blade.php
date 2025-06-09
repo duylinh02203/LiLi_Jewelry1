@@ -56,6 +56,15 @@
                                 placeholder="Địa chủ email" readonly>
                         </div>
                         <div class="form-group">
+                            <label>Số điện thoại
+                                @error('phone')
+                                <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                @enderror
+                            </label>
+                            <input value="{{ $userUpdate->userInfor->phone }}" type="phone" class="form-control" name="phone"
+                                placeholder="Số điện thoại">
+                        </div>
+                        <div class="form-group">
                             <label>Mật khẩu
                                 @error('password')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
