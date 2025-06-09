@@ -64,8 +64,7 @@
                                         </div>
                                     </li>
                                     <li><a href="{{ route('home') }}" class="nav-link menu">Trang chủ</a></li>
-                                    <li><a href="{{ route('shop') }}" class="nav-link menu">Shop</a></li>
-                                    <li><a href="{{ route('review') }}" class="nav-link menu">Đánh giá</a></li>
+                                    <li><a href="{{ route('shop') }}" class="nav-link menu">Cửa hàng</a></li>
                                     <li><a href="{{ route('contact') }}" class="nav-link menu">Liên hệ</a>
                                     </li>
                                     <li><a href="blog.html" class="nav-link menu">Bảng tin</a></li>

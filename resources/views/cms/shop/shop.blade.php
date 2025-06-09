@@ -99,7 +99,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h3>Shop</h3>
+                <h3>Cửa hàng</h3>
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -107,7 +107,7 @@
                                 <i class="fas fa-home"></i>
                             </a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                        <li class="breadcrumb-item active" aria-current="page">Cửa hàng</li>
                     </ol>
                 </nav>
             </div>
@@ -242,7 +242,7 @@
                                                     <input class="checkbox_animated check-it" id="gender3"
                                                         name="gender[]" type="checkbox" value="unisex"
                                                         {{ is_array(request('gender')) && in_array('unisex', request('gender')) ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="gender3">Unisex</label>
+                                                    <label class="form-check-label" for="gender3">Cặp đôi</label>
                                                 </div>
                                             </li>
                                         </ul>
@@ -449,9 +449,9 @@
             <!-- Các option sẽ được JS chèn vào -->
         </select>
         <div class="d-flex justify-content-between">
-            <button id="cancelSize" type="button" class="btn btn-outline-dark">Hủy</button>
+            <button id="cancelSize" type="button" class="btn btn-outline-dark" style="border-radius:10px;">Hủy</button>
             <button id="confirmSize" type="button" class="btn"
-                style="background-color: #e87316; color: black; font-weight: bold;">Xác nhận</button>
+                style="background-color: #e87316; color: black; font-weight: bold; border-radius:10px;">Xác nhận</button>
         </div>
     </div>
 </div>

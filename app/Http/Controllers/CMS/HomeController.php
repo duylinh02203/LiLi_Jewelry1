@@ -10,6 +10,18 @@ use App\Models\UserInfor;
 
 class HomeController extends Controller
 {
+    public function handbook_1(){
+        return view('cms.handbook.handbook_1');
+    }
+    public function handbook_2(){
+        return view('cms.handbook.handbook_2');
+    }
+    public function handbook_3(){
+        return view('cms.handbook.handbook_3');
+    }
+    public function handbook_4(){
+        return view('cms.handbook.handbook_4');
+    }
 
     public function index()
     {

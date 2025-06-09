@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="wrap-regis">
-                        <label for="name" style="line-height: 60px; font-weight: 300;">Tên
+                        <label for="name" style="line-height: 60px; font-weight: 300;">Tên tài khoản
                             @error('name')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                             @enderror

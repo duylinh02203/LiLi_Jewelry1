@@ -42,6 +42,13 @@ class UpdateUserRequest extends FormRequest
                 'string',
                 'min:6',
             ],
+            'phone' => [
+                'required',
+                'string',
+                'min:10',
+                'max:15',
+                Rule::unique('user_infors', 'phone')->ignore($id, 'user_id'),
+            ],
         ];
     }
 
@@ -61,6 +68,10 @@ class UpdateUserRequest extends FormRequest
 
             'password.string' => 'Mật khẩu phải là chuỗi ký tự.',
             'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
+            'phone.required' => 'Vui lòng nhập số điện thoại',
+            'phone.min' => 'Số điện thoại phải có ít nhất 10 ký tự',
+            'phone.max' => 'Số điện thoại không được vượt quá 15 ký tự',
+            'phone.unique' => 'Số điện thoại đã tồn tại',
         ];
     }
 }

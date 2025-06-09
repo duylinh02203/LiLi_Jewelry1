@@ -54,7 +54,7 @@
                 <span class="menu-title">Thống kê</span>
             </a>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.category.index')||request()->routeIs('admin.category.detail')||request()->routeIs('admin.category.edit')||request()->routeIs('admin.category.create') ? 'active' : '' }}">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.category.index')||request()->routeIs('admin.category.detail')||request()->routeIs('admin.category.edit')||request()->routeIs('admin.category.create')||request()->routeIs('admin.category.search') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.category.index') }}">
                 <span class="menu-icon">
                     <i class="fa-solid fa-layer-group"></i>
@@ -62,7 +62,7 @@
                 <span class="menu-title">Danh mục</span>
             </a>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.product.index')||request()->routeIs('admin.product.detail')||request()->routeIs('admin.product.edit')||request()->routeIs('admin.product.create') ? 'active' : '' }}">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.product.index')||request()->routeIs('admin.product.detail')||request()->routeIs('admin.product.edit')||request()->routeIs('admin.product.create')||request()->routeIs('admin.product.search') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.product.index') }}">
                 <span class="menu-icon">
                     <i class="fa-solid fa-boxes-packing"></i>
@@ -70,7 +70,7 @@
                 <span class="menu-title">Sản phẩm</span>
             </a>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.review.ProductReview')||request()->routeIs('admin.review.detail') ? 'active' : '' }}">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.review.ProductReview')||request()->routeIs('admin.review.detail')||request()->routeIs('admin.review.search') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.review.ProductReview') }}">
                 <span class="menu-icon">
                     <i class="fa-solid fa-star"></i> 
@@ -78,7 +78,7 @@
                 <span class="menu-title">Đánh giá sản phẩm</span>
             </a>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.contact.index')||request()->routeIs('admin.contact.detail') ? 'active' : '' }}">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.contact.index')||request()->routeIs('admin.contact.detail')||request()->routeIs('admin.contact.search') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.contact.index') }}">
                 <span class="menu-icon">
                     <i class="mdi mdi-playlist-play"></i>

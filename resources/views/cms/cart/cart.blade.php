@@ -93,7 +93,7 @@
                             @if ($cartItems->isEmpty())
                                 <tr>
                                     <td colspan="6" class="text-center">
-                                        <h4>Không có sản phẩm nào trong giỏ hàng</h4>
+                                        <h4 style="color:#ccc">Không có sản phẩm nào trong giỏ hàng</h4>
                                     </td>
                                 </tr>
                             @endif

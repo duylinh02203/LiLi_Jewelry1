@@ -4,6 +4,13 @@
     .btn-solid-default::before {
         border-radius: 10px !important;
     }
+    .change-pass::before{
+        background-color: brown;
+        border: brown;
+    }
+    .back::before{
+        background-color: gray;
+    }
 </style>
 <section class="contact-section" style="margin-bottom: 30px;">
     <div class="container">
@@ -39,7 +46,7 @@
                 });
             </script>
             @endif
-            <div class="col-lg-7">
+            <div class="col-lg-6">
                 <div class="materialContainer">
                     <div class="material-details">
                         <div class="title title1 title-effect mb-1 title-left">
@@ -98,10 +105,10 @@
                                 <button class="btn btn-solid-default submit-form" type="submit" style="border-radius:10px;">Chỉnh sửa thông tin</button>
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-solid-default change-pass" type="button" style="border-radius:10px;">Đổi mật khẩu</button>
+                                <button class="btn btn-solid-default change-pass" type="button" style="border-radius: 10px ; border-color: brown;">Đổi mật khẩu</button>
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-solid-default back" type="button" style="border-radius:10px;">Quay lại</button>
+                                <button class="btn btn-solid-default back" type="button" style="border-radius:10px; border-color: gray;">Quay lại</button>
                             </div>
                         </div>
                     </form>

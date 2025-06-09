@@ -44,6 +44,9 @@
                                     <span>Địa chỉ Email: </span> {{ $user->email }}
                                 </div>
                                 <div class="mb-6">
+                                    <span>Số điện thoại: </span> {{ $user->userInfor->phone }}
+                                </div>
+                                <div class="mb-6">
                                     <span>Mật khẩu: </span> {{ $user->password }}
                                 </div>
                                 <div class="mb-6">
