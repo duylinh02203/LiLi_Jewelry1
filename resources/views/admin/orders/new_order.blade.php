@@ -2,7 +2,7 @@
 @section('content')
     <div class="content-wrapper">
         <div class="page-header">
-            <h3 class="page-title">Quản lí danh mục</h3>
+            <h3 class="page-title">Quản lí đơn hàng chưa duyệt</h3>
             <nav aria-label="breadcrumb">
             </nav>
         </div>
@@ -24,13 +24,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Nút Add New -->
-                            <a href="{{ route('addCategory') }} " style="text-decoration: none;">
-                                <button class="btn btn-primary"
-                                    style="border-radius: 20px; font-size: 14px; padding: 10px 20px; display: flex; align-items: center;">
-                                    <span style="margin-right: 5px;">+</span> Add New
-                                </button>
-                            </a>
                         </div>
                         <div class="table-responsive">
                             <style>
@@ -90,39 +83,45 @@
                                 <thead>
                                     <tr>
                                         <th>STT</th>
-                                        <th>Họ và tên</th>
+                                        <th>Tên người dùng</th>
+                                        <th>Mã đơn hàng</th>
                                         <th>Email</th>
                                         <th>Hình thức thanh toán</th>
-                                        <th>Mã sản phẩm</th>
+                                        <th>Tổng tiền</th>
                                         <th>Trạng thái</th>
                                         <th>Chức năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Sản phẩm A</td>
-                                        <td>Mô tả về sản phẩm A</td>
-                                        <td>COD</td>
-                                        <td>330M</td>
-                                        <td>Đang xử lí</td>
-                                        <td>
-                                            <button type="button" class="btn btn-edit">Sửa</button>
-                                            <button type="button" class="btn btn-delete">Xóa</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Sản phẩm B</td>
-                                        <td>Mô tả về sản phẩm B</td>
-                                        <td>COD</td>
-                                        <td>212V</td>
-                                        <td>Đã duyệt</td>
-                                        <td>
-                                            <button type="button" class="btn btn-edit">Sửa</button>
-                                            <button type="button" class="btn btn-delete">Xóa</button>
-                                        </td>
-                                    </tr>
+                                    @foreach ($orders as $key => $order)
+                                        <tr>
+                                            <td>{{ ++$key }}</td>
+                                            <td>{{ $order->name }}</td>
+                                            <td>{{ $order->id }}</td>
+                                            <td>{{ $order->email }}</td>
+                                            <td>{{ $order->payment == 'cod' ? 'thanh toán khi nhận hàng' : 'thanh toán qua VNPay' }}
+                                            </td>
+                                            <td>{{ number_format($order->total_price, 0, '.', ',') }} VNĐ </td>
+                                            <td style="color: coral">
+                                                {{ $order->status == 'pending' ? 'Đang chờ xác nhận' : '' }}
+                                            </td>
+                                            <td>
+                                                <!-- FORM đặt ngoài button -->
+                                                <form id="form_accept_order_{{ $order->id }}"
+                                                    action="{{ route('admin.order.acceptOrder') }}" method="POST"
+                                                    style="display: none;">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                                </form>
+
+                                                <!-- NÚT đặt bên ngoài form -->
+                                                <button type="button" class="btn btn-edit btn-accept-order"
+                                                    data-id="{{ $order->id }}">Xác nhận</button>
+                                                <button type="button" class="btn btn-delete">Hủy</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -131,13 +130,13 @@
             </div>
         </div>
     </div>
+    <script>
+        document.querySelectorAll('.btn-accept-order').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const orderId = this.getAttribute('data-id');
+                const form = document.getElementById('form_accept_order_' + orderId);
+                form.submit();
+            });
+        });
+    </script>
 @endsection
-<!-- <div class="card-footer clearfix">
-                        <ul class="pagination pagination m-0 float-right">
-                            <li class="page-item"><a class="page-link" href="#">«</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">»</a></li>
-                        </ul>
-                    </div> -->

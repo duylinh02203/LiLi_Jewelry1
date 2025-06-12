@@ -4,11 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <meta name="csrf-token" content="MkRqEzTGuoSx6LqJUm0OAKxSgNUYt26wTT7RMUZY"> -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="assets/images/favicon.ico')}}">
-    <!-- <link rel="icon" href="{{ asset('cms/assets/images/favicon.ico') }}" type="image/x-icon" >
-    <link rel="icon" href="{{ asset('cms/assets/images/favicon.ico') }}" type="image/x-icon" > -->
     <meta name="theme-color" content="#e87316">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -67,6 +64,7 @@
 </head>
 
 <body class="theme-color4 light ltr">
+
     <header class="header-style-2 fixed-header" id="home">
         @include('cms.layouts.partials.header')
     </header>

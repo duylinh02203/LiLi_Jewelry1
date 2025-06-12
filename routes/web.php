@@ -11,10 +11,12 @@ use App\Http\Controllers\CMS\AuthController;
 use App\Http\Controllers\ADMIN\AuthController as AuthAdminController;
 use App\Http\Controllers\CMS\ShopController;
 use App\Http\Controllers\ADMIN\DashboardController;
+use App\Http\Controllers\ADMIN\OrderController;
 use App\Http\Controllers\ADMIN\ReviewController;
 use App\Http\Controllers\ADMIN\UserController;
 use App\Http\Controllers\CMS\AccountController;
 use App\Http\Controllers\CMS\CartController;
+use App\Http\Controllers\CMS\PaymentController;
 use App\Http\Controllers\CMS\ProductReviewController;
 use App\Http\Controllers\CMS\WishlistController;
 use App\Models\ProductReview;
@@ -94,6 +96,12 @@ Route::middleware('auth.login')->group(function () {
             Route::post('remove-cart-item', [CartController::class, 'removeCartItem'])->name('removeCartItem');
             Route::post('remove-all-cart-item', [CartController::class, 'removeAllCartItem'])->name('removeAllCartItem');
         });
+    Route::prefix('payment')->group(function () {
+        Route::get('/checkout', [PaymentController::class, 'viewCheckout'])->name('checkout');
+        Route::post('/vnpay', [PaymentController::class, 'createVNPayPayment'])->name('payment.vnpay');
+        Route::get('/vnpay/return', [PaymentController::class, 'vnpayReturn'])->name('vnpay.return');
+        Route::post('/orders', [PaymentController::class, 'orders'])->name('payment.orders');
+    });
 });
 
 Route::prefix('admin')
@@ -166,6 +174,12 @@ Route::prefix('admin')
                     Route::put('changeInforAccount', [AccountADController::class, 'changeInforAccount'])->name('changeInforAccount');
                     Route::get('formChangePass', [AccountADController::class, 'formChangePass'])->name('formChangePass');
                     Route::put('changePass', [AccountADController::class, 'changePass'])->name('changePass');
+                });
+            Route::prefix('order')
+                ->as('order.')
+                ->group(function () {
+                    Route::get('newOder', [OrderController::class, 'newOrder'])->name('newOrder');
+                    Route::put('acceptOrder', [OrderController::class, 'acceptOrder'])->name('acceptOrder');
                 });
         });
     });

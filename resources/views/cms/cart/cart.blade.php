@@ -195,13 +195,9 @@
                 <div class="cart-checkout-section">
                     <div class="row g-4">
                         <div class="col-lg-4 col-sm-6">
-
                         </div>
-
                         <div class="col-lg-4 col-sm-6 ">
-
                         </div>
-
                         <div class="col-lg-4">
                             <div class="cart-box">
                                 <div class="cart-box-details">
@@ -211,8 +207,8 @@
                                                 <span>{{ number_format($totalPrice, 0, '.', ',') }} VNĐ</span>
                                             </h2>
                                         </div>
-                                        <div class="bottom-details">
-                                            <a href="checkout">Thanh toán</a>
+                                        <div class="bottom-details submit-payment">
+                                            <a href="{{ route('checkout') }}">Thanh toán</a>
                                         </div>
                                     </div>
                                 </div>
@@ -299,7 +295,8 @@
                         })
                         .then(res => res.json())
                         .then(data => {
-                            showNotification(data.status === 'success' ? 'success' : 'error',
+                            showNotification(data.status === 'success' ? 'success' :
+                                'error',
                                 data.message);
                             if (data.status === 'success') location.reload();
                         })
@@ -326,7 +323,8 @@
                     })
                     .then(res => res.json())
                     .then(data => {
-                        showNotification(data.status === 'success' ? 'success' : 'error', data.message);
+                        showNotification(data.status === 'success' ? 'success' : 'error', data
+                            .message);
                         if (data.status === 'success') {
                             location.reload();
                         }
@@ -399,7 +397,8 @@
                         quantity: quantity
                     }),
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'),
                         'Content-Type': 'application/json',
                     }
                 })
@@ -443,7 +442,8 @@
                                 }),
                                 headers: {
                                     'X-CSRF-TOKEN': document.querySelector(
-                                        'meta[name="csrf-token"]').getAttribute('content'),
+                                        'meta[name="csrf-token"]').getAttribute(
+                                        'content'),
                                     'Content-Type': 'application/json',
                                 }
                             })
@@ -487,7 +487,8 @@
                                 }),
                                 headers: {
                                     'X-CSRF-TOKEN': document.querySelector(
-                                        'meta[name="csrf-token"]').getAttribute('content'),
+                                        'meta[name="csrf-token"]').getAttribute(
+                                        'content'),
                                     'Content-Type': 'application/json',
                                 }
                             })
@@ -527,7 +528,8 @@
                     })
                     .then(res => res.json())
                     .then(data => {
-                        showNotification(data.status === 'success' ? 'success' : 'error', data.message);
+                        showNotification(data.status === 'success' ? 'success' : 'error', data
+                            .message);
                         if (data.status === 'success') location.reload();
                     })
                     .catch(() => showNotification('error', 'Đã có lỗi xảy ra khi cập nhật size!'));
