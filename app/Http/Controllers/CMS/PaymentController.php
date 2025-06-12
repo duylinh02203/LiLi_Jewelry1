@@ -54,8 +54,9 @@ class PaymentController extends Controller
                         $cartItem->delete();
                     }
                 }
+                $orderWithItems = Order::with('orderItems.product')->find($order->id);
                 DB::commit();
-                return view('cms.checkout.payment_success');
+                return view('cms.checkout.payment_success' , compact('orderWithItems'));
             }
         } catch (\Exception $e) {
             DB::rollBack();
