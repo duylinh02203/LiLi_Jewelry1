@@ -207,9 +207,15 @@
                                                 <span>{{ number_format($totalPrice, 0, '.', ',') }} VNĐ</span>
                                             </h2>
                                         </div>
+                                        @if($totalPrice > 0)
                                         <div class="bottom-details submit-payment">
                                             <a href="{{ route('checkout') }}">Thanh toán</a>
                                         </div>
+                                        @else
+                                         <div class="bottom-details submit-payment" disabled>
+                                            <a href="javascript:void(0)">Thanh toán</a>
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

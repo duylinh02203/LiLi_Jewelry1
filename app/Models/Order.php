@@ -18,4 +18,9 @@ class Order extends Model
         'address',
         'total_price',
     ];
+    
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }
