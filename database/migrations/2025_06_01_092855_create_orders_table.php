@@ -14,9 +14,13 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->decimal('total_price', 12, 2);
             $table->string('status');
+            $table->string('payment')->comment('cod, vnpay');
+            $table->string('phone');
+            $table->string('email');
+            $table->string('name');
             $table->string('address');
+            $table->unsignedBigInteger('total_price');
             $table->timestamps();
         });
     }

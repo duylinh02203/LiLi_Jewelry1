@@ -8,17 +8,17 @@
             <div class="profile-desc">
                 <div class="profile-pic">
                     <div class="count-indicator">
-                        <img class="img-xs rounded-circle " src="{{asset('assets/images/user.png')}}" alt="">
+                        <img class="img-xs rounded-circle " src="{{ asset('assets/images/user.png') }}" alt="">
                         <span class="count bg-success"></span>
                     </div>
                     <div class="profile-name">
-                        <h5 class="mb-0 font-weight-normal">{{session('userData')->name}}</h5>
+                        <h5 class="mb-0 font-weight-normal">{{ session('userData')->name }}</h5>
                     </div>
                 </div>
                 <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
                 <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list"
                     aria-labelledby="profile-dropdown">
-                    <a href="{{route('admin.account.information')}}" class="dropdown-item preview-item">
+                    <a href="{{ route('admin.account.information') }}" class="dropdown-item preview-item">
                         <div class="preview-thumbnail">
                             <div class="preview-icon bg-dark rounded-circle">
                                 <i class="mdi mdi-settings text-primary"></i>
@@ -29,7 +29,7 @@
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="{{route('admin.account.formChangePass')}}" class="dropdown-item preview-item">
+                    <a href="{{ route('admin.account.formChangePass') }}" class="dropdown-item preview-item">
                         <div class="preview-thumbnail">
                             <div class="preview-icon bg-dark rounded-circle">
                                 <i class="mdi mdi-onepassword  text-info"></i>
@@ -54,7 +54,8 @@
                 <span class="menu-title">Thống kê</span>
             </a>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.category.index')||request()->routeIs('admin.category.detail')||request()->routeIs('admin.category.edit')||request()->routeIs('admin.category.create') ? 'active' : '' }}">
+        <li
+            class="nav-item menu-items {{ request()->routeIs('admin.category.index') || request()->routeIs('admin.category.detail') || request()->routeIs('admin.category.edit') || request()->routeIs('admin.category.create') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.category.index') }}">
                 <span class="menu-icon">
                     <i class="fa-solid fa-layer-group"></i>
@@ -62,7 +63,8 @@
                 <span class="menu-title">Danh mục</span>
             </a>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.product.index')||request()->routeIs('admin.product.detail')||request()->routeIs('admin.product.edit')||request()->routeIs('admin.product.create') ? 'active' : '' }}">
+        <li
+            class="nav-item menu-items {{ request()->routeIs('admin.product.index') || request()->routeIs('admin.product.detail') || request()->routeIs('admin.product.edit') || request()->routeIs('admin.product.create') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.product.index') }}">
                 <span class="menu-icon">
                     <i class="fa-solid fa-boxes-packing"></i>
@@ -70,15 +72,17 @@
                 <span class="menu-title">Sản phẩm</span>
             </a>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.review.ProductReview')||request()->routeIs('admin.review.detail') ? 'active' : '' }}">
+        <li
+            class="nav-item menu-items {{ request()->routeIs('admin.review.ProductReview') || request()->routeIs('admin.review.detail') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.review.ProductReview') }}">
                 <span class="menu-icon">
-                    <i class="fa-solid fa-star"></i> 
+                    <i class="fa-solid fa-star"></i>
                 </span>
                 <span class="menu-title">Đánh giá sản phẩm</span>
             </a>
         </li>
-        <li class="nav-item menu-items {{ request()->routeIs('admin.contact.index')||request()->routeIs('admin.contact.detail') ? 'active' : '' }}">
+        <li
+            class="nav-item menu-items {{ request()->routeIs('admin.contact.index') || request()->routeIs('admin.contact.detail') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.contact.index') }}">
                 <span class="menu-icon">
                     <i class="mdi mdi-playlist-play"></i>
@@ -91,11 +95,15 @@
                 <span class="menu-icon">
                     <i class="mdi mdi-file-document-box"></i>
                 </span>
-                <span class="menu-title">Quản lí giỏ hàng</span>
+                <span class="menu-title">Quản lí đơn hàng</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.order.newOrder') }}">Đơn hàng chưa
+                            xác
+                            nhận</a>
+                    </li>
                     <li class="nav-item"> <a class="nav-link" href="#">All</a></li>
                     <li class="nav-item"> <a class="nav-link" href="#">Unapproved Orders</a>
                     </li>
@@ -108,17 +116,21 @@
             </div>
         </li>
         <li class="nav-item menu-items {{ request()->is('admin/user*') ? 'active' : '' }}">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="{{ request()->is('admin/user*') ? 'true' : 'false' }}" aria-controls="auth">
+            <a class="nav-link" data-toggle="collapse" href="#auth"
+                aria-expanded="{{ request()->is('admin/user*') ? 'true' : 'false' }}" aria-controls="auth">
                 <span class="menu-icon">
                     <i class="fa-solid fa-user"></i>
                 </span>
                 <span class="menu-title">Quản lý tài khoản</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse {{ request()->routeIs('admin.user.listUser', 'admin.user.listAdmin') ? 'show' : '' }}" id="auth">
+            <div class="collapse {{ request()->routeIs('admin.user.listUser', 'admin.user.listAdmin') ? 'show' : '' }}"
+                id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item "> <a class="nav-link" href="{{route('admin.user.listUser')}}"> Người dùng </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{route('admin.user.listAdmin')}}"> Quản trị viên </a></li>
+                    <li class="nav-item "> <a class="nav-link" href="{{ route('admin.user.listUser') }}"> Người
+                            dùng </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Quản trị
+                            viên </a></li>
                 </ul>
             </div>
 
