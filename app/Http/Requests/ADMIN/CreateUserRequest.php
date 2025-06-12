@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ADMIN;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateUserRequest extends FormRequest
@@ -21,11 +22,19 @@ class CreateUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
         return [
             'name' => 'required|unique:users,name|min:6|max:32|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|max:32|string',
             'confirm_password' => 'required|same:password',
+            'phone' => [
+                'required',
+                'string',
+                'min:10',
+                'max:15',
+                Rule::unique('user_infors', 'phone')->ignore($id, 'user_id'),
+            ],
         ];
     }
 
@@ -46,7 +55,10 @@ class CreateUserRequest extends FormRequest
             'password.string' => 'Mật khẩu phải là chuỗi ký tự',
             'confirm_password.required' => 'Hãy điền mật khẩu',
             'confirm_password.same' => 'Mật khẩu xác nhận không khớp với mật khẩu',
-
+            'phone.required' => 'Vui lòng nhập số điện thoại',
+            'phone.min' => 'Số điện thoại phải có ít nhất 10 ký tự',
+            'phone.max' => 'Số điện thoại không được vượt quá 15 ký tự',
+            'phone.unique'=>'Số điện thoại đã tồn tại',
         ];
     }
 }

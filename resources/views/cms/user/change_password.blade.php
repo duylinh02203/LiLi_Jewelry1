@@ -4,6 +4,12 @@
     .btn-solid-default::before {
         border-radius: 10px !important;
     }
+    .submit-PasswordUser::before{
+        background-color: brown;
+    }
+    .back::before{
+        background-color: gray;
+    }
 </style>
 <section class="contact-section" style="margin-bottom: 30px;">
     <div class="container">
@@ -50,10 +56,10 @@
                                     placeholder="Nhập lại mật khẩu mới">
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-solid-default submit-PasswordUser" type="submit" style="border-radius:10px;">Đổi mật khẩu</button>
+                                <button class="btn btn-solid-default submit-PasswordUser" type="submit" style="border-radius:10px; border-color: brown;">Đổi mật khẩu</button>
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-solid-default back" type="button" style="border-radius:10px;">Quay lại</button>
+                                <button class="btn btn-solid-default back" type="button" style="border-radius:10px; border-color: gray;">Quay lại</button>
                             </div>
                         </div>
                     </form>

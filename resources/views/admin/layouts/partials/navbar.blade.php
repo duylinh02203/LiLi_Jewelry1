@@ -16,15 +16,19 @@
                     @php
                     $contacts = \App\Models\Contact::where('status','active')->count();
                     $contactUsers = \App\Models\Contact::where('status','active')->orderBy('created_at','desc')->get();
+                    $CountReviews = \App\Models\ProductReview::where('status','active')->count();
+                    $productReviews = \App\Models\ProductReview::where('status','active')->orderBy('created_at','desc')->get();
+                    $total= $contacts + $CountReviews;
                     @endphp
                     <i class="mdi mdi-bell"></i>
-                    <strong><span class="count" style="color:red; margin-top:-7px;">{{$contacts}}</span></strong>
+                    <strong><span class="count" style="color:red; margin-top:-7px;">{{$total}}+</span></strong>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                     aria-labelledby="notificationDropdown">
                     <h6 class="p-3 mb-0">Tất cả thông báo</h6>
-                    @if($contacts > 0)
+                    @if($total > 0)
                     <div style="max-height: 200px; overflow-y: auto;">
+                        @if($contacts>0)
                         @foreach($contactUsers as $contactUser)
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item preview-item" href="{{ route('admin.contact.detail', $contactUser->id) }}">
@@ -39,6 +43,23 @@
                             </div>
                         </a>
                         @endforeach
+                        @endif
+                        @if($CountReviews>0)
+                        @foreach($productReviews as $productReview)
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item preview-item" href="{{route('admin.review.detail',$productReview->id)}}">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject mb-1">Đánh giá sản phẩm</p>
+                                <p class="text-muted ellipsis mb-0"> {{$productReview->user->name}} đã đánh giá {{$productReview->product->name}} {{$productReview->rating}} !</p>
+                            </div>
+                        </a>
+                        @endforeach
+                        @endif
                     </div>
                     @endif
 

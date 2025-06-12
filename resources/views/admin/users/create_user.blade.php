@@ -44,6 +44,15 @@
                                 placeholder="Địa chủ email">
                         </div>
                         <div class="form-group">
+                            <label>Số điện thoại
+                                @error('phone')
+                                <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                @enderror
+                            </label>
+                            <input value="{{ old('phone') }}" type="phone" class="form-control" name="phone"
+                                placeholder="Số điện thoại">
+                        </div>
+                        <div class="form-group">
                             <label>Mật khẩu
                                 @error('password')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
@@ -72,8 +81,8 @@
                                 <option value="2">Người dùng</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                        <button class="btn btn-dark" type="button"><a href="{{ url()->previous() }}" style="text-decoration: none; color:white;">Cancel</a></button>
+                        <button type="submit" class="btn btn-primary mr-2">Gửi</button>
+                        <button class="btn btn-dark" type="button"><a href="{{ url()->previous() }}" style="text-decoration: none; color:white;">Quay lại</a></button>
                     </form>
                 </div>
             </div>

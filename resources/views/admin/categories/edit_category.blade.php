@@ -36,18 +36,18 @@
                                 type="text" placeholder="Name">
                         </div>
                         <div class="form-group">
-                            <label>File upload</label>
+                            <label>Tải lên tập tin</label>
                             <input type="file" name="image" class="file-upload-default">
                             <div class="input-group col-xs-12">
-                                <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                <input type="text" class="form-control file-upload-info" disabled placeholder="Tải hình ảnh lên">
                                 <span class="input-group-append">
-                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    <button class="file-upload-browse btn btn-primary" type="button">Tải tệp</button>
                                 </span>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                        <button type="submit" class="btn btn-primary mr-2">Gửi</button>
                         <button class="btn btn-dark" type="button"><a href="{{ url()->previous() }}"
-                                style="text-decoration: none; color:white;">Cancel</a></button>
+                                style="text-decoration: none; color:white;">Quay lại</a></button>
                     </form>
                 </div>
             </div>

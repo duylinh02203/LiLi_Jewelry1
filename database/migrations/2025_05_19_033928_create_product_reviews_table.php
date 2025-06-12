@@ -17,7 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->integer('rating')->default(0);
             $table->text('comment')->nullable();
-            $table->unique(['user_id', 'product_id']); 
+            $table->unique(['user_id', 'product_id']);
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

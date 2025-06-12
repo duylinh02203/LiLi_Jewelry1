@@ -67,11 +67,9 @@ class ContactController extends Controller
     public function searchContact(Request $request)
     {
         $search = $request->input('search');
-        $contacts = Contact::where('first_name', 'like', "%$search%")
-            ->orWhere('last_name', 'like', "%$search%")
-            ->orWhere('email', 'like', "%$search%")
-            ->orWhere('phone', 'like', "%$search%")
-            ->get();
+        $contacts = Contact::where('name', 'like', "%$search%")
+            ->paginate(2);
+
         return view('admin.contacts.contact', compact('contacts'));
     }
 
