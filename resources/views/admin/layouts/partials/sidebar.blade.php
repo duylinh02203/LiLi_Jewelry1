@@ -90,30 +90,14 @@
                 <span class="menu-title">Liên hệ</span>
             </a>
         </li>
-        <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <li
+            class="nav-item menu-items {{ request()->routeIs('admin.order.newOrder') || request()->routeIs('admin.order.acceptOrder') || request()->routeIs('admin.order.search') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.order.newOrder') }}">
                 <span class="menu-icon">
-                    <i class="mdi mdi-file-document-box"></i>
+                    <i class="mdi mdi-playlist-play"></i>
                 </span>
-                <span class="menu-title">Quản lí đơn hàng</span>
-                <i class="menu-arrow"></i>
+                <span class="menu-title">Quản lí đơn hàng</span>
             </a>
-            <div class="collapse" id="ui-basic">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.order.newOrder') }}">Đơn hàng chưa
-                            xác
-                            nhận</a>
-                    </li>
-                    <li class="nav-item"> <a class="nav-link" href="#">All</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#">Unapproved Orders</a>
-                    </li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Approved
-                            Orders</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Orders
-                            Delete</a>
-                    </li>
-                </ul>
-            </div>
         </li>
         <li class="nav-item menu-items {{ request()->is('admin/user*') ? 'active' : '' }}">
             <a class="nav-link" data-toggle="collapse" href="#auth"

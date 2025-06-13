@@ -18,7 +18,13 @@
                     $contactUsers = \App\Models\Contact::where('status','active')->orderBy('created_at','desc')->get();
                     $CountReviews = \App\Models\ProductReview::where('status','active')->count();
                     $productReviews = \App\Models\ProductReview::where('status','active')->orderBy('created_at','desc')->get();
-                    $total= $contacts + $CountReviews;
+                    $pendingOrdersCount = \App\Models\Order::where('status', 'pending')->count();
+                    $pendingOrders = \App\Models\Order::with('orderItems.product')
+                    ->where('status', 'pending')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+                    $total= $contacts + $CountReviews+$pendingOrdersCount;
                     @endphp
                     <i class="mdi mdi-bell"></i>
                     <strong><span class="count" style="color:red; margin-top:-7px;">{{$total}}+</span></strong>
@@ -56,6 +62,22 @@
                             <div class="preview-item-content">
                                 <p class="preview-subject mb-1">Đánh giá sản phẩm</p>
                                 <p class="text-muted ellipsis mb-0"> {{$productReview->user->name}} đã đánh giá {{$productReview->product->name}} {{$productReview->rating}} !</p>
+                            </div>
+                        </a>
+                        @endforeach
+                        @endif
+                        @if($pendingOrdersCount>0)
+                        @foreach($pendingOrders as $pendingOrder)
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item preview-item" href="">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="fa-solid fa-box"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject mb-1">{{$pendingOrder->user->name}} đặt hàng</p>
+                                <p class="text-muted ellipsis mb-0"> Mã SP: DL00{{$pendingOrder->id}}</p>
                             </div>
                         </a>
                         @endforeach

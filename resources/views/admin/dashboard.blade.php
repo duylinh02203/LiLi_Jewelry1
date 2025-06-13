@@ -47,17 +47,18 @@
                     <div class="row">
                         <div class="col-9">
                             <div class="d-flex align-items-center align-self-start">
-                                <h3 class="mb-0">$12.34</h3>
-                                <p class="text-danger ml-2 mb-0 font-weight-medium">-2.4%</p>
+                                <h3 class="mb-0">{{$ordersCount}}</h3>
+                                <p class="text-danger ml-2 mb-0 font-weight-medium"></p>
                             </div>
                         </div>
                         <div class="col-3">
-                            <div class="icon icon-box-danger">
-                                <span class="mdi mdi-arrow-bottom-left icon-item"></span>
+                            <div>
+                                <img src="{{asset('images/icon-3.png')}}" alt="Sản phẩm" style="width: 50px; height: 50px;">
+
                             </div>
                         </div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Daily Income</h6>
+                    <h6 class="text-muted font-weight-normal">Số lượng đơn hàng</h6>
                 </div>
             </div>
         </div>
@@ -67,17 +68,18 @@
                     <div class="row">
                         <div class="col-9">
                             <div class="d-flex align-items-center align-self-start">
-                                <h3 class="mb-0">$31.53</h3>
-                                <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
+                                <h3 class="mb-0">{{ number_format($totalPrice, 0, ',', '.') }} VNĐ</h3>
+                                <p class="text-success ml-2 mb-0 font-weight-medium"></p>
                             </div>
                         </div>
                         <div class="col-3">
-                            <div class="icon icon-box-success ">
-                                <span class="mdi mdi-arrow-top-right icon-item"></span>
+                            <div>
+                                <img src="{{asset('images/doanh-thu.png')}}" alt="Sản phẩm" style="width: 50px; height: 50px;">
+
                             </div>
                         </div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Expense current</h6>
+                    <h6 class="text-muted font-weight-normal">Tổng doanh thu</h6>
                 </div>
             </div>
         </div>
