@@ -14,4 +14,13 @@ class OrderController extends Controller
         $allOrders = Order::where('user_id', $idUser)->get();
         return view('cms.order.all_order', compact('allOrders'));
     }
+
+    public function detail($id)
+    {
+        $order = Order::with('orderItems.product')->find($id);
+        if (!$order) {
+            return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
+        }
+        return view('cms.order.detail_order', compact('order'));
+    }    
 }
