@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ADMIN;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\AcceptedOrder;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,8 @@ class OrderController extends Controller
         $order->update([
             'status' => 'accepted',
         ]);
+        $orderWithItems = Order::with('orderItems.product')->find($order->id);
+        AcceptedOrder::dispatch($orderWithItems);
         return redirect()->back()->with('success', 'Đơn hàng đã được xác nhận.');
     }
 }

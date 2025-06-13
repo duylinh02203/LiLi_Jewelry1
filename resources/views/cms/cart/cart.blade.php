@@ -2,6 +2,15 @@
 @section('content')
     @push('styles')
         <style>
+            .btn-checkout.disabled {
+                pointer-events: none;
+                background-color: #ccc !important;
+                color: #666 !important;
+                border: none;
+                cursor: not-allowed;
+                text-decoration: none;
+            }
+
             .quantity-control {
                 display: flex;
                 align-items: center;
@@ -207,15 +216,13 @@
                                                 <span>{{ number_format($totalPrice, 0, '.', ',') }} VNĐ</span>
                                             </h2>
                                         </div>
-                                        @if($totalPrice > 0)
                                         <div class="bottom-details submit-payment">
-                                            <a href="{{ route('checkout') }}">Thanh toán</a>
+                                            <a href="{{ $totalPrice > 0 ? route('checkout') : 'javascript:void(0)' }}"
+                                                class="btn-checkout {{ $totalPrice == 0 ? 'disabled' : '' }}"
+                                                {{ $totalPrice == 0 ? 'aria-disabled=true' : '' }}>
+                                                Thanh toán
+                                            </a>
                                         </div>
-                                        @else
-                                         <div class="bottom-details submit-payment" disabled>
-                                            <a href="javascript:void(0)">Thanh toán</a>
-                                        </div>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
