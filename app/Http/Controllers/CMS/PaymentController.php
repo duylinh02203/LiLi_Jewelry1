@@ -21,6 +21,9 @@ class PaymentController extends Controller
         foreach ($cartItems as $cartItem) {
             $totalPrice += $cartItem->product->price * $cartItem->quantity;
         }
+        if ($totalPrice <= 0) {
+            return redirect()->route('shop')->with('error', 'Không thể thanh toán vì giỏ hàng trống');
+        }
         return view('cms.checkout.checkout', compact('cartItems', 'totalPrice', 'cartId'));
     }
 
@@ -56,7 +59,7 @@ class PaymentController extends Controller
                 }
                 $orderWithItems = Order::with('orderItems.product')->find($order->id);
                 DB::commit();
-                return view('cms.checkout.payment_success' , compact('orderWithItems'));
+                return view('cms.checkout.payment_success', compact('orderWithItems'));
             }
         } catch (\Exception $e) {
             DB::rollBack();
