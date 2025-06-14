@@ -41,8 +41,13 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            $status = $request->quantity && $request->quantity > 0 ? 'active' : 'inactive';
-            $isFreeSize = empty($request->sizes) ? 1 : 0;
+            $sizes = collect(explode(',', $request->sizes))
+                ->map(fn($size) => trim($size))
+                ->filter(fn($size) => $size !== '')
+                ->values();
+
+            $isFreeSize = $sizes->isEmpty() ? 1 : 0;
+
             $dataProduct = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -50,9 +55,7 @@ class ProductController extends Controller
                 'listed_price' => $request->listed_price ?? '',
                 'category_id' => $request->category_id,
                 'gender' => $request->gender,
-                'quantity' => $request->quantity ?? 0,
                 'slug' => Str::slug($request->name),
-                'status' => $status,
                 'is_free_size' => $isFreeSize,
             ];
             $createdProduct = Product::create($dataProduct);
@@ -70,14 +73,20 @@ class ProductController extends Controller
                 }
             }
             if ($isFreeSize === 0 && $request->sizes) {
-                $sizes = explode(',', $request->sizes);
+                $sizes = collect(explode(',', $request->sizes))
+                    ->map(fn($size) => trim($size))
+                    ->filter(fn($size) => $size !== '')
+                    ->all();
+
                 foreach ($sizes as $size) {
                     ProductSize::create([
                         'product_id' => $createdProduct->id,
-                        'size' => trim($size),
+                        'size' => $size,
                     ]);
                 }
             }
+
+
             DB::commit();
             return redirect()->route('admin.product.index')->with('success', 'Thêm sản phẩm thành công');
         } catch (\Throwable $th) {
@@ -112,19 +121,29 @@ class ProductController extends Controller
                     }
                 }
             }
-            $newStatus = $request->quantity && $request->quantity > 0 ? 'active' : 'inactive';
-            if ((!$request->has('is_free_size')) && $request->has('sizes')) {
-                $sizes = explode(',', $request->sizes);
-                ProductSize::where('product_id', $oldProduct->id)->delete();
+            // Xử lý danh sách size sau khi trim và lọc rỗng
+            $sizes = collect(explode(',', $request->sizes))
+                ->map(fn($size) => trim($size))
+                ->filter(fn($size) => $size !== '')
+                ->values(); // reset lại key
+
+            // Cập nhật lại is_free_size
+            $oldProduct->is_free_size = $sizes->isEmpty() ? 1 : 0;
+            $oldProduct->save();
+
+            // Xoá toàn bộ size cũ
+            ProductSize::where('product_id', $oldProduct->id)->delete();
+
+            // Nếu có size mới thì tạo lại
+            if (!$sizes->isEmpty()) {
                 foreach ($sizes as $size) {
                     ProductSize::create([
                         'product_id' => $oldProduct->id,
-                        'size' => trim($size),
+                        'size' => $size,
                     ]);
                 }
-            } else {
-                ProductSize::where('product_id', $oldProduct->id)->delete();
             }
+
             $newProduct = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -132,10 +151,7 @@ class ProductController extends Controller
                 'listed_price' => $request->listed_price,
                 'category_id' => $request->category_id ?? $oldProduct->category_id,
                 'gender' => $request->gender ?? $oldProduct->gender,
-                'status' => $newStatus,
                 'slug' => Str::slug($request->name),
-                'quantity' => $request->quantity ?? $oldProduct->quantity,
-                'is_free_size' => $request->has('is_free_size') ? 1 : 0,
             ];
             $oldProduct->update($newProduct);
 
@@ -180,6 +196,6 @@ class ProductController extends Controller
             ->where('name', 'LIKE', "%{$search}%")
             ->paginate(5);
         $categories = Category::all();
-        return view('admin.products.product', compact('products','categories'));
+        return view('admin.products.product', compact('products', 'categories'));
     }
 }

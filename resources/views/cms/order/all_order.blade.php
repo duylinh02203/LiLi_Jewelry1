@@ -93,7 +93,7 @@
         @foreach ($allOrders as $order)
         <tr>
             <td style="padding-left: 40px;">{{ $order->id }}</td>
-            <td>{{ $order->created_at }}</td>
+            <td>{{ $order->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s')}}</td>
             <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
             @php
             $statusClass = match($order->status) {

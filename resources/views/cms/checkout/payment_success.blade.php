@@ -31,6 +31,19 @@
                     <p><strong>Khách hàng:</strong> {{ $orderWithItems->name }}</p>
                     <p><strong>SDT :</strong> {{ $orderWithItems->phone }}</p>
                     <p><strong>Địa chỉ:</strong> {{ $orderWithItems->address }}</p>
+                    <p><strong>Phương thức thanh toán :</strong> {{ $orderWithItems->payment == 'cod' ? 'Thanh toán khi nhận hàng (COD)' : ($order->payment == 'vnpay' ? 'Thanh toán online qua VNPAY' : 'Hình thức thanh toán không xác định') }}</p>
+                    @php
+                    $statusText = match($orderWithItems->status) {
+                    'pending' => 'Đang chờ xác nhận',
+                    'accepted' => 'Đã xác nhận',
+                    'shipping' => 'Đang giao hàng',
+                    'completed' => 'Đã giao',
+                    'cancelled' => 'Đã hủy',
+                    default => 'Không rõ',
+                    };
+                    @endphp
+
+                    <p><strong>Trạng thái đơn hàng:</strong> {{ $statusText }}</p>
                 </div>
                 <table class="table table-bordered table-sm mt-3" style="font-size: 14px;">
                     <thead class="table-warning text-center">
@@ -60,7 +73,7 @@
                 </table>
 
                 <p class="fw-bold">Xin cảm ơn Quý khách!</p>
-                 <a href="{{route('cart')}}">Quay lại</a>
+                <a href="{{route('cart')}}">Quay lại</a>
             </div>
         </div>
     </div>

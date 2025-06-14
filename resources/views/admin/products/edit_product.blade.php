@@ -98,11 +98,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Số lượng</label>
-                            <input type="text" class="form-control" placeholder="Quantity" name="quantity"
-                                value="{{ $productUpdate->quantity }}">
-                        </div>
-                        <div class="form-group">
                             <label>Mô tả sản phẩm
                                 @error('description')
                                 <span class="text-danger" style="font-size: 12px">{{ $message }}</span>

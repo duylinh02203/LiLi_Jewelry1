@@ -19,12 +19,26 @@
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <div class="card-tools">
                             <div class="input-group input-group search-bar " style="width: 250px;">
-                                 <form class="nav-link mt-2 mt-md-0 d-lg-flex search" action="{{ route('admin.order.search') }}" method="GET">
-                                <input type="text" style="padding: 15;" class="form-control" name="search"
-                                    value="{{ request()->input('search') }}" placeholder="Tìm kiếm đơn hàng">
-                            </form>
+                                <form class="nav-link mt-2 mt-md-0 d-lg-flex search" action="{{ route('admin.order.search') }}" method="GET">
+                                    <input type="text" style="padding: 15;" class="form-control" name="search"
+                                        value="{{ request()->input('search') }}" placeholder="Tìm kiếm đơn hàng">
+                                </form>
                             </div>
                         </div>
+                        <form method="GET" action="{{ route('admin.order.newOrder') }}" class="mb-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <select name="status" class="form-select" onchange="this.form.submit()">
+                                        <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>Tất cả trạng thái</option>
+                                        @foreach($statusMap as $key => $label)
+                                        <option value="{{ $key }}" {{ request('status') == $key ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="table-responsive">
                         <style>
@@ -132,7 +146,7 @@
                     </div>
                 </div>
                 <div class="pagination-container" style="display: flex; width:100%;justify-content: center; margin-bottom: -10px;">
-                     {{ $orders->appends(request()->query())->links('admin.pagination.default') }}
+                    {{ $orders->appends(request()->query())->links('admin.pagination.default') }}
                 </div>
             </div>
         </div>

@@ -127,7 +127,6 @@
                                     <th>Mô tả</th>
                                     <th>Giá niêm yết</th>
                                     <th>Giá ưu đãi</th>
-                                    <th>Số lượng</th>
                                     <th>Chức năng</th>
                                 </tr>
                             </thead>
@@ -153,7 +152,6 @@
                                     <td>{{ Str::limit($product->description ?? 'null', 60) }}</td>
                                     <td>{{ $product->listed_price ?? 'null' }}</td>
                                     <td>{{ $product->price ?? 'null' }}</td>
-                                    <td>{{ $product->quantity ?? 'null' }}</td>
                                     <td>
                                         <a href="{{ route('admin.product.edit', $product->id) }}">
                                             <button type="button" class="btn btn-edit">Sửa</button></a>

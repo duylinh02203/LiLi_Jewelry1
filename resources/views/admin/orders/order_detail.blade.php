@@ -58,7 +58,9 @@
                         <tbody>
                             @foreach($order->orderItems as $item)
                             <tr style="text-align: center;">
-                                <td style="border: 1px solid #ccc; padding: 8px;">{{ $item->product->name }}</td>
+                                <td style="border: 1px solid #ccc; padding: 8px;">{{ $item->product->name }} @if(!empty($item->size))
+                                    - Size {{ $item->size }}
+                                    @endif</td>
                                 <td style="border: 1px solid #ccc; padding: 8px;">{{ $item->quantity }}</td>
                                 <td style="border: 1px solid #ccc; padding: 8px;">{{ number_format($item->product->price, 0, ',', '.') }}</td>
                                 <td style="border: 1px solid #ccc; padding: 8px;">{{ number_format($item->quantity * $item->product->price, 0, ',', '.') }}</td>

@@ -27,7 +27,6 @@ class UpdateProductRequest extends FormRequest
             'listed_price' => 'nullable|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
             'gender' => 'required|in:male,female,unisex',
-            'quantity' => 'required|integer|min:0',
             'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'sizes' => 'nullable|string',
 

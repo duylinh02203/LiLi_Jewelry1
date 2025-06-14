@@ -55,9 +55,6 @@
                                     <span>Mô tả sản phẩm:</span> {{ $product->description ?? 'No description available' }}
                                 </div>
                                 <div class="mb-3">
-                                    <span>Số lượng hàng:</span> {{ $product->quantity ?? 'N/A' }}
-                                </div>
-                                <div class="mb-3">
                                     <span>Thời gian thêm:</span> {{ $product->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s')}}
                                 </div>
                                 <div class="mb-3">
@@ -71,7 +68,7 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Xóa</button>
                                     </form>
-                                    <a href="{{ route('admin.product.index') }}" class="btn btn-secondary">Quay lại</a>
+                                    <a href="{{ url()->previous() }}" class="btn btn-secondary">Quay lại</a>
                                 </div>
                             </div>
                         </div>

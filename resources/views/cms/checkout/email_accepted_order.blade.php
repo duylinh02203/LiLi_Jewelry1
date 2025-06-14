@@ -83,7 +83,7 @@
             <p><strong>Tên khách hàng:</strong> {{ $order->name }}</p>
             <p><strong>Email:</strong> {{ $order->email }}</p>
             <p><strong>Ngày đặt hàng:</strong> {{ $order->created_at }}</p>
-            <p><strong>Mã đơn hàng:</strong> {{ $order->id }}</p>
+            <p><strong>Mã đơn hàng:</strong> DL00{{ $order->id }}</p>
         </div>
 
         <table class="product-table">
