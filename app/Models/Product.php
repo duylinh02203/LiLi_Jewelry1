@@ -20,7 +20,6 @@ class Product extends Model
         'listed_price',
         'status',
         'slug',
-        'quantity',
         'category_id',
         'gender',
         'is_free_size',

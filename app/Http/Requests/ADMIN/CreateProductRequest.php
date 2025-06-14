@@ -30,7 +30,6 @@ class CreateProductRequest extends FormRequest
             'gender' => 'required|in:male,female,unisex',
             'image' => 'required|array',
             'image.*' => 'image|max:2048',
-            'quantity' => 'nullable|numeric|min:0',
             'sizes' => 'nullable|string',
         ];
     }

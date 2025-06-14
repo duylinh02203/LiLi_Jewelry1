@@ -102,11 +102,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Số lượng</label>
-                                <input value="{{ old('quantity') }}" type="text" class="form-control"
-                                    placeholder="Số lượng sản phẩm" name="quantity">
-                            </div>
-                            <div class="form-group">
                                 <label>Mô tả sản phẩm
                                     @error('description')
                                         <span class="text-danger" style="font-size: 12px">{{ $message }}</span>

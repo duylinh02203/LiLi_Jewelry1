@@ -12,9 +12,23 @@ class OrderController extends Controller
 {
     public function newOrder()
     {
-        $orders = Order::orderBy('created_at', 'desc')->paginate(5);
-        return view('admin.orders.new_order', compact('orders'));
+        $query = Order::with('orderItems.product')->orderBy('created_at', 'desc');
+
+        if (request()->has('status') && request()->status !== 'all') {
+            $query->where('status', request()->status);
+        }
+        $orders = $query->paginate(5);
+        $statusMap = [
+            'pending' => 'Chờ xác nhận',
+            'accepted' => 'Đã xác nhận',
+            'shipping' => 'Đang giao hàng',
+            'completed' => 'Đã giao',
+            'cancelled' => 'Đã hủy',
+        ];
+
+        return view('admin.orders.new_order', compact('orders', 'statusMap'));
     }
+
 
     public function acceptOrder(Request $request)
     {
@@ -26,6 +40,10 @@ class OrderController extends Controller
         $order->update([
             'status' => $status,
         ]);
+        if ($order->status === 'accepted') {
+            $orderWithItems = Order::with('orderItems.product')->find($order->id);
+            AcceptedOrder::dispatch($orderWithItems);
+        }
         return redirect()->back()->with('success', 'Chính sửa trạng thái thành công !');
     }
 

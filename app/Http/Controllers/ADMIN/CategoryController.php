@@ -88,10 +88,12 @@ class CategoryController extends Controller
 
     public function searchCategory(Request $request)
     {
-        $search = $request->input('search');
+        dd($request->all());
+        $search = $request->search;
         $cats = Category::where('name', 'like', "%$search%")->get();
         return view('admin.categories.category', compact('cats'));
     }
+
     public function destroy($id)
     {
         DB::beginTransaction();

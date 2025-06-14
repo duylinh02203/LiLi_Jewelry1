@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('gender')->comment('male, female, unisex');
             $table->unsignedBigInteger('listed_price');
             $table->string('status')->default('active');
-            $table->unsignedBigInteger('quantity')->default(0);
             $table->string('slug')->unique();
             $table->unsignedBigInteger('category_id');
             $table->boolean('is_free_size')->default(false);

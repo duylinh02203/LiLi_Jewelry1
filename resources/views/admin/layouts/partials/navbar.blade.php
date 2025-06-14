@@ -69,7 +69,7 @@
                         @if($pendingOrdersCount>0)
                         @foreach($pendingOrders as $pendingOrder)
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item" href="">
+                        <a class="dropdown-item preview-item" href="{{route('admin.order.detail', $pendingOrder->id)}}">
                             <div class="preview-thumbnail">
                                 <div class="preview-icon bg-dark rounded-circle">
                                     <i class="fa-solid fa-box"></i>

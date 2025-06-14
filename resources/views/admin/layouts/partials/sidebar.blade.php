@@ -21,7 +21,7 @@
                     <a href="{{ route('admin.account.information') }}" class="dropdown-item preview-item">
                         <div class="preview-thumbnail">
                             <div class="preview-icon bg-dark rounded-circle">
-                                <i class="mdi mdi-settings text-primary"></i>
+                                <i class="mdi mdi-account-card-details" style="color:blue"></i>
                             </div>
                         </div>
                         <div class="preview-item-content">
@@ -46,7 +46,7 @@
         <li class="nav-item nav-category">
             <span class="nav-link">Điều hướng</span>
         </li>
-        <li class="nav-item menu-items">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.dashboard') }}">
                 <span class="menu-icon">
                     <i class="fa-solid fa-chart-simple"></i>
@@ -94,7 +94,7 @@
             class="nav-item menu-items {{ request()->routeIs('admin.order.newOrder') || request()->routeIs('admin.order.acceptOrder') || request()->routeIs('admin.order.search') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.order.newOrder') }}">
                 <span class="menu-icon">
-                    <i class="mdi mdi-playlist-play"></i>
+                    <i class="fa-solid fa-book"></i>
                 </span>
                 <span class="menu-title">Quản lí đơn hàng</span>
             </a>
