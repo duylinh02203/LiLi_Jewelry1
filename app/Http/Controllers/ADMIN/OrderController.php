@@ -4,47 +4,45 @@ namespace App\Http\Controllers\ADMIN;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\AcceptedOrder;
+use App\Jobs\CancelledOrder;
 use Illuminate\Support\Str;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     public function newOrder()
     {
-        $query = Order::with('orderItems.product')->orderBy('created_at', 'desc');
-
+        $query = Order::with('orderItems.product')->where('status', 'pending')->orderBy('created_at', 'desc');
         if (request()->has('status') && request()->status !== 'all') {
             $query->where('status', request()->status);
         }
         $orders = $query->paginate(5);
-        $statusMap = [
-            'pending' => 'Chờ xác nhận',
-            'accepted' => 'Đã xác nhận',
-            'shipping' => 'Đang giao hàng',
-            'completed' => 'Đã giao',
-            'cancelled' => 'Đã hủy',
-        ];
-
-        return view('admin.orders.new_order', compact('orders', 'statusMap'));
+        return view('admin.orders.new_order', compact('orders'));
     }
 
 
     public function acceptOrder(Request $request)
     {
-        $order = Order::find($request->order_id);
-        $status = $request->status;
-        if (!$order) {
-            return redirect()->back()->with('error', 'Không tìm thấy đơn hàng.');
-        }
-        $order->update([
-            'status' => $status,
-        ]);
-        if ($order->status === 'accepted') {
+        DB::beginTransaction();
+        try {
+            $order = Order::find($request->order_id);
+            $status = 'shipping';
+            if (!$order) {
+                return redirect()->back()->with('error', 'Không tìm thấy đơn hàng.');
+            }
+            $order->update([
+                'status' => $status,
+            ]);
+            DB::commit();
             $orderWithItems = Order::with('orderItems.product')->find($order->id);
             AcceptedOrder::dispatch($orderWithItems);
+            return redirect()->back()->with('success', 'Xác nhận đơn hàng thành công !');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('success', 'Xác nhận đơn hàng thất bại !');
         }
-        return redirect()->back()->with('success', 'Chính sửa trạng thái thành công !');
     }
 
     public function searchOrder(Request $request)
@@ -58,24 +56,30 @@ class OrderController extends Controller
                 ->orWhere('id', (int) $search)
                 ->paginate(5);
         }
-
         return view('admin.orders.new_order', compact('orders'));
     }
 
     public function cancelOrder(Request $request)
     {
-        $order = Order::find($request->order_id);
-        if (!$order) {
-            return back()->with('error', 'Không tìm thấy đơn hàng.');
+        DB::beginTransaction();
+        try {
+            $order = Order::find($request->order_id);
+            if (!$order) {
+                return back()->with('error', 'Không tìm thấy đơn hàng.');
+            }
+            if ($order->status == 'shipping' || $order->status == 'completed') {
+                return back()->with('error', 'Không thể hủy đơn hàng ở trạng thái hiện tại.');
+            }
+            $orderWithItems = Order::with('orderItems.product')->find($order->id);
+            $order->delete();
+            DB::commit();
+            CancelledOrder::dispatch($orderWithItems);
+            return back()->with('success', 'Đơn hàng đã được hủy.');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Đã xảy ra lỗi khi hủy đơn hàng.');
         }
-
-        if (!in_array($order->status, ['pending', 'accepted'])) {
-            return back()->with('error', 'Không thể hủy đơn hàng ở trạng thái hiện tại.');
-        }
-
-        $order->update(['status' => 'cancelled']);
-        return back()->with('success', 'Đơn hàng đã được hủy.');
     }
+
     public function detail($id)
     {
         $order = Order::with('orderItems.product')->find($id);

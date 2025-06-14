@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('address');
             $table->unsignedBigInteger('total_price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

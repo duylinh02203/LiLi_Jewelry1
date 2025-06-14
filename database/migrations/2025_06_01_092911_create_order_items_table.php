@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('size')->nullable();
             $table->integer('quantity');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

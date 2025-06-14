@@ -75,9 +75,7 @@
 <body>
     <div class="invoice-container">
         <div class="invoice-header">
-            <h2>Hóa đơn mua hàng</h2>
-            <h3>Đơn hàng của bạn đã được xác nhận và đang được giao</h3>
-            <p>Cảm ơn bạn đã mua sắm tại <strong>LiliJewly</strong>!</p>
+            <h2 style="color: red">Đơn hàng của bạn đã được hủy</h2>
         </div>
 
         <div class="invoice-details">

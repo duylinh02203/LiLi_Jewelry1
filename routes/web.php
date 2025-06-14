@@ -106,7 +106,6 @@ Route::middleware('auth.login')->group(function () {
     Route::get('all-orders', [OrderCmsController::class, 'allOrders'])->name('allOrders');
     Route::get('detail-order/{id}', [OrderCmsController::class, 'detail'])->name('detailOrder');
     Route::put('/cancel-order', [OrderController::class, 'cancelOrder'])->name('cancelOrder');
-
 });
 
 Route::prefix('admin')
@@ -187,6 +186,7 @@ Route::prefix('admin')
                     Route::put('acceptOrder', [OrderController::class, 'acceptOrder'])->name('acceptOrder');
                     Route::get('search', [OrderController::class, 'searchOrder'])->name('search');
                     Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
+                    Route::delete('/remove', [OrderController::class, 'cancelOrder'])->name('cancelOrder');
                 });
         });
     });
