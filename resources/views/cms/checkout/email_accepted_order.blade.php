@@ -83,8 +83,8 @@
         <div class="invoice-details">
             <p><strong>Tên khách hàng:</strong> {{ $order->name }}</p>
             <p><strong>Email:</strong> {{ $order->email }}</p>
-            <p><strong>Ngày đặt hàng:</strong> {{ $order->created_at }}</p>
-            <p><strong>Mã đơn hàng:</strong> DL00{{ $order->id }}</p>
+            <p><strong>Ngày đặt hàng:</strong> {{ $order->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('H:i:s d/m/Y') }}</p>
+            <p><strong>Mã đơn hàng:</strong> JL00{{ $order->id }}</p>
         </div>
 
         <table class="product-table">

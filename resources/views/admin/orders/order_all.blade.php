@@ -2,7 +2,7 @@
 @section('content')
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title">Đơn hàng chưa xác nhận</h3>
+        <h3 class="page-title">Tất cả đơn hàng</h3>
         <nav aria-label="breadcrumb">
         </nav>
         @if ($message = Session::get('success'))
@@ -20,12 +20,29 @@
                         <div class="card-tools">
                             <div class="input-group input-group search-bar " style="width: 250px;">
                                 <form class="nav-link mt-2 mt-md-0 d-lg-flex search"
-                                    action="{{ route('admin.order.newOrder') }}" method="GET">
+                                    action="{{ route('admin.order.orderAll') }}" method="GET">
                                     <input type="text" style="padding: 15;" class="form-control" name="search"
                                         value="{{ request()->input('search') }}" placeholder="Tìm kiếm đơn hàng">
+                                    <input type="hidden" name="status" value="{{ request('status') }}">
                                 </form>
                             </div>
                         </div>
+                        <form method="GET" action="{{ route('admin.order.orderAll') }}" class="mb-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="hidden" style="padding: 15;" class="form-control" name="search"
+                                        value="{{ request()->input('search') }}" placeholder="Tìm kiếm đơn hàng">
+                                    <select name="status" class="form-select" onchange="this.form.submit()" style="background-color: #cce5ff; padding: 5px; color: #004085; border: none; border-radius: 5px;">
+                                        <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>Tất cả trạng thái</option>
+                                        @foreach($statusMap as $key => $label)
+                                        <option value="{{ $key }}" {{ request('status') == $key ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="table-responsive">
                         <table class="table">
@@ -38,6 +55,7 @@
                                     <th>Tổng tiền</th>
                                     <th>Trạng thái</th>
                                     <th>Hành động</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,42 +68,18 @@
                                     <td>{{ $order->payment == 'cod' ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua VNPay' }}
                                     </td>
                                     <td>{{ number_format($order->total_price, 0, '.', ',') }} VNĐ</td>
-                                    @php
-                                    $statusText = match ($order->status) {
-                                    'pending' => 'Đang chờ xác nhận',
-                                    'shipping' => 'Đang giao hàng',
-                                    'completed' => 'Đã giao',
-                                    default => 'Không rõ',
-                                    };
-                                    @endphp
-                                    <td style="color: yellow;">{{ $statusText }}
+                                    <td style="color: {{ $order->status == 'shipping' ? 'orange' : 'green' }};">
+                                        {{ $order->status == 'shipping' ? 'Đang giao...' : ($order->status == 'completed' ? 'Đã giao' : $order->status) }}
                                     </td>
+
+
                                     <td>
-                                        <div style="display: flex; justify-content: center; gap: 8px;">
-                                            <form action="{{ route('admin.order.acceptOrder') }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                                <button class="btn btn-success">Xác nhận</button>
-                                            </form>
-
-                                            @if ($order->payment == 'cod')
-                                            <form action="{{ route('admin.order.cancelOrder') }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                                <button class="btn btn-danger">Hủy</button>
-                                            </form>
-                                            @else
-                                            <button class="btn btn-secondary" style="color: #000;" disabled>Hủy</button>
-                                            @endif
-
+                                        <div style="display: flex; gap: 8px; justify-content: center;">
                                             <a href="{{ route('admin.order.detail', $order->id) }}">
-                                                <button type="button" class="btn btn-primary">Chi tiết</button>
+                                                <button type="button" class="btn btn-primary">Chi tiết</button>
                                             </a>
                                         </div>
                                     </td>
-
 
                                 </tr>
                                 @endforeach

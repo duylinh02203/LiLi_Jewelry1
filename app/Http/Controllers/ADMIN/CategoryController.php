@@ -15,11 +15,19 @@ use App\Models\ProductImage;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $cats = Category::paginate(5);
+        $query = Category::query();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $cats = $query->paginate(5)->appends(['search' => $request->search]);
+
         return view('admin.categories.category', compact('cats'));
     }
+
 
     public function create()
     {

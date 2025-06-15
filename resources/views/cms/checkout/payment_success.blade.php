@@ -20,7 +20,8 @@
                 <p>Liên hệ: 0397326216</p>
                 <h4 class="fw-bold mt-3 mb-3">HÓA ĐƠN BÁN HÀNG</h4>
                 <div class="d-flex justify-content-between" style="font-size: 14px;">
-                    <span>Ngày: {{ date('d/m/Y', strtotime($orderWithItems->created_at)) }}</span>
+                    <span>Ngày: {{ $orderWithItems->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y') }}
+                    </span>
                     <span>Mã đơn hàng: DL00{{ $orderWithItems->id }}</span>
                 </div>
                 <div class="d-flex justify-content-between mb-3" style="font-size: 14px;">
@@ -29,7 +30,7 @@
                 </div>
                 <div class="text-start" style="font-size: 15px;">
                     <p><strong>Khách hàng:</strong> {{ $orderWithItems->name }}</p>
-                    <p><strong>SDT :</strong> {{ $orderWithItems->phone }}</p>
+                    <p><strong>SĐT :</strong> {{ $orderWithItems->phone }}</p>
                     <p><strong>Địa chỉ:</strong> {{ $orderWithItems->address }}</p>
                     <p><strong>Phương thức thanh toán :</strong> {{ $orderWithItems->payment == 'cod' ? 'Thanh toán khi nhận hàng (COD)' : ($order->payment == 'vnpay' ? 'Thanh toán online qua VNPAY' : 'Hình thức thanh toán không xác định') }}</p>
                     @php
