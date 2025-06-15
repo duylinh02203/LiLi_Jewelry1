@@ -99,7 +99,6 @@ Route::middleware('auth.login')->group(function () {
         });
     Route::prefix('payment')->group(function () {
         Route::get('/checkout', [PaymentController::class, 'viewCheckout'])->name('checkout');
-        Route::post('/vnpay', [PaymentController::class, 'createVNPayPayment'])->name('payment.vnpay');
         Route::get('/vnpay/return', [PaymentController::class, 'vnpayReturn'])->name('vnpay.return');
         Route::post('/orders', [PaymentController::class, 'orders'])->name('payment.orders');
     });
