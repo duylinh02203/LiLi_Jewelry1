@@ -25,4 +25,35 @@ class OrderController extends Controller
         }
         return view('cms.order.detail_order', compact('order'));
     }
+
+    public function cancelOrder(Request $request)
+    {
+        $order = Order::find($request->order_id);
+
+        if (!$order) {
+            return back()->with('error', 'Không tìm thấy đơn hàng.');
+        }
+
+        if (in_array($order->status, ['shipping', 'completed'])) {
+            return back()->with('error', 'Không thể hủy đơn hàng ở trạng thái hiện tại.');
+        }
+
+        $orderWithItems = Order::with('orderItems.product')->find($order->id);
+        $order->delete();
+
+        // Dispatch event or perform any additional actions if needed
+        // CancelledOrder::dispatch($orderWithItems);
+
+        return back()->with('success', 'Đơn hàng đã được hủy.');
+    }
+
+    public function completeOrder(Request $request)
+    {
+        $order = Order::find($request->order_id);
+        if (!$order) {
+            return back()->with('error', 'Không tìm thấy đơn hàng.');
+        }
+        $order->update(['status' => 'completed']);
+        return back()->with('success', 'Đơn hàng đã được hoàn thành.');
+    }
 }

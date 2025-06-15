@@ -19,15 +19,24 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with(['images', 'category', 'sizes']);
-        $categories = Category::all();
-        if ($request->has('category') && $request->category != '') {
-            $query->where('category_id', $request->category);
-        }
-        $query->orderBy('created_at', 'desc');
+        $search = $request->search;
+        $categoryId = $request->category;
+
+        $query = Product::with(['images', 'category', 'sizes'])
+            ->when($search, function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%");
+            })
+            ->when($categoryId && $categoryId !== 'all', function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId);
+            })
+            ->orderBy('created_at', 'desc');
+
         $products = $query->paginate(5);
+        $categories = Category::all();
+
         return view('admin.products.product', compact('products', 'categories'));
     }
+
 
 
 
@@ -187,15 +196,5 @@ class ProductController extends Controller
     {
         $product = Product::with('images', 'category')->findOrFail($id);
         return view('admin.products.detail', compact('product'));
-    }
-
-    public function searchProduct(Request $request)
-    {
-        $search = $request->search;
-        $products = Product::with(['images', 'category'])
-            ->where('name', 'LIKE', "%{$search}%")
-            ->paginate(5);
-        $categories = Category::all();
-        return view('admin.products.product', compact('products', 'categories'));
     }
 }

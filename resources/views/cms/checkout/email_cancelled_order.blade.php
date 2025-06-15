@@ -81,8 +81,8 @@
         <div class="invoice-details">
             <p><strong>Tên khách hàng:</strong> {{ $order->name }}</p>
             <p><strong>Email:</strong> {{ $order->email }}</p>
-            <p><strong>Ngày đặt hàng:</strong> {{ $order->created_at }}</p>
-            <p><strong>Mã đơn hàng:</strong> DL00{{ $order->id }}</p>
+            <p><strong>Ngày đặt hàng:</strong> {{ $order->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('H:i:s d/m/Y') }}</p>
+            <p><strong>Mã đơn hàng:</strong> JL00{{ $order->id }}</p>
         </div>
 
         <table class="product-table">
@@ -96,15 +96,15 @@
             </thead>
             <tbody>
                 @foreach ($order->orderItems as $item)
-                    <tr>
-                        <td class="text-start">{{ $item->product->name ?? 'Không có tên' }} @if (!empty($item->size))
-                                - Size {{ $item->size }}
-                            @endif
-                        </td>
-                        <td>{{ $item->quantity }}</td>
-                        <td>{{ number_format($item->product->price ?? 0) }}</td>
-                        <td class="fw-bold">{{ number_format(($item->product->price ?? 0) * $item->quantity) }}</td>
-                    </tr>
+                <tr>
+                    <td class="text-start">{{ $item->product->name ?? 'Không có tên' }} @if (!empty($item->size))
+                        - Size {{ $item->size }}
+                        @endif
+                    </td>
+                    <td>{{ $item->quantity }}</td>
+                    <td>{{ number_format($item->product->price ?? 0) }}</td>
+                    <td class="fw-bold">{{ number_format(($item->product->price ?? 0) * $item->quantity) }}</td>
+                </tr>
                 @endforeach
             </tbody>
         </table>

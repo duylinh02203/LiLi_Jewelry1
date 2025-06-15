@@ -29,7 +29,7 @@
                     <div class="search-add-wrapper"
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <div class="search-bar col-lg-3" style="width: 250px; flex: 1; margin-left: -10px;">
-                            <form class="nav-link mt-2 mt-md-0 d-lg-flex" action="{{ route('admin.category.search') }}" method="GET">
+                            <form class="nav-link mt-2 mt-md-0 d-lg-flex" action="{{ route('admin.category.index') }}" method="GET">
                                 <input type="text" style="padding: 15px;" class="form-control" name="search"
                                     value="{{ request()->input('search') }}" placeholder="Tìm kiếm danh mục">
                             </form>

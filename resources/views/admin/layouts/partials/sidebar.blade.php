@@ -90,22 +90,31 @@
                 <span class="menu-title">Liên hệ</span>
             </a>
         </li>
-        <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <li class="nav-item menu-items {{ request()->routeIs('admin.order.*') ? 'active' : '' }}">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="{{ request()->routeIs('admin.order.*') ? 'true' : 'false' }}" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <i class="mdi mdi-file-document-box"></i>
                 </span>
                 <span class="menu-title">Quản lí đơn hàng</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-basic">
+
+            <div class="collapse {{ request()->routeIs('admin.order.*') ? 'show' : '' }}" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.order.newOrder') }}">Đơn hàng chưa
-                            xác
-                            nhận</a>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.order.newOrder') ? 'active' : '' }}" href="{{ route('admin.order.newOrder') }}">
+                            Đơn hàng chưa xác nhận
+                        </a>
                     </li>
-                    <li class="nav-item"> <a class="nav-link" href="#">Tất cả đơn hàng</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#">Đơn hàng đã bị hủy</a>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.order.orderAll') ? 'active' : '' }}" href="{{ route('admin.order.orderAll') }}">
+                            Tất cả đơn hàng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.order.orderCancelled') ? 'active' : '' }}" href="{{ route('admin.order.orderCancelled') }}">
+                            Đơn hàng đã bị hủy
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -122,9 +131,9 @@
             <div class="collapse {{ request()->routeIs('admin.user.listUser', 'admin.user.listAdmin') ? 'show' : '' }}"
                 id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item "> <a class="nav-link" href="{{ route('admin.user.listUser') }}"> Người
+                    <li class="nav-item "> <a class="nav-link {{ request()->routeIs('admin.user.listUser') ? 'active' : '' }}" href="{{ route('admin.user.listUser') }}"> Người
                             dùng </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Quản trị
+                    <li class="nav-item {{ request()->routeIs('admin.user.listAdmin') ? 'active' : '' }}"> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Quản trị
                             viên </a></li>
                 </ul>
             </div>
