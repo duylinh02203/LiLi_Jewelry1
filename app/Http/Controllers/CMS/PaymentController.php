@@ -115,7 +115,7 @@ class PaymentController extends Controller
                 }
                 $orderWithItems = Order::with('orderItems.product')->find($order->id);
                 DB::commit();
-                return view('cms.checkout.payment_success', compact('orderWithItems'));
+                return view('cms.checkout.payment_success', compact('orderWithItems', 'order'));
             }
         } catch (\Exception $e) {
             DB::rollBack();
