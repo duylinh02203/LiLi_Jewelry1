@@ -44,7 +44,7 @@
                             <th scope="col">Hình ảnh</th>
                             <th scope="col">Tên sản phẩm</th>
                             <th scope="col">Giá tiền</th>
-                            <th scope="col">Sẵn có</th>
+                            <th scope="col">Trạng thái</th>
                             <th scope="col">Hoạt động</th>
                         </tr>
                     </thead>
@@ -87,7 +87,7 @@
                                 <p class="fw-bold">{{$wishlist->product->price}} VNĐ</p>
                             </td>
                             <td>
-                                @if($wishlist->product->quantity > 0)
+                                @if($wishlist->product->status == 'active')
                                 <p>Còn hàng</p>
                                 @else
                                 <p>Hết hàng</p>

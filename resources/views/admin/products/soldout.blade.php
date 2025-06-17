@@ -74,7 +74,7 @@
         <div class="link-wrap">
             <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
             <p class="rev">></p>
-            @if (request()->routeIs('admin.product.index'))
+            @if (request()->routeIs('admin.product.soldOut'))
             <span style="color: #333; cursor: not-allowed;">Sản phẩm</span>
             @endif
         </div>
@@ -88,23 +88,17 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ route('admin.product.create') }}" style="text-decoration: none; display: flex; justify-content: end;">
-                        <button class="btn btn-primary"
-                            style="border-radius: 20px; font-size: 14px; padding: 10px 20px; display: flex; align-items: center;">
-                            <span style="margin-right: 5px;">+</span>Thêm mới
-                        </button>
-                    </a>
                     <div class="search-add-wrapper"
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <div class="search-bar col-lg-3" style="width: 250px; flex: 1;margin-left: -10px;">
-                            <form class="nav-link mt-2 mt-md-0 d-lg-flex search" action="{{ route('admin.product.index') }}" method="GET">
+                            <form class="nav-link mt-2 mt-md-0 d-lg-flex search" action="{{ route('admin.product.soldOut') }}" method="GET">
                                 <input type="text" style="padding: 15;" class="form-control"
                                     placeholder="Tìm kiếm sản phẩm" name="search"
                                     value="{{ request()->input('search') }}">
                                 <input type="hidden" name="category" value="{{ request('category') }}">
                             </form>
                         </div>
-                        <form method="GET" action="{{ route('admin.product.index') }}">
+                        <form method="GET" action="{{ route('admin.product.soldOut') }}">
                             <input type="hidden" style="padding: 15;" class="form-control"
                                 placeholder="Tìm kiếm sản phẩm" name="search"
                                 value="{{ request()->input('search') }}">
@@ -158,7 +152,7 @@
                                     <td>{{ $product->listed_price ?? 'null' }}</td>
                                     <td>{{ $product->price ?? 'null' }}</td>
                                     <td>
-                                        <form action="{{route('admin.product.updateStatus',$product->id)}}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.product.updateStatus', $product->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('PUT')
                                             <select name="status" onchange="this.form.submit()" class="form-select form-select-sm"
@@ -168,6 +162,7 @@
                                             </select>
                                         </form>
                                     </td>
+
                                     <td>
                                         <a href="{{ route('admin.product.edit', $product->id) }}">
                                             <button type="button" class="btn btn-edit">Sửa</button></a>

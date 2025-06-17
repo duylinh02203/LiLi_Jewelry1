@@ -23,6 +23,7 @@ class ProductController extends Controller
         $categoryId = $request->category;
 
         $query = Product::with(['images', 'category', 'sizes'])
+            ->where('status', 'active')
             ->when($search, function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%");
             })
@@ -35,6 +36,28 @@ class ProductController extends Controller
         $categories = Category::all();
 
         return view('admin.products.product', compact('products', 'categories'));
+    }
+
+
+    public function soldOut(Request $request)
+    {
+
+        $search = $request->search;
+        $categoryId = $request->category;
+
+        $query = Product::with(['images', 'category', 'sizes'])
+            ->where('status', 'soldout')
+            ->when($search, function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%");
+            })
+            ->when($categoryId && $categoryId !== 'all', function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId);
+            })
+            ->orderBy('created_at', 'desc');
+
+        $products = $query->paginate(5);
+        $categories = Category::all();
+        return view('admin.products.soldout', compact('products', 'categories'));
     }
 
 
@@ -165,10 +188,14 @@ class ProductController extends Controller
             $oldProduct->update($newProduct);
 
             DB::commit();
-            return redirect()->route('admin.product.index')->with('success', 'Sửa sản phẩm thành công');
+            if ($oldProduct->status === 'active') {
+                return redirect()->route('admin.product.index')->with('success', 'Chỉnh sửa quản sản phẩm thành công !');
+            } else {
+                return redirect()->route('admin.product.soldOut')->with('success', 'Chỉnh sửa sản phẩm thành công !');
+            }
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('admin.product.index')->with('error', 'Sửa sản phẩm thất bại: ' . $th->getMessage());
+            return redirect()->back()->with('error', 'Sửa sản phẩm thất bại: ' . $th->getMessage());
         }
     }
 
@@ -185,10 +212,14 @@ class ProductController extends Controller
             ProductReview::where('product_id', $id)->delete();
             $product->delete();
             DB::commit();
-            return redirect()->route('admin.product.index')->with('success', 'Xóa sản phẩm thành công');
+            if ($product->status === 'active') {
+                return redirect()->route('admin.product.index')->with('success', 'Xóa quản sản phẩm thành công !');
+            } else {
+                return redirect()->route('admin.product.soldOut')->with('success', 'Xóa sản phẩm thành công !');
+            }
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('admin.product.index')->with('error', 'Xóa sản phẩm thất bại');
+            return redirect()->back()->with('error', 'Xóa sản phẩm thất bại');
         }
     }
 
@@ -196,5 +227,14 @@ class ProductController extends Controller
     {
         $product = Product::with('images', 'category')->findOrFail($id);
         return view('admin.products.detail', compact('product'));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        $product->status = $request->status;
+        $product->save();
+
+        return redirect()->back()->with('success', 'Cập nhật trạng thái thành công.');
     }
 }

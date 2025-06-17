@@ -168,34 +168,38 @@
                                                     : ucfirst($order->status))) }}
                     </span>
                 </td>
-                <td>
+                <td style="align-items: start !important;">
                     <a href="{{ route('detailOrder', $order->id) }}" class="details-link">Xem</a>
 
-                    @if (in_array($order->status, ['pending', 'accepted']))
-                    <form action="{{ route('cancelOrder') }}" method="POST" style="display: inline;">
+                    @if (in_array($order->status, ['pending', 'accepted'])&&$order->payment == 'cod')
+                    <form action="{{ route('cancelOrder') }}" method="POST" style="display: none;" id="cancelled-form-{{ $order->id }}">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="order_id" value="{{ $order->id }}">
-                        <button type="submit" class="btn btn-sm btn-danger"
-                            style="border-radius:10px; margin-left: 8px;"
-                            onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này?')">
-                            Hủy
-                        </button>
                     </form>
+                    <button type="submit" class="btn btn-sm btn-danger confirm-cancelled" data-order-id="{{ $order->id }}"
+                        style="border-radius:10px; margin-left: 8px;">
+                        Hủy
+                    </button>
                     @endif
 
                     @if ($order->status == 'shipping' )
-                    <form action="{{ route('completeOrder') }}" method="POST" style="display: inline;">
+                    <form action="{{ route('completeOrder') }}" method="POST" style="display: none;" id="complete-form-{{ $order->id }}">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="order_id" value="{{ $order->id }}">
-                        <button type="submit" class="received-btn"
-                            onclick="return confirm('Bạn xác nhận đã nhận được hàng?')">
-                            Đã nhận hàng
-                        </button>
                     </form>
+                    <button type="submit" class="received-btn confirm-complete" data-order-id="{{ $order->id }}">
+                        Đã nhận hàng
+                    </button>
 
                     @endif
+                    @if ($order->status == 'completed' )
+                    <button type="button" class="received-btn confirm-rating" data-order-id="{{ $order->id }}" style="background-color:orange;">
+                        Đánh giá
+                    </button>
+                    @endif
+
                 </td>
             </tr>
             @endforeach
@@ -286,5 +290,148 @@
         document.getElementById('tab-content-' + tab).style.display = 'block';
         document.getElementById('tab-' + tab).classList.add('active');
     }
+    //confirm completed
+    document.querySelectorAll('.confirm-complete').forEach((button) => {
+        button.addEventListener('click', function() {
+            const orderId = this.getAttribute('data-order-id');
+
+            showConfirmPopup('Bạn xác nhận đã nhận được hàng?', () => {
+                const form = document.getElementById('complete-form-' + orderId);
+                if (form) form.submit();
+            });
+        });
+    });
+    //confirm cancelled
+    document.querySelectorAll('.confirm-cancelled').forEach((button) => {
+        button.addEventListener('click', function() {
+            const orderId = this.getAttribute('data-order-id');
+
+            showConfirmPopup('Bạn xác nhận muốn hủy đơn hàng ?', () => {
+                const form = document.getElementById('cancelled-form-' + orderId);
+                if (form) form.submit();
+            });
+        });
+    });
+    // confirm rating
+    document.querySelectorAll('.confirm-rating').forEach((button) => {
+        button.addEventListener('click', function() {
+            const orderId = this.getAttribute('data-order-id');
+
+            fetch(`/cms/order/${orderId}/products`)
+                .then(res => res.json())
+                .then(data => {
+                    showProductListPopup(data.products);
+                })
+                .catch(err => {
+                    alert('Không lấy được thông tin sản phẩm.');
+                    console.error(err);
+                });
+        });
+    });
+    // showProductListPopup the active tab by default
+    function showProductListPopup(products) {
+        const overlay = document.createElement('div');
+        overlay.classList.add('popup-overlay');
+
+        const productListHtml = products.map((p, index) => `
+        <li class="popup-product-item">
+            <a href="/product/${p.slug}">
+                  <span>${index + 1}. ${p.name}</span>
+            </a>
+        </li>
+    `).join('');
+
+        overlay.innerHTML = `
+        <div class="popup-box">
+            <h3>Bạn hãy vào phần đánh giá ở mục chi tiết sản phẩm để đánh giá nhé !</h3>
+            <ul class="popup-product-list" style="display: flex; flex-direction: column; text-align: left; padding-left: 20px;">
+                ${productListHtml}
+            </ul>
+
+            <div class="popup-actions" style="margin-top: 20px;">
+                <button class="popup-cancel">Đóng</button>
+            </div>
+        </div>
+    `;
+
+        document.body.appendChild(overlay);
+
+        overlay.querySelector('.popup-cancel').addEventListener('click', () => {
+            overlay.remove();
+        });
+    }
+
+
+
+    // Show the active tab by default
+    function showConfirmPopup(message, onConfirm, onCancel = null) {
+        const overlay = document.createElement('div');
+        overlay.classList.add('popup-overlay');
+        overlay.innerHTML = `
+        <div class="popup-box">
+            <p>${message}</p>
+            <div class="popup-actions">
+                <button class="popup-confirm">Đồng ý</button>
+                <button class="popup-cancel">Huỷ</button>
+            </div>
+        </div>
+    `;
+        document.body.appendChild(overlay);
+
+        overlay.querySelector('.popup-confirm').addEventListener('click', () => {
+            onConfirm();
+            overlay.remove();
+        });
+
+        overlay.querySelector('.popup-cancel').addEventListener('click', () => {
+            if (typeof onCancel === 'function') onCancel();
+            overlay.remove();
+        });
+    }
+    const style = document.createElement('style');
+    style.textContent = `
+            .popup-overlay {
+                position: fixed;
+                top: 0; left: 0;
+                width: 100vw; height: 100vh;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 2000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .popup-box {
+                background: white;
+                padding: 20px 30px;
+                border-radius: 10px;
+                max-width: 400px;
+                text-align: center;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            }
+            .popup-box p {
+                margin-bottom: 20px;
+                font-size: 16px;
+            }
+            .popup-actions {
+                display: flex;
+                justify-content: space-around;
+            }
+            .popup-actions button {
+                padding: 8px 16px;
+                font-weight: bold;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .popup-confirm {
+                background-color: #d9534f;
+                color: white;
+            }
+            .popup-cancel {
+                background-color: #6c757d;
+                color: white;
+            }
+        `;
+    document.head.appendChild(style);
 </script>
 @endsection

@@ -62,22 +62,25 @@
                                     </td>
                                     <td>
                                         <div style="display: flex; justify-content: center; gap: 8px;">
-                                            <form action="{{ route('admin.order.acceptOrder') }}" method="POST">
+                                            <form action="{{ route('admin.order.acceptOrder') }}" method="POST" style="display: none;" id="confirm-form-{{ $order->id }}">
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                                <button class="btn btn-success">Xác nhận</button>
                                             </form>
+                                            <button type="submit" class="btn btn-success confirm-success" data-order-id="{{ $order->id }}">Xác nhận</button>
 
                                             @if ($order->payment == 'cod')
-                                            <form action="{{ route('admin.order.cancelOrder') }}" method="POST">
+                                            <form action="{{ route('admin.order.cancelOrder') }}" method="POST" style="display: none;" id="cancelled-form-{{ $order->id }}">
                                                 @csrf
-                                                @method('DELETE')
+                                                @method('PUT')
                                                 <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                                <button class="btn btn-danger">Hủy</button>
                                             </form>
+                                            <button type="submit" class="btn btn-sm btn-danger confirm-cancelled" data-order-id="{{ $order->id }}"
+                                                style="border-radius:10px; margin-left: 8px;">
+                                                Hủy
+                                            </button>
                                             @else
-                                            <button class="btn btn-secondary" style="color: #000;" disabled>Hủy</button>
+                                            <button class="btn btn-secondary" style="color: #000; border-radius:10px; margin-left: 8px;" disabled>Hủy</button>
                                             @endif
 
                                             <a href="{{ route('admin.order.detail', $order->id) }}">
@@ -85,8 +88,6 @@
                                             </a>
                                         </div>
                                     </td>
-
-
                                 </tr>
                                 @endforeach
                                 @else
@@ -118,5 +119,123 @@
             }, 500);
         }
     }, 3000);
+   
+    //confirm success
+    document.querySelectorAll('.confirm-success').forEach((button) => {
+        button.addEventListener('click', function() {
+            const orderId = this.getAttribute('data-order-id');
+
+            showConfirmPopup1('Bạn xác nhận đơn hàng ?', () => {
+                const form = document.getElementById('confirm-form-' + orderId);
+                if (form) form.submit();
+            });
+        });
+    });
+    // showConfirmPopup1 the active tab by default
+    function showConfirmPopup1(message, onConfirm, onCancel = null) {
+        const overlay = document.createElement('div');
+        overlay.classList.add('popup-overlay');
+        overlay.innerHTML = `
+        <div class="popup-box" style="background-color: #f8f9fa; color: black;">
+            <p>${message}</p>
+            <div class="popup-actions">
+                <button class="popup-confirm">Đồng ý</button>
+                <button class="popup-cancel">Huỷ</button>
+            </div>
+        </div>
+    `;
+        document.body.appendChild(overlay);
+
+        overlay.querySelector('.popup-confirm').addEventListener('click', () => {
+            onConfirm();
+            overlay.remove();
+        });
+
+        overlay.querySelector('.popup-cancel').addEventListener('click', () => {
+            if (typeof onCancel === 'function') onCancel();
+            overlay.remove();
+        });
+    }
+     //confirm cancelled
+    document.querySelectorAll('.confirm-cancelled').forEach((button) => {
+        button.addEventListener('click', function() {
+            const orderId = this.getAttribute('data-order-id');
+
+            showConfirmPopup('Bạn xác nhận muốn hủy đơn hàng ?', () => {
+                const form = document.getElementById('cancelled-form-' + orderId);
+                if (form) form.submit();
+            });
+        });
+    });
+    // Show the active tab by default
+    function showConfirmPopup(message, onConfirm, onCancel = null) {
+        const overlay = document.createElement('div');
+        overlay.classList.add('popup-overlay');
+        overlay.innerHTML = `
+        <div class="popup-box" style="background-color: #f8f9fa; color: black;">
+            <p>${message}</p>
+            <div class="popup-actions">
+                <button class="popup-confirm">Đồng ý</button>
+                <button class="popup-cancel">Huỷ</button>
+            </div>
+        </div>
+    `;
+        document.body.appendChild(overlay);
+
+        overlay.querySelector('.popup-confirm').addEventListener('click', () => {
+            onConfirm();
+            overlay.remove();
+        });
+
+        overlay.querySelector('.popup-cancel').addEventListener('click', () => {
+            if (typeof onCancel === 'function') onCancel();
+            overlay.remove();
+        });
+    }
+    const style = document.createElement('style');
+    style.textContent = `
+            .popup-overlay {
+                position: fixed;
+                top: 0; left: 0;
+                width: 100vw; height: 100vh;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 2000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .popup-box {
+                background: white;
+                padding: 20px 30px;
+                border-radius: 10px;
+                max-width: 400px;
+                text-align: center;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            }
+            .popup-box p {
+                margin-bottom: 20px;
+                font-size: 16px;
+            }
+            .popup-actions {
+                display: flex;
+                justify-content: space-around;
+            }
+            .popup-actions button {
+                padding: 8px 16px;
+                font-weight: bold;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .popup-confirm {
+                background-color: #d9534f;
+                color: white;
+            }
+            .popup-cancel {
+                background-color: #6c757d;
+                color: white;
+            }
+        `;
+    document.head.appendChild(style);
 </script>
 @endsection

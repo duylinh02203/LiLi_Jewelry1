@@ -106,8 +106,13 @@
                             <textarea class="form-control" id="exampleTextarea1" rows="4" name="description">{{ $productUpdate->description }}</textarea>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Gửi</button>
+                       @if($productUpdate->status == 'active')
                         <button class="btn btn-dark" type="button"><a href="{{route('admin.product.index')}}"
                                 style="text-decoration: none; color:white;">Quay lại</a></button>
+                       @else
+                        <button class="btn btn-dark" type="button"><a href="{{route('admin.product.soldOut')}}"
+                                style="text-decoration: none; color:white;">Quay lại</a></button>
+                       @endif
                     </form>
                 </div>
             </div>

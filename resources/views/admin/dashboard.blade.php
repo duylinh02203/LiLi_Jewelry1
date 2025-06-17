@@ -60,6 +60,9 @@
             cursor: not-allowed;
             color: #ccc;
         }
+        .shadow:hover{
+            background-color: black;
+        }
     </style>
     <div class="row">
         <div class="col-xl-3 col-sm-6 grid-margin stretch-card">

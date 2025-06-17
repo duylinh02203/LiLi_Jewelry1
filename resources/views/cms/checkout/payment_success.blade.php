@@ -32,7 +32,7 @@
                     <p><strong>Khách hàng:</strong> {{ $orderWithItems->name }}</p>
                     <p><strong>SĐT :</strong> {{ $orderWithItems->phone }}</p>
                     <p><strong>Địa chỉ:</strong> {{ $orderWithItems->address }}</p>
-                    <p><strong>Phương thức thanh toán :</strong> {{ $orderWithItems->payment == 'cod' ? 'Thanh toán khi nhận hàng (COD)' : ($order->payment == 'vnpay' ? 'Thanh toán online qua VNPAY' : 'Hình thức thanh toán không xác định') }}</p>
+                    <p><strong>Phương thức thanh toán :</strong> {{ $orderWithItems->payment == 'cod' ? 'Thanh toán khi nhận hàng (COD)' : ($orderWithItems->payment == 'vnpay' ? 'Thanh toán online qua VNPAY' : 'Hình thức thanh toán không xác định') }}</p>
                     @php
                     $statusText = match($orderWithItems->status) {
                     'pending' => 'Đang chờ xác nhận',

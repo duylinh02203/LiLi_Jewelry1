@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ADMIN\AccountADController;
+use App\Http\Controllers\ADMIN\ADPostController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\CMS\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -12,12 +13,14 @@ use App\Http\Controllers\ADMIN\AuthController as AuthAdminController;
 use App\Http\Controllers\CMS\ShopController;
 use App\Http\Controllers\ADMIN\DashboardController;
 use App\Http\Controllers\ADMIN\OrderController;
+use App\Http\Controllers\ADMIN\PostController;
 use App\Http\Controllers\CMS\OrderController as OrderCmsController;
 use App\Http\Controllers\ADMIN\ReviewController;
 use App\Http\Controllers\ADMIN\UserController;
 use App\Http\Controllers\CMS\AccountController;
 use App\Http\Controllers\CMS\CartController;
 use App\Http\Controllers\CMS\PaymentController;
+use App\Http\Controllers\CMS\PostController as CMSPostController;
 use App\Http\Controllers\CMS\ProductReviewController;
 use App\Http\Controllers\CMS\WishlistController;
 use App\Models\ProductReview;
@@ -107,11 +110,20 @@ Route::middleware('auth.login')->group(function () {
     Route::get('detail-order/{id}', [OrderCmsController::class, 'detail'])->name('detailOrder');
     Route::put('/completeOrder', [OrderCmsController::class, 'completeOrder'])->name('completeOrder');
     Route::put('/cancel-order', [OrderController::class, 'cancelOrder'])->name('cancelOrder');
+    Route::get('/cms/order/{id}/products', [OrderCmsController::class, 'getOrderProducts']);
+    // Post
+    Route::get('/bai-viet', [CMSPostController::class, 'index'])->name('shop.posts.index');
+    Route::get('/bai-viet/{slug}', [CMSPostController::class, 'show'])->name('shop.posts.show');
 });
 
 Route::prefix('admin')
     ->as('admin.')
     ->group(function () {
+        // Route::resource('posts',ADPostController::class);
+        Route::get('index', [ADPostController::class, 'index'])->name('posts.index');
+        Route::get('create', [ADPostController::class, 'create'])->name('posts.create');
+        Route::post('store', [ADPostController::class, 'store'])->name('posts.store');
+        // Route::post('store', [ADPostController::class, 'store'])->name('posts.store');
         Route::get('/login', [AuthAdminController::class, 'login'])->name('login');
         Route::post('/login', [AuthAdminController::class, 'loginAction'])->name('login');
         Route::middleware('auth.admin.login')->group(function () {
@@ -133,7 +145,8 @@ Route::prefix('admin')
             Route::prefix('product')
                 ->as('product.')
                 ->group(function () {
-                    Route::get('', [ProductController::class, 'index'])->name('index');
+                    Route::get('/active', [ProductController::class, 'index'])->name('index');
+                    Route::get('/soldOut', [ProductController::class, 'soldOut'])->name('soldOut');
                     Route::get('/create', [ProductController::class, 'createForm'])->name('create');
                     Route::post('/create', [ProductController::class, 'create'])->name('create');
                     Route::get('/edit/{id}', [ProductController::class, 'editForm'])->name('edit');
@@ -141,6 +154,7 @@ Route::prefix('admin')
                     Route::get('/remove/{id}', [ProductController::class, 'remove'])->name('remove');
                     Route::get('/detail/{id}', [ProductController::class, 'detail'])->name('detail');
                     Route::get('/search', [ProductController::class, 'searchProduct'])->name('search');
+                    Route::put('/{id}/status', [ProductController::class, 'updateStatus'])->name('updateStatus');
                 });
             Route::prefix('contact')
                 ->as('contact.')
@@ -189,7 +203,7 @@ Route::prefix('admin')
                     Route::put('acceptOrder', [OrderController::class, 'acceptOrder'])->name('acceptOrder');
                     Route::get('search', [OrderController::class, 'searchOrder'])->name('search');
                     Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
-                    Route::delete('/remove', [OrderController::class, 'cancelOrder'])->name('cancelOrder');
+                    Route::put('/remove', [OrderController::class, 'cancelOrder'])->name('cancelOrder');
                 });
         });
     });
