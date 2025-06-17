@@ -85,7 +85,12 @@
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Chỉnh sửa</button>
-                        <button class="btn btn-dark" type="button"><a href="{{ url()->previous() }}" style="text-decoration: none; color:white;">Quay lại</a></button>
+                        @if($userUpdate->role == '1')
+                        <button class="btn btn-dark" type="button"><a href="{{route('admin.user.listAdmin')}}" style="text-decoration: none; color:white;">Quay lại</a></button>
+                        @else
+                        <button class="btn btn-dark" type="button"><a href="{{route('admin.user.listUser')}}" style="text-decoration: none; color:white;">Quay lại</a></button>
+
+                        @endif
                     </form>
                 </div>
             </div>

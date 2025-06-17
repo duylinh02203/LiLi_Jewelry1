@@ -63,7 +63,7 @@
                 <span class="menu-title">Danh mục</span>
             </a>
         </li>
-        <li
+        <!-- <li
             class="nav-item menu-items {{ request()->routeIs('admin.product.index') || request()->routeIs('admin.product.detail') || request()->routeIs('admin.product.edit') || request()->routeIs('admin.product.create') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.product.index') }}">
                 <span class="menu-icon">
@@ -71,6 +71,30 @@
                 </span>
                 <span class="menu-title">Sản phẩm</span>
             </a>
+        </li> -->
+        <li class="nav-item menu-items {{ request()->routeIs('admin.product.*') ? 'active' : '' }}">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic-1" aria-expanded="{{ request()->routeIs('admin.product.*') ? 'true' : 'false' }}" aria-controls="ui-basic">
+                <span class="menu-icon">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                </span>
+                <span class="menu-title">Quản lí sản phẩm</span>
+                <i class="menu-arrow"></i>
+            </a>
+
+            <div class="collapse {{ request()->routeIs('admin.product.*') ? 'show' : '' }}" id="ui-basic-1">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.product.index') ? 'active' : '' }}" href="{{ route('admin.product.index') }}">
+                            Sản phẩm còn hàng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.product.soldOut') ? 'active' : '' }}" href="{{ route('admin.product.soldOut') }}">
+                            Sản phẩm đã hết hàng
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </li>
         <li
             class="nav-item menu-items {{ request()->routeIs('admin.review.ProductReview') || request()->routeIs('admin.review.detail') ? 'active' : '' }}">
@@ -98,7 +122,6 @@
                 <span class="menu-title">Quản lí đơn hàng</span>
                 <i class="menu-arrow"></i>
             </a>
-
             <div class="collapse {{ request()->routeIs('admin.order.*') ? 'show' : '' }}" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
@@ -133,8 +156,26 @@
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item "> <a class="nav-link {{ request()->routeIs('admin.user.listUser') ? 'active' : '' }}" href="{{ route('admin.user.listUser') }}"> Người
                             dùng </a></li>
-                    <li class="nav-item {{ request()->routeIs('admin.user.listAdmin') ? 'active' : '' }}"> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Quản trị
-                            viên </a></li>
+                    <li class="nav-item "> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Quản trị viên </a></li>
+                </ul>
+            </div>
+
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#post"
+                aria-expanded="{{ request()->is('admin/user*') ? 'true' : 'false' }}" aria-controls="auth">
+                <span class="menu-icon">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+                <span class="menu-title">Quản lý bài viết</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse "
+                id="post">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item "> <a class="nav-link " href="{{ route('admin.posts.index') }}"> Người
+                            dùng </a></li>
+                    <li class="nav-item "> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Quản trị viên </a></li>
                 </ul>
             </div>
 

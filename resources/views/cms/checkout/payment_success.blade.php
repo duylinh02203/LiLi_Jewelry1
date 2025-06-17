@@ -23,7 +23,7 @@
                     <div class="d-flex justify-content-between" style="font-size: 14px;">
                         <span>Ngày: {{ $orderWithItems->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y') }}
                         </span>
-                        <span>Mã đơn hàng: DL00{{ $orderWithItems->id }}</span>
+                        <span>Mã đơn hàng: JL00{{ $orderWithItems->id }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-3" style="font-size: 14px;">
                         <span>Thu ngân: Hệ thống</span>
@@ -44,7 +44,6 @@
                                 'cancelled' => 'Đã hủy',
                             };
                         @endphp
-
                         <p><strong>Trạng thái đơn hàng:</strong> {{ $statusText }}</p>
                     </div>
                     <table class="table table-bordered table-sm mt-3" style="font-size: 14px;">

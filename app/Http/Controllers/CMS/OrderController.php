@@ -40,10 +40,6 @@ class OrderController extends Controller
 
         $orderWithItems = Order::with('orderItems.product')->find($order->id);
         $order->delete();
-
-        // Dispatch event or perform any additional actions if needed
-        // CancelledOrder::dispatch($orderWithItems);
-
         return back()->with('success', 'Đơn hàng đã được hủy.');
     }
 
@@ -55,5 +51,20 @@ class OrderController extends Controller
         }
         $order->update(['status' => 'completed']);
         return back()->with('success', 'Đơn hàng đã được hoàn thành.');
+    }
+
+    public function getOrderProducts($id)
+    {
+        $order = Order::with('orderItems.product')->findOrFail($id);
+
+        $products = $order->orderItems->map(function ($detail) {
+            return [
+                'id' => $detail->product->id,
+                'name' => $detail->product->name,
+              'slug'=> $detail->product->slug,
+            ];
+        });
+
+        return response()->json(['products' => $products]);
     }
 }

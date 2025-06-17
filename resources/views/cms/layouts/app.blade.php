@@ -78,12 +78,6 @@
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)">
-                    <i data-feather="align-justify"></i>
-                    <span>Danh mục</span>
-                </a>
-            </li>
-            <li>
                 <a href="{{ route('cart') }}">
                     <i data-feather="shopping-bag"></i>
                     <span>Giỏ hàng</span>
@@ -96,7 +90,7 @@
                 </a>
             </li>
             <li>
-                <a href="user-dashboard.php">
+                <a href="{{route('information')}}">
                     <i data-feather="user"></i>
                     <span>Tài khoản</span>
                 </a>

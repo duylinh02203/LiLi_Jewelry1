@@ -25,6 +25,7 @@ class ShopController extends Controller
         $categories = Category::all();
 
         $query = Product::with('images')
+            ->where('status', 'active')
             ->when($categorySlug, function ($q) use ($categorySlug) {
                 $q->whereHas('category', function ($subQuery) use ($categorySlug) {
                     $subQuery->whereIn('slug', $categorySlug);

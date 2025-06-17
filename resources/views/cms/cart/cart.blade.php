@@ -141,20 +141,24 @@
                                     <td>
                                         <span>{{ number_format($item->product->price, 0, ',', '.') }} VNĐ</span>
                                     </td>
-                                    <td>
-                                        <div class="input-group input-group-sm justify-content-center"
-                                            style="max-width: 120px;">
-                                            <button type="button" class="btn btn-outline-secondary qty-decrease"
-                                                data-cart-item-id="{{ $item->id }}">−</button>
+                                   <td class="text-center align-middle">
+    <div class="w-100 d-flex justify-content-center align-items-center">
+        <div class="input-group input-group-sm" style="max-width: 120px;">
+            <button type="button" class="btn btn-outline-secondary qty-decrease"
+                data-cart-item-id="{{ $item->id }}">−</button>
 
-                                            <input type="text" name="quantity"
-                                                class="form-control text-center input-number" value="{{ $item->quantity }}"
-                                                data-cart-item-id="{{ $item->id }}" style="max-width: 50px;" />
+            <input type="text" name="quantity"
+                class="form-control text-center input-number"
+                value="{{ $item->quantity }}" data-cart-item-id="{{ $item->id }}"
+                style="max-width: 50px;" />
 
-                                            <button type="button" class="btn btn-outline-secondary qty-increase"
-                                                data-cart-item-id="{{ $item->id }}">+</button>
-                                        </div>
-                                    </td>
+            <button type="button" class="btn btn-outline-secondary qty-increase"
+                data-cart-item-id="{{ $item->id }}">+</button>
+        </div>
+    </div>
+</td>
+
+
 
                                     <td>
                                         @if ($item->product && $item->product->sizes && $item->product->sizes->count() > 0)

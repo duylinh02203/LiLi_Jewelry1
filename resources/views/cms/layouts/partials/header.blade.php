@@ -67,7 +67,7 @@
                                     <li><a href="{{ route('shop') }}" class="nav-link menu">Cửa hàng</a></li>
                                     <li><a href="{{ route('contact') }}" class="nav-link menu">Liên hệ</a>
                                     </li>
-                                    <li><a href="blog.html" class="nav-link menu">Bảng tin</a></li>
+                                    <li><a href="{{route('shop.posts.index')}}" class="nav-link menu">Bảng tin</a></li>
                                  
                                     <li><a href="{{ route('allOrders') }}" class="nav-link menu">Đơn hàng đã đặt</a>
                                     </li>
