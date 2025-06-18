@@ -278,9 +278,11 @@
                     </div>
                 </div>
                 @php
-                    $productSales = \App\Models\Product::where('status','active')->whereRaw(
-                        'ROUND((CAST(listed_price AS SIGNED) - CAST(price AS SIGNED)) / listed_price * 100) BETWEEN 30 AND 45',
-                    )->get();
+                    $productSales = \App\Models\Product::where('status', 'active')
+                        ->whereRaw(
+                            'ROUND((CAST(listed_price AS SIGNED) - CAST(price AS SIGNED)) / listed_price * 100) BETWEEN 30 AND 45',
+                        )
+                        ->get();
                 @endphp
 
                 <div class="our-product products-c">
@@ -310,8 +312,10 @@
                                     <div class="cart-wrap">
                                         <ul>
                                             <li>
-                                                <a href="javascript:void(0)" class="addtocart-btn" data-bs-toggle="modal"
-                                                    data-bs-target="#addtocart">
+                                                <a href="javascript:void(0)" class="addtocart-btn addToCart"
+                                                    data-product-id="{{ $product->id }}"
+                                                    data-has-size="{{ $product->sizes->count() > 0 ? 1 : 0 }}"
+                                                    data-sizes='@json($product->sizes->pluck('size'))'>
                                                     <i data-feather="shopping-cart"></i>
                                                 </a>
                                             </li>

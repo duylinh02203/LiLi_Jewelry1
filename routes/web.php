@@ -46,9 +46,6 @@ Route::get('review', [HomeController::class, 'review'])->name('review');
 Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 //Shop
 Route::get('shop', [ShopController::class, 'shop'])->name('shop');
-// 
-
-// 
 Route::get('product/{slug}', [ShopController::class, 'productDetails'])->name('shop.product.details');
 //success
 Route::get('/contact-us/success', [ContactController::class, 'success'])->name('admin.contact.success');
@@ -56,10 +53,13 @@ Route::get('/danh-muc/{slug}', [HomeController::class, 'products'])->name('shop.
 // account
 Route::get('account', [AccountController::class, 'index'])->name('index');
 // Handbook
-Route::get('cach-bao-quan-bac', [HomeController::class, 'handbook_1'])->name('shop.handbook.hb_1');
-Route::get('tai-sao-su-dung-bac', [HomeController::class, 'handbook_2'])->name('shop.handbook.hb_2');
-Route::get('lam-sang-tai-nha', [HomeController::class, 'handbook_3'])->name('shop.handbook.hb_3');
-Route::get('tac-dung-cua-bac', [HomeController::class, 'handbook_4'])->name('shop.handbook.hb_4');
+Route::get('how-to-preserve', [HomeController::class, 'handbook_1'])->name('shop.handbook.hb_1');
+Route::get('why-use-silver', [HomeController::class, 'handbook_2'])->name('shop.handbook.hb_2');
+Route::get('brighten', [HomeController::class, 'handbook_3'])->name('shop.handbook.hb_3');
+Route::get('effect', [HomeController::class, 'handbook_4'])->name('shop.handbook.hb_4');
+// Post
+Route::get('/posts', [CMSPostController::class, 'index'])->name('shop.posts.index');
+Route::get('/post/{slug}', [CMSPostController::class, 'show'])->name('shop.posts.show');
 // cms
 Route::prefix('auth')->group(
     function () {
@@ -110,19 +110,20 @@ Route::middleware('auth.login')->group(function () {
     Route::put('/completeOrder', [OrderCmsController::class, 'completeOrder'])->name('completeOrder');
     Route::put('/cancel-order', [OrderController::class, 'cancelOrder'])->name('cancelOrder');
     Route::get('/cms/order/{id}/products', [OrderCmsController::class, 'getOrderProducts']);
-    // Post
-    Route::get('/bai-viet', [CMSPostController::class, 'index'])->name('shop.posts.index');
-    Route::get('/bai-viet/{slug}', [CMSPostController::class, 'show'])->name('shop.posts.show');
 });
 
 Route::prefix('admin')
     ->as('admin.')
     ->group(function () {
-        // Route::resource('posts',ADPostController::class);
-        Route::get('index', [ADPostController::class, 'index'])->name('posts.index');
-        Route::get('create', [ADPostController::class, 'create'])->name('posts.create');
-        Route::post('store', [ADPostController::class, 'store'])->name('posts.store');
-        // Route::post('store', [ADPostController::class, 'store'])->name('posts.store');
+        // post
+        Route::prefix('post')
+            ->as('posts.')
+            ->group(function () {
+                Route::get('index', [ADPostController::class, 'index'])->name('index');
+                Route::get('create', [ADPostController::class, 'create'])->name('create');
+                Route::post('store', [ADPostController::class, 'store'])->name('store');
+            });
+        // auth
         Route::get('/login', [AuthAdminController::class, 'login'])->name('login');
         Route::post('/login', [AuthAdminController::class, 'loginAction'])->name('login');
         Route::middleware('auth.admin.login')->group(function () {

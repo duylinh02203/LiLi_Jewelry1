@@ -90,7 +90,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{route('information')}}">
+                <a href="{{ route('information') }}">
                     <i data-feather="user"></i>
                     <span>Tài khoản</span>
                 </a>
@@ -158,7 +158,7 @@
         </div>
     </div>
 
-    <div class="modal fade cart-modal" id="addtocart" tabindex="-1" role="dialog" aria-label="myModalLabel"
+    {{-- <div class="modal fade cart-modal" id="addtocart" tabindex="-1" role="dialog" aria-label="myModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content ">
@@ -294,7 +294,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="tap-to-top">
         <a href="#home">
             <i class="fas fa-chevron-up"></i>

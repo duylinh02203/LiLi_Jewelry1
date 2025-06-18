@@ -73,7 +73,9 @@
             </a>
         </li> -->
         <li class="nav-item menu-items {{ request()->routeIs('admin.product.*') ? 'active' : '' }}">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic-1" aria-expanded="{{ request()->routeIs('admin.product.*') ? 'true' : 'false' }}" aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic-1"
+                aria-expanded="{{ request()->routeIs('admin.product.*') ? 'true' : 'false' }}"
+                aria-controls="ui-basic">
                 <span class="menu-icon">
                     <i class="fa-solid fa-boxes-packing"></i>
                 </span>
@@ -84,12 +86,14 @@
             <div class="collapse {{ request()->routeIs('admin.product.*') ? 'show' : '' }}" id="ui-basic-1">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.product.index') ? 'active' : '' }}" href="{{ route('admin.product.index') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.product.index') ? 'active' : '' }}"
+                            href="{{ route('admin.product.index') }}">
                             Sản phẩm còn hàng
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.product.soldOut') ? 'active' : '' }}" href="{{ route('admin.product.soldOut') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.product.soldOut') ? 'active' : '' }}"
+                            href="{{ route('admin.product.soldOut') }}">
                             Sản phẩm đã hết hàng
                         </a>
                     </li>
@@ -115,7 +119,8 @@
             </a>
         </li>
         <li class="nav-item menu-items {{ request()->routeIs('admin.order.*') ? 'active' : '' }}">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="{{ request()->routeIs('admin.order.*') ? 'true' : 'false' }}" aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic"
+                aria-expanded="{{ request()->routeIs('admin.order.*') ? 'true' : 'false' }}" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <i class="mdi mdi-file-document-box"></i>
                 </span>
@@ -125,17 +130,20 @@
             <div class="collapse {{ request()->routeIs('admin.order.*') ? 'show' : '' }}" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.order.newOrder') ? 'active' : '' }}" href="{{ route('admin.order.newOrder') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.order.newOrder') ? 'active' : '' }}"
+                            href="{{ route('admin.order.newOrder') }}">
                             Đơn hàng chưa xác nhận
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.order.orderAll') ? 'active' : '' }}" href="{{ route('admin.order.orderAll') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.order.orderAll') ? 'active' : '' }}"
+                            href="{{ route('admin.order.orderAll') }}">
                             Tất cả đơn hàng
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.order.orderCancelled') ? 'active' : '' }}" href="{{ route('admin.order.orderCancelled') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.order.orderCancelled') ? 'active' : '' }}"
+                            href="{{ route('admin.order.orderCancelled') }}">
                             Đơn hàng đã bị hủy
                         </a>
                     </li>
@@ -154,9 +162,12 @@
             <div class="collapse {{ request()->routeIs('admin.user.listUser', 'admin.user.listAdmin') ? 'show' : '' }}"
                 id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item "> <a class="nav-link {{ request()->routeIs('admin.user.listUser') ? 'active' : '' }}" href="{{ route('admin.user.listUser') }}"> Người
+                    <li class="nav-item "> <a
+                            class="nav-link {{ request()->routeIs('admin.user.listUser') ? 'active' : '' }}"
+                            href="{{ route('admin.user.listUser') }}"> Người
                             dùng </a></li>
-                    <li class="nav-item "> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Quản trị viên </a></li>
+                    <li class="nav-item "> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Quản
+                            trị viên </a></li>
                 </ul>
             </div>
 
@@ -170,12 +181,12 @@
                 <span class="menu-title">Quản lý bài viết</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse "
-                id="post">
+            <div class="collapse " id="post">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item "> <a class="nav-link " href="{{ route('admin.posts.index') }}"> Người
-                            dùng </a></li>
-                    <li class="nav-item "> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Quản trị viên </a></li>
+                    <li class="nav-item "> <a class="nav-link " href="{{ route('admin.posts.index') }}"> Bài viết
+                            đang hiển thị</a></li>
+                    <li class="nav-item "> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Bài viết
+                            đã xóa </a></li>
                 </ul>
             </div>
 
