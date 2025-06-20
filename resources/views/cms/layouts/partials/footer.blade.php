@@ -80,7 +80,8 @@
                         <li>
                             <div>
                                 <i class="fa-solid fa-location-dot"></i>
-                                <span style="margin-left: 5px;"><b>Địa chỉ:</b><span class="font-light"> 149 Khương Thượng, Đống Đa, Hà Nội</span></span>
+                                <span style="margin-left: 5px;"><b>Địa chỉ:</b><span class="font-light"> 149 Khương
+                                        Thượng, Đống Đa, Hà Nội</span></span>
                             </div>
                         </li>
                         <li>
@@ -105,9 +106,6 @@
                             </li>
                             <li>
                                 <a href="{{ route('shop') }}" class=" menu-link">Cửa hàng</a>
-                            </li>
-                            <li>
-                                <a href="#" class=" menu-link">Bảng tin</a>
                             </li>
                             <li>
                                 <a href="{{ route('contact') }}" class=" menu-link">Liên hệ</a>
@@ -180,16 +178,19 @@
                     <div class="footer-content">
                         <ul>
                             <li>
-                                <a href="{{route('shop.handbook.hb_2')}}" class="menu-link">Tại sao nên chọn bạc ?</a>
+                                <a href="{{ route('shop.handbook.hb_2') }}" class="menu-link">Tại sao nên chọn bạc
+                                    ?</a>
                             </li>
                             <li>
-                                <a href="{{route('shop.handbook.hb_4')}}" class="menu-link">Tác dụng của bạc</a>
+                                <a href="{{ route('shop.handbook.hb_4') }}" class="menu-link">Tác dụng của bạc</a>
                             </li>
                             <li>
-                                <a href="{{route('shop.handbook.hb_3')}}" class="menu-link">Cách làm trắng bạc tại nhà</a>
+                                <a href="{{ route('shop.handbook.hb_3') }}" class="menu-link">Cách làm trắng bạc
+                                    tại nhà</a>
                             </li>
                             <li>
-                                <a href="{{route('shop.handbook.hb_1')}}" class="menu-link">Cách bảo quản trang sức bạc</a>
+                                <a href="{{ route('shop.handbook.hb_1') }}" class="menu-link">Cách bảo quản trang
+                                    sức bạc</a>
                             </li>
                         </ul>
                     </div>
