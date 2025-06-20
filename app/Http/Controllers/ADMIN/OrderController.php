@@ -53,12 +53,13 @@ class OrderController extends Controller
             }
         }
 
-        if ($request->has('status') && $request->status !== 'all') {
-            $query->where('status', $request->status);
-        }
+        $status = $request->input('status');
 
-        $query->orderByRaw("FIELD(status, 'shipping', 'completed')")
-            ->orderBy('created_at', 'desc');
+        if ($status && $status !== 'all') {
+            $query->where('status', $status);
+        } else {
+            $query->whereIn('status', ['shipping', 'completed']);
+        }
 
         $orders = $query->paginate(5);
 

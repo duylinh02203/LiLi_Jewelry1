@@ -70,7 +70,7 @@
     </style>
     <div class="content-wrapper">
         <div class="page-header">
-            <h3 class="page-title">Quản lí sản phẩm</h3>
+            <h3 class="page-title">QUẢN LÍ SẢN PHẨM</h3>
             <div class="link-wrap">
                 <a class="none-a" href="{{ route('admin.dashboard') }}">Thống kê </a>
                 <p class="rev">></p>
@@ -111,7 +111,7 @@
                                     placeholder="Tìm kiếm sản phẩm" name="search"
                                     value="{{ request()->input('search') }}">
                                 <select name="category" onchange="this.form.submit()" class="form-select w-auto"
-                                    style="background-color: #cce5ff; padding: 5px; color: #004085; border: none; border-radius: 5px;">
+                                    style="background-color: #cce5ff; padding: 5px; color: #004085; border: none; border-radius: 5px;margin-bottom: -15px;">
                                     <option value="all" {{ request('category') == 'all' ? 'selected' : '' }}>Tất cả danh
                                         mục</option>
                                     @foreach ($categories as $category)
