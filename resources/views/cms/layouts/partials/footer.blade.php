@@ -58,6 +58,12 @@
         width: 30%;
     }
 </style>
+@php
+$categories = \App\Models\Category::with('products')
+->orderBy('created_at', 'desc')
+->take(5)
+->get();
+@endphp
 <div class="main-footer">
     <div class="container">
         <div class="row gy-4">
@@ -120,23 +126,18 @@
                         <h3 style="font-weight: bold;" class="cate-under">DANH MỤC MỚI</h3>
                     </div>
                     <div class="footer-content">
-                        @php
-                            $categories = \App\Models\Category::with('products')
-                                ->orderBy('created_at', 'desc')
-                                ->take(5)
-                                ->get();
-                        @endphp
+
                         <ul>
                             @foreach ($categories as $category)
-                                <li>
-                                    <form action="{{ route('shop') }}" id="form_cate" name="category" method="GET">
-                                        <a href="javascript:void(0)"
-                                            class="menu-link cate-click-1">{{ $category->name }}</a>
-                                        <input type="hidden" id="category_{{ $category->id }}" name="category[]"
-                                            value="{{ $category->slug }}"
-                                            {{ is_array(request('category')) && in_array($category->slug, request('category')) ? 'checked' : '' }}>
-                                    </form>
-                                </li>
+                            <li>
+                                <form action="{{ route('shop') }}" id="form_cate" name="category" method="GET">
+                                    <a href="javascript:void(0)"
+                                        class="menu-link cate-click-1">{{ $category->name }}</a>
+                                    <input type="hidden" id="category_{{ $category->id }}" name="category[]"
+                                        value="{{ $category->slug }}"
+                                        {{ is_array(request('category')) && in_array($category->slug, request('category')) ? 'checked' : '' }}>
+                                </form>
+                            </li>
                             @endforeach
 
                         </ul>
@@ -155,11 +156,11 @@
                                 <a href="{{ route('shop') }}" class="menu-link">Sản phẩm mới</a>
                             </li>
                             <li>
-                                <a href="{{ route('shop', ['gender[]' => 'male']) }}" class="menu-link">Trang sức
+                                <a href="{{ route('shop', ['gender[]' => 'female']) }}" class="menu-link">Trang sức
                                     nam</a>
                             </li>
                             <li>
-                                <a href="{{ route('shop', ['gender[]' => 'female']) }}" class="menu-link">Trang sức
+                                <a href="{{ route('shop', ['gender[]' => 'male']) }}" class="menu-link">Trang sức
                                     nữ</a>
                             </li>
                             <li>

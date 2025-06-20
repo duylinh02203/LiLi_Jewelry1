@@ -8,7 +8,7 @@
         margin-top: 40px;
     }
 
-    h3 {
+    .title-h3 {
         text-align: center;
         margin: 20px 0;
     }
@@ -137,10 +137,9 @@
     <button onclick="showTab('cancelled')" id="tab-cancelled" class="tab-btn">Đơn hàng đã huỷ</button>
 </div>
 
-{{-- Đơn hàng đã đặt --}}
 <div id="tab-content-active">
     @if ($allOrders->count() > 0)
-    <h3>Đơn hàng đã đặt</h3>
+    <h3 class="title-h3">Đơn hàng đã đặt</h3>
     <table>
         <thead>
             <tr>
@@ -213,7 +212,7 @@
 {{-- Đơn hàng đã huỷ --}}
 <div id="tab-content-cancelled" style="display: none;">
     @if ($allOrdersCancelled->count() > 0)
-    <h3>Đơn hàng đã huỷ</h3>
+    <h3 class="title-h3">Đơn hàng đã huỷ</h3>
     <table>
         <thead>
             <tr>
@@ -343,7 +342,7 @@
 
         overlay.innerHTML = `
         <div class="popup-box">
-            <h3>Bạn hãy vào phần đánh giá ở mục chi tiết sản phẩm để đánh giá nhé !</h3>
+            <h3 class="title-h3">Bạn hãy vào phần đánh giá ở mục chi tiết sản phẩm để đánh giá nhé !</h3>
             <ul class="popup-product-list" style="display: flex; flex-direction: column; text-align: left; padding-left: 20px;">
                 ${productListHtml}
             </ul>

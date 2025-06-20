@@ -27,13 +27,37 @@ class HomeController extends Controller
         return view('cms.handbook.handbook_4');
     }
 
+
     public function index()
     {
         $user = session('userData');
+
         $categories = Category::with('products')->orderBy('created_at', 'desc')->get();
-        $newCategories = Category::withCount('products')->orderBy('products_count', 'desc')->take(3)->get();
-        $products = Product::with('images')->where('status', 'active')->orderBy('created_at', 'desc')->take(12)->get();
-        return view('cms.home.content', compact('categories', 'products', 'newCategories'));
+
+        $newCategories = Category::withCount('products')
+            ->orderBy('products_count', 'desc')
+            ->take(3)
+            ->get();
+
+        $products = Product::with('images')
+            ->where('status', 'active')
+            ->orderBy('created_at', 'desc')
+            ->take(12)
+            ->get();
+
+        $productSales = Product::where('status', 'active')
+            ->whereRaw(
+                'ROUND((CAST(listed_price AS SIGNED) - CAST(price AS SIGNED)) / listed_price * 100) BETWEEN 30 AND 45'
+            )
+            ->get();
+
+        return view('cms.home.content', compact(
+            'user',
+            'categories',
+            'products',
+            'newCategories',
+            'productSales'
+        ));
     }
 
     public function products($slug)

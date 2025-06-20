@@ -70,7 +70,7 @@
 </style>
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title">Quản lí sản phẩm</h3>
+        <h3 class="page-title">QUẢN LÍ SẢN PHẨM</h3>
         <div class="link-wrap">
             <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
             <p class="rev">></p>
@@ -102,7 +102,7 @@
                             <input type="hidden" style="padding: 15;" class="form-control"
                                 placeholder="Tìm kiếm sản phẩm" name="search"
                                 value="{{ request()->input('search') }}">
-                            <select name="category" onchange="this.form.submit()" class="form-select w-auto" style="background-color: #cce5ff; padding: 5px; color: #004085; border: none; border-radius: 5px;">
+                            <select name="category" onchange="this.form.submit()" class="form-select w-auto" style="background-color: #cce5ff; padding: 5px; color: #004085; border: none; border-radius: 5px; margin-bottom: -12px;">
                                 <option value="all" {{ request('category') == 'all' ? 'selected' : '' }}>Tất cả danh mục</option>
                                 @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
@@ -122,9 +122,7 @@
                                     <th>Hình ảnh</th>
                                     <th>Danh mục</th>
                                     <th>Giới tính</th>
-                                    <th>Mô tả</th>
                                     <th>Giá niêm yết</th>
-                                    <th>Giá ưu đãi</th>
                                     <th>Trạng thái</th>
                                     <th>Chức năng</th>
                                 </tr>
@@ -148,9 +146,7 @@
                                             ($product->gender === 'unisex' ? 'Cặp đôi' : 'Không xác định'))
                                         }}
                                     </td>
-                                    <td>{{ Str::limit($product->description ?? 'null', 60) }}</td>
                                     <td>{{ $product->listed_price ?? 'null' }}</td>
-                                    <td>{{ $product->price ?? 'null' }}</td>
                                     <td>
                                         <form action="{{ route('admin.product.updateStatus', $product->id) }}" method="POST" class="d-inline">
                                             @csrf

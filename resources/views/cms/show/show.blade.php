@@ -307,7 +307,7 @@
                                     <i class="fas fa-home"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
                         </ol>
                     </nav>
                 </div>

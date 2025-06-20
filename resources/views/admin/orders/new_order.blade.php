@@ -2,11 +2,20 @@
 @section('content')
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title">Đơn hàng chưa xác nhận</h3>
-        <nav aria-label="breadcrumb">
-        </nav>
+        <h3 class="page-title">ĐƠN HÀNG CHƯA XÁC NHẬN</h3>
+        <div class="link-wrap">
+            <a class="none-a" href="{{ route('admin.dashboard') }}">Thống kê </a>
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.order.newOrder'))
+            <span style="color: #333; cursor: not-allowed;">Đơn hàng chờ xác nhận</span>
+            @endif
+        </div>
         @if ($message = Session::get('success'))
-        <div id="alert" class="alert alert-success" style="position: absolute; width: 80%;">
+        <div id="alert" class="alert alert-success" style="position: absolute; width: 80.5%;">
+            {{ $message }}
+        </div>
+        @elseif ($message = Session::get('error'))
+        <div id="alert" class="alert alert-danger" style="position: absolute; width: 80.5%;">
             {{ $message }}
         </div>
         @endif
@@ -32,7 +41,6 @@
                             <thead>
                                 <tr>
                                     <th>Mã đơn hàng</th>
-                                    <th>Tên người dùng</th>
                                     <th>Email</th>
                                     <th>Hình thức thanh toán</th>
                                     <th>Tổng tiền</th>
@@ -45,7 +53,6 @@
                                 @foreach ($orders as $key => $order)
                                 <tr>
                                     <td>JL00{{ $order->id }}</td>
-                                    <td>{{ $order->name }}</td>
                                     <td>{{ $order->email }}</td>
                                     <td>{{ $order->payment == 'cod' ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua VNPay' }}
                                     </td>
@@ -119,7 +126,7 @@
             }, 500);
         }
     }, 3000);
-   
+
     //confirm success
     document.querySelectorAll('.confirm-success').forEach((button) => {
         button.addEventListener('click', function() {
@@ -156,7 +163,7 @@
             overlay.remove();
         });
     }
-     //confirm cancelled
+    //confirm cancelled
     document.querySelectorAll('.confirm-cancelled').forEach((button) => {
         button.addEventListener('click', function() {
             const orderId = this.getAttribute('data-order-id');

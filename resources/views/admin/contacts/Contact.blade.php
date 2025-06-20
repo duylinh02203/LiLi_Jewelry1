@@ -2,7 +2,7 @@
 @section('content')
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title">Quản lí liên hệ</h3>
+        <h3 class="page-title">QUẢN LÍ LIÊN HỆ</h3>
         <div class="link-wrap">
             <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
             <p class="rev">></p>

@@ -84,6 +84,26 @@ class ShopController extends Controller
             ->where('id', '!=', $product->id)
             ->limit(6)
             ->get();
-        return view('cms.show.show', compact('product', 'relatedProducts', 'productSizes', 'productReviews', 'reviewCount', 'ratings','roundTbRating'));
+
+        $order = null;
+        if (session()->has('userData')) {
+            $order = \App\Models\Order::where('user_id', session('userData')->id)
+                ->where('status', 'completed')
+                ->whereHas('orderItems', function ($query) use ($product) {
+                    $query->where('product_id', $product->id);
+                })
+                ->first();
+        }
+
+        return view('cms.show.show', compact(
+            'product',
+            'relatedProducts',
+            'productSizes',
+            'productReviews',
+            'reviewCount',
+            'ratings',
+            'roundTbRating',
+            'order'
+        ));
     }
 }

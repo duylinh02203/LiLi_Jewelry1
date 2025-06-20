@@ -277,14 +277,6 @@
                         <h5 class="theme-color">Mua ngay</h5>
                     </div>
                 </div>
-                @php
-                    $productSales = \App\Models\Product::where('status', 'active')
-                        ->whereRaw(
-                            'ROUND((CAST(listed_price AS SIGNED) - CAST(price AS SIGNED)) / listed_price * 100) BETWEEN 30 AND 45',
-                        )
-                        ->get();
-                @endphp
-
                 <div class="our-product products-c">
                     @foreach ($productSales as $productSale)
                         <div>

@@ -63,15 +63,6 @@
                 <span class="menu-title">Danh mục</span>
             </a>
         </li>
-        <!-- <li
-            class="nav-item menu-items {{ request()->routeIs('admin.product.index') || request()->routeIs('admin.product.detail') || request()->routeIs('admin.product.edit') || request()->routeIs('admin.product.create') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.product.index') }}">
-                <span class="menu-icon">
-                    <i class="fa-solid fa-boxes-packing"></i>
-                </span>
-                <span class="menu-title">Sản phẩm</span>
-            </a>
-        </li> -->
         <li class="nav-item menu-items {{ request()->routeIs('admin.product.*') ? 'active' : '' }}">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic-1"
                 aria-expanded="{{ request()->routeIs('admin.product.*') ? 'true' : 'false' }}"

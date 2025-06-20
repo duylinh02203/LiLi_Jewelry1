@@ -2,14 +2,14 @@
 @section('content')
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title">Quản lí sản phẩm</h3>
+        <h3 class="page-title">QUẢN LÍ SẢN PHẨM</h3>
         <div class="link-wrap">
             <a class="none-a" href="{{route('admin.dashboard')}}">Thống kê </a>
             <p class="rev">></p>
-            @if (request()->routeIs('admin.category.index'))
-            <span style="color: #333; cursor: not-allowed;">Danh mục</span>
+            @if (request()->routeIs('admin.product.index'))
+            <span style="color: #333; cursor: not-allowed;">Sản phẩm</span>
             @else
-            <a class="none-a2" href="{{route('admin.category.index')}}">Danh mục</a>
+            <a class="none-a2" href="{{route('admin.product.index')}}">Sản phẩm</a>
             @endif
             <p class="rev">></p>
             @if (request()->routeIs('admin.product.detail'))
@@ -34,6 +34,12 @@
                                 <br>
                                 <div class="mb-3">
                                     <span>Tên sản phẩm:</span> {{ $product->name }}
+                                </div>
+                                <div class="mb-3">
+                                    <span>Thuộc danh mục:</span> {{ $product->category->name }}
+                                </div>
+                                <div class="mb-3">
+                                    <span>Giá niêm yết:</span> {{ number_format($product->listed_price, 0, ',', '.') }} VNĐ
                                 </div>
                                 <div class="mb-3">
                                     <span>Giá bán:</span> {{ number_format($product->price, 0, ',', '.') }} VNĐ

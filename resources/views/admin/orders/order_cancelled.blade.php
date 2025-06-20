@@ -2,11 +2,20 @@
 @section('content')
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title">Đơn hàng đã hủy</h3>
-        <nav aria-label="breadcrumb">
-        </nav>
+        <h3 class="page-title">ĐƠN HÀNG ĐÃ HỦY</h3>
+        <div class="link-wrap">
+            <a class="none-a" href="{{ route('admin.dashboard') }}">Thống kê </a>
+            <p class="rev">></p>
+            @if (request()->routeIs('admin.order.orderCancelled'))
+            <span style="color: #333; cursor: not-allowed;">Đơn hàng hủy</span>
+            @endif
+        </div>
         @if ($message = Session::get('success'))
-        <div id="alert" class="alert alert-success" style="position: absolute; width: 80%;">
+        <div id="alert" class="alert alert-success" style="position: absolute; width: 80.5%;">
+            {{ $message }}
+        </div>
+        @elseif ($message = Session::get('error'))
+        <div id="alert" class="alert alert-danger" style="position: absolute; width: 80.5%;">
             {{ $message }}
         </div>
         @endif
@@ -32,7 +41,6 @@
                             <thead>
                                 <tr>
                                     <th>Mã đơn hàng</th>
-                                    <th>Tên người dùng</th>
                                     <th>Email</th>
                                     <th>Hình thức thanh toán</th>
                                     <th>Tổng tiền</th>
@@ -45,7 +53,6 @@
                                 @foreach ($orders as $key => $order)
                                 <tr>
                                     <td>JL00{{ $order->id }}</td>
-                                    <td>{{ $order->name }}</td>
                                     <td>{{ $order->email }}</td>
                                     <td>{{ $order->payment == 'cod' ? 'thanh toán khi nhận hàng' : 'thanh toán qua VNPay' }}
                                     </td>
