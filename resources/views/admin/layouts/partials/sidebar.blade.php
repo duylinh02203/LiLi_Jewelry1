@@ -170,27 +170,6 @@
                             trị viên </a></li>
                 </ul>
             </div>
-
         </li>
-        <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#post"
-                aria-expanded="{{ request()->is('admin/user*') ? 'true' : 'false' }}" aria-controls="auth">
-                <span class="menu-icon">
-                    <i class="fa-solid fa-user"></i>
-                </span>
-                <span class="menu-title">Quản lý bài viết</span>
-                <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse " id="post">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item "> <a class="nav-link " href="{{ route('admin.posts.index') }}"> Bài viết
-                            đang hiển thị</a></li>
-                    <li class="nav-item "> <a class="nav-link" href="{{ route('admin.user.listAdmin') }}"> Bài viết
-                            đã xóa </a></li>
-                </ul>
-            </div>
-
-        </li>
-
     </ul>
 </nav>

@@ -118,13 +118,12 @@ class OrderController extends Controller
     public function cancelOrder(Request $request)
     {
         DB::beginTransaction();
+        $id_canceler = session('userData')->id;
         try {
             $order = Order::find($request->order_id);
-
             if (!$order) {
                 return back()->with('error', 'Không tìm thấy đơn hàng.');
             }
-
             if (in_array($order->status, ['shipping', 'completed'])) {
                 return back()->with('error', 'Không thể hủy đơn hàng ở trạng thái hiện tại.');
             }

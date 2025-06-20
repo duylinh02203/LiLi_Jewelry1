@@ -313,9 +313,9 @@
                                         <ul>
                                             <li>
                                                 <a href="javascript:void(0)" class="addtocart-btn addToCart"
-                                                    data-product-id="{{ $product->id }}"
-                                                    data-has-size="{{ $product->sizes->count() > 0 ? 1 : 0 }}"
-                                                    data-sizes='@json($product->sizes->pluck('size'))'>
+                                                    data-product-id="{{ $productSale->id }}"
+                                                    data-has-size="{{ $productSale->sizes->count() > 0 ? 1 : 0 }}"
+                                                    data-sizes='@json($productSale->sizes->pluck('size'))'>
                                                     <i data-feather="shopping-cart"></i>
                                                 </a>
                                             </li>
