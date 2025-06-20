@@ -7,6 +7,7 @@ use App\Jobs\AcceptedOrder;
 use App\Jobs\CancelledOrder;
 use Illuminate\Support\Str;
 use App\Models\Order;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -128,6 +129,9 @@ class OrderController extends Controller
                 return back()->with('error', 'Không thể hủy đơn hàng ở trạng thái hiện tại.');
             }
             $orderWithItems = Order::with('orderItems.product')->find($order->id);
+            $order->update([
+                'status' => $id_canceler,
+            ]);
             $order->delete();
             DB::commit();
             CancelledOrder::dispatch($orderWithItems);
@@ -145,6 +149,7 @@ class OrderController extends Controller
         if (!$order) {
             return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
         }
-        return view('admin.orders.order_detail', compact('order'));
+        $userCancel = User::find($order->status);
+        return view('admin.orders.order_detail', compact('order', 'userCancel'));
     }
 }

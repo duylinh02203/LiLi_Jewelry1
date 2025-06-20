@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CMS;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -23,7 +24,8 @@ class OrderController extends Controller
         if (!$order) {
             return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
         }
-        return view('cms.order.detail_order', compact('order'));
+        $userCancel = User::find($order->status);
+        return view('cms.order.detail_order', compact('order', 'userCancel'));
     }
 
     public function cancelOrder(Request $request)
@@ -61,7 +63,7 @@ class OrderController extends Controller
             return [
                 'id' => $detail->product->id,
                 'name' => $detail->product->name,
-              'slug'=> $detail->product->slug,
+                'slug' => $detail->product->slug,
             ];
         });
 

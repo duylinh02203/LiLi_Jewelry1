@@ -14,75 +14,88 @@
                 <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
                     data-toggle="dropdown">
                     @php
-                    $contacts = \App\Models\Contact::where('status','active')->count();
-                    $contactUsers = \App\Models\Contact::where('status','active')->orderBy('created_at','desc')->get();
-                    $CountReviews = \App\Models\ProductReview::where('status','active')->count();
-                    $productReviews = \App\Models\ProductReview::where('status','active')->orderBy('created_at','desc')->get();
-                    $pendingOrdersCount = \App\Models\Order::where('status', 'pending')->count();
-                    $pendingOrders = \App\Models\Order::with('orderItems.product')
-                    ->where('status', 'pending')
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+                        $contacts = \App\Models\Contact::where('status', 'active')->count();
+                        $contactUsers = \App\Models\Contact::where('status', 'active')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                        $CountReviews = \App\Models\ProductReview::where('status', 'active')->count();
+                        $productReviews = \App\Models\ProductReview::where('status', 'active')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                        $pendingOrdersCount = \App\Models\Order::where('status', 'pending')->count();
+                        $pendingOrders = \App\Models\Order::with('orderItems.product')
+                            ->where('status', 'pending')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
 
-                    $total= $contacts + $CountReviews+$pendingOrdersCount;
+                        $total = $contacts + $CountReviews + $pendingOrdersCount;
                     @endphp
                     <i class="mdi mdi-bell"></i>
-                    <strong><span class="count" style="color:red; margin-top:-7px;">{{$total}}+</span></strong>
+                    <strong><span class="count"
+                            style="color:red; margin-top:-7px;">{{ $total }}+</span></strong>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                     aria-labelledby="notificationDropdown">
                     <h6 class="p-3 mb-0">Tất cả thông báo</h6>
-                    @if($total > 0)
-                    <div style="max-height: 200px; overflow-y: auto;">
-                        @if($contacts>0)
-                        @foreach($contactUsers as $contactUser)
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item" href="{{ route('admin.contact.detail', $contactUser->id) }}">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-dark rounded-circle">
-                                    <i class="mdi mdi-calendar text-success"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <p class="preview-subject mb-1">Liên hệ</p>
-                                <p class="text-muted ellipsis mb-0"> {{$contactUser->name}} đã gửi liên hệ !</p>
-                            </div>
-                        </a>
-                        @endforeach
-                        @endif
-                        @if($CountReviews>0)
-                        @foreach($productReviews as $productReview)
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item" href="{{route('admin.review.detail',$productReview->id)}}">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-dark rounded-circle">
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <p class="preview-subject mb-1">Đánh giá sản phẩm</p>
-                                <p class="text-muted ellipsis mb-0"> {{$productReview->user->name}} đã đánh giá {{$productReview->product->name}} {{$productReview->rating}} !</p>
-                            </div>
-                        </a>
-                        @endforeach
-                        @endif
-                        @if($pendingOrdersCount>0)
-                        @foreach($pendingOrders as $pendingOrder)
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item" href="{{route('admin.order.detail', $pendingOrder->id)}}">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-dark rounded-circle">
-                                    <i class="fa-solid fa-box"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <p class="preview-subject mb-1">{{$pendingOrder->user->name}} đặt hàng</p>
-                                <p class="text-muted ellipsis mb-0"> Mã SP: DL00{{$pendingOrder->id}}</p>
-                            </div>
-                        </a>
-                        @endforeach
-                        @endif
-                    </div>
+                    @if ($total > 0)
+                        <div style="max-height: 200px; overflow-y: auto;">
+                            @if ($contacts > 0)
+                                @foreach ($contactUsers as $contactUser)
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item preview-item"
+                                        href="{{ route('admin.contact.detail', $contactUser->id) }}">
+                                        <div class="preview-thumbnail">
+                                            <div class="preview-icon bg-dark rounded-circle">
+                                                <i class="mdi mdi-calendar text-success"></i>
+                                            </div>
+                                        </div>
+                                        <div class="preview-item-content">
+                                            <p class="preview-subject mb-1">Liên hệ</p>
+                                            <p class="text-muted ellipsis mb-0"> {{ $contactUser->name }} đã gửi liên
+                                                hệ !</p>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            @endif
+                            @if ($CountReviews > 0)
+                                @foreach ($productReviews as $productReview)
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item preview-item"
+                                        href="{{ route('admin.review.detail', $productReview->id) }}">
+                                        <div class="preview-thumbnail">
+                                            <div class="preview-icon bg-dark rounded-circle">
+                                                <i class="fa-solid fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <div class="preview-item-content">
+                                            <p class="preview-subject mb-1">Đánh giá sản phẩm</p>
+                                            <p class="text-muted ellipsis mb-0"> {{ $productReview->user->name }} đã
+                                                đánh giá {{ $productReview->product->name }}
+                                                {{ $productReview->rating }} !</p>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            @endif
+                            @if ($pendingOrdersCount > 0)
+                                @foreach ($pendingOrders as $pendingOrder)
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item preview-item"
+                                        href="{{ route('admin.order.detail', $pendingOrder->id) }}">
+                                        <div class="preview-thumbnail">
+                                            <div class="preview-icon bg-dark rounded-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                        </div>
+                                        <div class="preview-item-content">
+                                            <p class="preview-subject mb-1">{{ $pendingOrder->user->name }} đặt hàng
+                                            </p>
+                                            <p class="text-muted ellipsis mb-0"> Mã SP: DL00{{ $pendingOrder->id }}
+                                            </p>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            @endif
+                        </div>
                     @endif
 
                 </div>
@@ -90,14 +103,13 @@
             <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                     <div class="navbar-profile">
-                        <img class="img-xs rounded-circle" src="{{asset('assets/images/user.png')}}" alt="">
-                        <p class="mb-0 d-none d-sm-block navbar-profile-name">{{session('userData')->name}}</p>
+                        <img class="img-xs rounded-circle" src="{{ asset('assets/images/user.png') }}" alt="">
+                        <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ session('userData')->name }}</p>
                         <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                     aria-labelledby="profileDropdown">
-                    <h6 class="p-3 mb-0" style="text-align: center;">Chức năng</h6>
                     <div class="dropdown-divider"></div>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item preview-item" href="{{ route('admin.logout') }}">

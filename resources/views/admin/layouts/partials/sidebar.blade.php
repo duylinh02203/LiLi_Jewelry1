@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="preview-item-content">
-                            <p class="preview-subject ellipsis mb-1 text-small">Cài đặt tài khoản</p>
+                            <p class="preview-subject ellipsis mb-1 text-small">Thông tin tài khoản</p>
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>
