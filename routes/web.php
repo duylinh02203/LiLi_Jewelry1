@@ -17,6 +17,7 @@ use App\Http\Controllers\ADMIN\PostController;
 use App\Http\Controllers\CMS\OrderController as OrderCmsController;
 use App\Http\Controllers\ADMIN\ReviewController;
 use App\Http\Controllers\ADMIN\UserController;
+use App\Http\Controllers\AiChatController;
 use App\Http\Controllers\CMS\AccountController;
 use App\Http\Controllers\CMS\CartController;
 use App\Http\Controllers\CMS\PaymentController;
@@ -37,7 +38,8 @@ use App\Models\ProductReview;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
+Route::post('/chat-ajax', [AiChatController::class, 'chatAjax'])->name('chat.ajax');
+Route::post('/chat/clear-history', [AiChatController::class, 'clearChatHistory'])->name('chat.clearHistory');
 Route::get('product', [HomeController::class, 'product'])->name('product');
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');

@@ -570,17 +570,6 @@
                                                 </div>
 
                                                 <div class="col-12">
-                                                    @php
-                                                        $order = \App\Models\Order::where(
-                                                            'user_id',
-                                                            session('userData')->id,
-                                                        )
-                                                            ->where('status', 'completed')
-                                                            ->whereHas('orderItems', function ($query) use ($product) {
-                                                                $query->where('product_id', $product->id);
-                                                            })
-                                                            ->first();
-                                                    @endphp
                                                     @if ($order)
                                                         <button type="submit" style="border-radius: 10px;"
                                                             class="btn default-light-theme default-theme default-theme-2">

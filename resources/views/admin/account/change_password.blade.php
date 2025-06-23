@@ -7,7 +7,7 @@
 </style>
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title">Cài đặt tài khoản</h3>
+        <h3 class="page-title">CÀI ĐẶT TÀI KHOẢN</h3>
         @if ($message = Session::get('success'))
         <div id="alert" class="alert alert-success" style="position: absolute; width: 80.5%;">
             {{ $message }}
