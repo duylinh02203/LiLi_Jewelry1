@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductReview;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,6 +21,32 @@ class DashboardController extends Controller
         $usersCount = User::where('role', 2)->count();
         $ordersCount = Order::where('status', 'completed')->count();
         $totalPrice = Order::where('status', 'completed')->sum('total_price');
+        $topCategories = DB::table('categories')
+            ->select('categories.id', 'categories.name', DB::raw('SUM(order_items.quantity) as total_sold'))
+            ->join('products', 'products.category_id', '=', 'categories.id')
+            ->join('order_items', 'order_items.product_id', '=', 'products.id')
+            ->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->where('orders.status', 'completed')
+            ->groupBy('categories.id', 'categories.name')
+            ->orderByDesc('total_sold')
+            ->limit(3)
+            ->get();
+        $totalCate = DB::table('categories')
+            ->select('categories.id', 'categories.name', DB::raw('COUNT(products.id) as product_count'))
+            ->leftJoin('products', 'products.category_id', '=', 'categories.id')
+            ->groupBy('categories.id', 'categories.name')
+            ->orderByDesc('product_count')
+            ->get();
+
+        $topDiscountProducts = Product::with('firstImage')
+            ->whereNotNull('listed_price')
+            ->where('listed_price', '>', 0)
+            ->whereColumn('price', '<', 'listed_price')
+            ->select('id', 'name', 'slug', 'price', 'listed_price')
+            ->selectRaw('ROUND(((listed_price - price) / listed_price) * 100) as discount_percent')
+            ->orderByDesc('discount_percent')
+            ->limit(5)
+            ->get();
 
         $statusMap = [
             'pending' => 'Chờ xác nhận',
@@ -28,6 +55,12 @@ class DashboardController extends Controller
             'completed' => 'Đã giao',
             'cancelled' => 'Đã hủy',
         ];
+        // rating
+        $averageRating = round(ProductReview::avg('rating'));
+        $ratingCounts = ProductReview::select('rating', DB::raw('count(*) as count'))
+            ->groupBy('rating')
+            ->pluck('count', 'rating');
+
 
         // Đếm số đơn theo trạng thái
         $orderStats = Order::selectRaw('status, COUNT(*) as count')
@@ -90,7 +123,12 @@ class DashboardController extends Controller
             'monthlyRevenueLabels',
             'monthlyRevenueData',
             'monthlyRevenueTotal',
-            'selectedMonth'
+            'selectedMonth',
+            'topCategories',
+            'totalCate',
+            'topDiscountProducts',
+            'ratingCounts',
+            'averageRating'
         ));
     }
 }

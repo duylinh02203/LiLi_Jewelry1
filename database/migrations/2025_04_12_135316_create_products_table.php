@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('status')->default('active');
             $table->string('slug')->unique();
             $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('quantity');
             $table->boolean('is_free_size')->default(false);
             $table->timestamps();
             $table->softDeletes();

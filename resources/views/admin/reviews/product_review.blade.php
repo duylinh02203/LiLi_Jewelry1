@@ -26,11 +26,28 @@
                     <div class="search-add-wrapper"
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <div class="search-bar col-lg-3" style="width: 250px; flex: 1; margin-left: -10px;">
-                            <form class="nav-link mt-2 mt-md-0 d-lg-flex" action="{{ route('admin.review.search') }}" method="GET">
+                            <form class="nav-link mt-2 mt-md-0 d-lg-flex" action="{{ route('admin.review.ProductReview') }}" method="GET">
                                 <input type="text" style="padding: 15px;" class="form-control" name="search"
                                     value="{{ request()->input('search') }}" placeholder="Tìm kiếm đánh giá">
+                                <input type="hidden" name="category" value="{{ request('rating') }}">
+
                             </form>
                         </div>
+                        <form method="GET" action="{{ route('admin.review.ProductReview') }}">
+                            <input type="hidden" style="padding: 15;" class="form-control"
+                                placeholder="Tìm kiếm sản phẩm" name="search"
+                                value="{{ request()->input('search') }}">
+                            <select name="rating" onchange="this.form.submit()" class="form-select w-auto"
+                                style="background-color: #cce5ff; padding: 5px; color: #004085; border: none; border-radius: 5px;margin-bottom: -15px;">
+                                <option value="all" {{ request('rating') == 'all' ? 'selected' : '' }}>Tất cả sao</option>
+                                @for ($i = 5; $i >= 1; $i--)
+                                <option value="{{ $i }}" {{ request('rating') == $i ? 'selected' : '' }}>
+                                    {{ $i }} sao
+                                    
+                                </option>
+                                @endfor
+                            </select>
+                        </form>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover">

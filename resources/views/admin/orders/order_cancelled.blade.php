@@ -56,7 +56,7 @@
                                     <td>{{ $order->email }}</td>
                                     <td>{{ $order->payment == 'cod' ? 'thanh toán khi nhận hàng' : 'thanh toán qua VNPay' }}
                                     </td>
-                                    <td>{{ number_format($order->total_price, 0, '.', ',') }} VNĐ</td>
+                                    <td>{{ number_format($order->total_price, 0, ',', '.') }} đ</td>
                                     <td>
                                         @if ($order->deleted_at)
                                         <span style="color:red;">Đã hủy</span>

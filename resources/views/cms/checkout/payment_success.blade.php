@@ -26,7 +26,9 @@
                         <span>Mã đơn hàng: JL00{{ $orderWithItems->id }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-3" style="font-size: 14px;">
+                        @if($orderWithItems->payment === 'vnpay')
                         <span>Thu ngân: Hệ thống</span>
+                        @endif
                         <span>In lúc: {{ date('H:i:s', strtotime($orderWithItems->created_at)) }}</span>
                     </div>
                     <div class="text-start" style="font-size: 15px;">
@@ -70,7 +72,7 @@
                             @endforeach
                             <tr>
                                 <td colspan="3" class="text-end fw-bold">Tổng cộng</td>
-                                <td class="fw-bold">{{ number_format($orderWithItems->total_price) }} VNĐ</td>
+                                <td class="fw-bold">{{ number_format($orderWithItems->total_price) }} đ</td>
                             </tr>
                         </tbody>
                     </table>

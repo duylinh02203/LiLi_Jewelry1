@@ -155,7 +155,7 @@
             <tr>
                 <td style="padding-left: 40px;">JL00{{ $order->id }}</td>
                 <td>{{ $order->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
-                <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
+                <td>{{ number_format($order->total_price, 0, ',', '.') }} đ</td>
                 <td>
                     <span class="status status-{{ $order->status }}">
                         {{ $order->status == 'pending'
@@ -228,7 +228,7 @@
             <tr>
                 <td style="padding-left: 40px;">JL00{{ $order->id }}</td>
                 <td>{{ $order->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
-                <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
+                <td>{{ number_format($order->total_price, 0, ',', '.') }} đ</td>
                 <td>
                     <span class="status status-cancelled">Đã huỷ</span>
                 </td>

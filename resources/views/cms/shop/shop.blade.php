@@ -571,7 +571,7 @@
                 notification.textContent = message;
                 Object.assign(notification.style, {
                     position: 'fixed',
-                    top: '20px',
+                    top: '120px',
                     right: '20px',
                     padding: '10px 20px',
                     borderRadius: '8px',
@@ -653,7 +653,7 @@
 
                     Object.assign(notification.style, {
                         position: 'fixed',
-                        top: '20px',
+                        top: '120px',
                         right: '20px',
                         padding: '10px 20px',
                         borderRadius: '8px',

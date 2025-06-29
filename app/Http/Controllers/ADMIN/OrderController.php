@@ -7,6 +7,8 @@ use App\Jobs\AcceptedOrder;
 use App\Jobs\CancelledOrder;
 use Illuminate\Support\Str;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\ProductSize;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -94,7 +96,6 @@ class OrderController extends Controller
         return view('admin.orders.order_cancelled', compact('orders'));
     }
 
-
     public function acceptOrder(Request $request)
     {
         DB::beginTransaction();
@@ -117,31 +118,81 @@ class OrderController extends Controller
         }
     }
 
+
+    // public function cancelOrder(Request $request)
+    // {
+    //     DB::beginTransaction();
+    //     $id_canceler = session('userData')->id;
+    //     try {
+    //         $order = Order::find($request->order_id);
+    //         if (!$order) {
+    //             return back()->with('error', 'Không tìm thấy đơn hàng.');
+    //         }
+    //         if (in_array($order->status, ['shipping', 'completed'])) {
+    //             return back()->with('error', 'Không thể hủy đơn hàng ở trạng thái hiện tại.');
+    //         }
+    //         $orderWithItems = Order::with('orderItems.product')->find($order->id);
+    //         $order->update([
+    //             'status' => $id_canceler,
+    //         ]);
+    //         $order->delete();
+    //         DB::commit();
+    //         CancelledOrder::dispatch($orderWithItems);
+    //         return back()->with('success', 'Đơn hàng đã được hủy.');
+    //     } catch (\Throwable $th) {
+    //         DB::rollBack();
+    //         return back()->with('error', 'Đã xảy ra lỗi khi hủy đơn hàng.');
+    //     }
+    // }
     public function cancelOrder(Request $request)
     {
         DB::beginTransaction();
         $id_canceler = session('userData')->id;
+
         try {
-            $order = Order::find($request->order_id);
+            $order = Order::with('orderItems.product')->find($request->order_id);
+
             if (!$order) {
                 return back()->with('error', 'Không tìm thấy đơn hàng.');
             }
+
             if (in_array($order->status, ['shipping', 'completed'])) {
                 return back()->with('error', 'Không thể hủy đơn hàng ở trạng thái hiện tại.');
             }
-            $orderWithItems = Order::with('orderItems.product')->find($order->id);
+
+            foreach ($order->orderItems as $item) {
+                $product = $item->product;
+
+                if (!$product) continue;
+
+                if ($product->is_free_size) {
+                    $product->increment('quantity', $item->quantity);
+                } else {
+                    $productSize = ProductSize::where('product_id', $product->id)
+                        ->where('size', $item->size)
+                        ->first();
+
+                    if ($productSize) {
+                        $productSize->increment('quantity', $item->quantity);
+                        $totalQty = ProductSize::where('product_id', $product->id)->sum('quantity');
+                        $product->update(['quantity' => $totalQty]);
+                    }
+                }
+            }
+
             $order->update([
                 'status' => $id_canceler,
             ]);
             $order->delete();
             DB::commit();
-            CancelledOrder::dispatch($orderWithItems);
+            CancelledOrder::dispatch($order);
             return back()->with('success', 'Đơn hàng đã được hủy.');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return back()->with('error', 'Đã xảy ra lỗi khi hủy đơn hàng.');
+            return back()->with('error', 'Đã xảy ra lỗi khi hủy đơn hàng: ' . $th->getMessage());
         }
     }
+
 
 
     public function detail($id)

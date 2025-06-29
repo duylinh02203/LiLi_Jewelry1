@@ -84,7 +84,7 @@
                                 </div>
                             </td>
                             <td>
-                                <p class="fw-bold">{{$wishlist->product->price}} VNĐ</p>
+                                <p class="fw-bold">{{ number_format($wishlist->product->price) }} VNĐ</p>
                             </td>
                             <td>
                                 @if($wishlist->product->status == 'active')

@@ -74,7 +74,7 @@
                                     <td>{{ $order->email }}</td>
                                     <td>{{ $order->payment == 'cod' ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua VNPay' }}
                                     </td>
-                                    <td>{{ number_format($order->total_price, 0, '.', ',') }} VNĐ</td>
+                                    <td>{{ number_format($order->total_price, 0, ',', '.') }} đ</td>
                                     <td style="color: {{ $order->status == 'shipping' ? 'orange' : 'green' }};">
                                         {{ $order->status == 'shipping' ? 'Đang giao...' : ($order->status == 'completed' ? 'Đã giao' : $order->status) }}
                                     </td>
