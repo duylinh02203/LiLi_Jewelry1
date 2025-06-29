@@ -224,12 +224,6 @@ $categories = \App\Models\Category::with('products')
                                 class="img-fluid blur-up lazyload" alt="payment icon">
                         </a>
                     </li>
-                    <li>
-                        <a href="javascript:void(0)">
-                            <img src="{{ asset('cms/assets/images/payment-icon/4.jpg') }}"
-                                class="img-fluid blur-up lazyload" alt="payment icon">
-                        </a>
-                    </li>
                 </ul>
             </div>
             <div class="col-md-6">

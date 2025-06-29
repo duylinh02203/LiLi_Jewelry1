@@ -132,8 +132,8 @@
                                         <th>Tên sản phẩm</th>
                                         <th>Hình ảnh</th>
                                         <th>Danh mục</th>
-                                        <th>Giới tính</th>
-                                        <th>Giá niêm yết</th>
+                                        <!-- <th>Giới tính</th> -->
+                                        <th>Giá bán</th>
                                         <th>Trạng thái</th>
                                         <th>Chức năng</th>
                                     </tr>
@@ -143,14 +143,14 @@
                                         @foreach ($products as $key => $product)
                                             <tr>
                                                 <td>{{ ++$key ?? 'null' }}</td>
-                                                <td>{{ $product->name ?? 'null' }}</td>
+                                                <td>{{Str::limit($product->name, 40)}}</td>
                                                 <td>
                                                     <img src="{{ asset('/images/' . optional($product->firstImage)->image ?? 'default.png') }}"
                                                         alt="Hình ảnh sản phẩm"
                                                         style="width: 80px; height: 100px; object-fit: cover; border-radius: 5px;">
                                                 </td>
                                                 <td>{{ $product->category->name ?? 'null' }}</td>
-                                                <td>
+                                                <!-- <td>
                                                     {{ $product->gender === 'male'
                                                         ? 'Nam'
                                                         : ($product->gender === 'female'
@@ -158,8 +158,8 @@
                                                             : ($product->gender === 'unisex'
                                                                 ? 'Cặp đôi'
                                                                 : 'Không xác định')) }}
-                                                </td>
-                                                <td>{{ $product->listed_price ?? 'null' }}</td>
+                                                </td> -->
+                                                <td>{{ $product->price ?? 'null' }}</td>
                                                 <td>
                                                     <form action="{{ route('admin.product.updateStatus', $product->id) }}"
                                                         method="POST" class="d-inline">

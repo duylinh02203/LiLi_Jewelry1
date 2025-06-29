@@ -76,14 +76,18 @@
                                     <option value="unisex">Cặp đôi</option>
                                 </select>
                             </div>
-                            <div class="form-group" id="sizes-wrapper">
-                                <label>Kích thước (Nhập cách nhau dấu phẩy):
+                           <div class="form-group">
+                                <label>Kích thước & Số lượng:
                                     @error('sizes')
                                         <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                     @enderror
                                 </label>
-                                <input type="text" class="form-control" name="sizes"
-                                    placeholder="Ví dụ: 6, 7, 8 hoặc S, M, L" value="{{ old('sizes') }}">
+                                <div id="size-list">
+                                    {{-- Các dòng nhập sẽ thêm ở đây --}}
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addSizeRow()">+ Thêm size</button>
+
+                                <input type="hidden" name="sizes" id="sizes-json">
                             </div>
                             <div class="form-group">
                                 <label>Ảnh sản phẩm
@@ -102,6 +106,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label>Số lượng sản phẩm
+                                    @error('quantity')
+                                        <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                                <input type="number" class="form-control" id="quantity-input" name="quantity" placeholder="Số lượng sản phẩm">
+                            </div>
+                            <div class="form-group">
                                 <label>Mô tả sản phẩm
                                     @error('description')
                                         <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
@@ -117,4 +129,49 @@
             </div>
         </div>
     </div>
+<script>
+    function addSizeRow() {
+        const container = document.getElementById('size-list');
+        const row = document.createElement('div');
+        row.classList.add('d-flex', 'gap-2', 'mb-2');
+        row.innerHTML = `
+            <input type="text" class="form-control w-25" placeholder="Size" style="margin-right:7px;" />
+            <input type="number" class="form-control w-25" placeholder="Số lượng" min="0"  style="margin-right:7px;"/>
+            <button type="button" class="btn btn-danger btn-sm" style="margin-right:7px;" onclick="this.parentElement.remove(); toggleQuantityField()">X</button>
+        `;
+        container.appendChild(row);
+        toggleQuantityField(); // Kiểm tra sau mỗi lần thêm
+    }
+
+    function toggleQuantityField() {
+        const sizeRows = document.querySelectorAll('#size-list > div');
+        const quantityInput = document.getElementById('quantity-input');
+        const quantityGroup = quantityInput.closest('.form-group');
+        if (sizeRows.length > 0) {
+            quantityGroup.style.display = 'none';
+            quantityInput.value = ''; // Reset nếu có size
+        } else {
+            quantityGroup.style.display = 'block';
+        }
+    }
+
+    // Gọi toggle khi load lại form (ví dụ khi submit lỗi)
+    window.addEventListener('DOMContentLoaded', toggleQuantityField);
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const rows = document.querySelectorAll('#size-list > div');
+        const sizes = [];
+        rows.forEach(row => {
+            const size = row.children[0].value.trim();
+            const qty = parseInt(row.children[1].value);
+            if (size && !isNaN(qty)) {
+                sizes.push({ size, quantity: qty });
+            }
+        });
+
+        document.getElementById('sizes-json').value = JSON.stringify(sizes);
+    });
+</script>
+
 @endsection
+

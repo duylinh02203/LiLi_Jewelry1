@@ -10,11 +10,34 @@ use Illuminate\Support\Facades\DB;
 
 class ReviewController extends Controller
 {
-    public function ProductReview()
+    public function ProductReview(Request $request)
     {
-        $productReviews = ProductReview::with('user', 'product')->paginate(5);
-        return view('admin.reviews.product_review', compact('productReviews'));
+        $search = $request->input('search');
+        $rating = $request->input('rating');
+
+        $query = ProductReview::with('user', 'product');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->orWhereHas('user', function ($q2) use ($search) {
+                    $q2->where('name', 'LIKE', "%{$search}%");
+                })
+                    ->orWhereHas('product', function ($q3) use ($search) {
+                        $q3->where('name', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($rating && $rating !== 'all') {
+            $query->where('rating', '=', (int) $rating);
+        }
+
+        $productReviews = $query->orderBy('created_at', 'desc')->paginate(5);
+
+        return view('admin.reviews.product_review', compact('productReviews', 'search', 'rating'));
     }
+
+
 
     public function destroy($id)
     {

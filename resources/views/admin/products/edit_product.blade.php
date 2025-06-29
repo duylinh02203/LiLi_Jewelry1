@@ -74,16 +74,31 @@
                                 <option value="female" {{ $productUpdate->gender == 'female' ? 'selected' : '' }}>Nữ</option>
                             </select>
                         </div>
-                        <div class="form-group" id="sizes-wrapper">
-                            <label>Kích thước (Nhập cách nhau dấu phẩy):
-                                @error('sizes')
-                                <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                        <div class="form-group" id="freesize-quantity-group" style="display: {{ $productUpdate->is_free_size ? 'block' : 'none' }};">
+                            <label>Số lượng sản phẩm
+                                @error('quantity')
+                                    <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                 @enderror
                             </label>
-                            <input type="text" class="form-control" name="sizes" placeholder="Ví dụ: 6, 7, 8 hoặc S, M, L"
-                                value="{{ old('sizes', isset($productSizes) ? implode(', ', $productSizes) : '') }}">
+                            <input type="number" class="form-control" name="quantity" value="{{ old('quantity', $productUpdate->quantity) }}" placeholder="Số lượng sản phẩm">
                         </div>
 
+                        <div class="form-group" id="size-list-group" style="display: {{ $productUpdate->is_free_size ? 'none' : 'block' }};">
+                            <label>Kích thước & Số lượng:</label>
+                            <div id="size-list">
+                                @if (!empty($productSizes))
+                                    @foreach ($productSizes as $size)
+                            <div class="d-flex gap-2 mb-2">
+                                <input type="text" class="form-control w-25" placeholder="Size" value="{{ $size->size }}" style="margin-right:7px;">
+                                <input type="number" class="form-control w-25" placeholder="Số lượng" min="0" value="{{ $size->quantity }}" style="margin-right:7px;">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">X</button>
+                            </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addSizeRow()">+ Thêm size</button>
+                            <input type="hidden" name="sizes" id="sizes-json">
+                        </div>
                         <div class="form-group">
                             <label>Hình ảnh sản phẩm
                             </label>
@@ -119,4 +134,31 @@
         </div>
     </div>
 </div>
+<script>
+    function addSizeRow() {
+        const container = document.getElementById('size-list');
+        const row = document.createElement('div');
+        row.classList.add('d-flex', 'gap-2', 'mb-2');
+        row.innerHTML = `
+            <input type="text" class="form-control w-25" placeholder="Size" style="margin-right:7px;"/>
+            <input type="number" class="form-control w-25" placeholder="Số lượng" min="0" style="margin-right:7px;"/>
+            <button type="button" class="btn btn-danger btn-sm" style="margin-right:7px;" onclick="this.parentElement.remove()">X</button>
+        `;
+        container.appendChild(row);
+    }
+
+    document.querySelector('.forms-sample3').addEventListener('submit', function (e) {
+        const rows = document.querySelectorAll('#size-list > div');
+        const sizes = [];
+        rows.forEach(row => {
+            const size = row.children[0].value.trim();
+            const qty = parseInt(row.children[1].value);
+            if (size && !isNaN(qty)) {
+                sizes.push({ size, quantity: qty });
+            }
+        });
+        document.getElementById('sizes-json').value = JSON.stringify(sizes);
+    });
+</script>
+
 @endsection

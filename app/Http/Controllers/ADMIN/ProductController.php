@@ -73,13 +73,18 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            $sizes = collect(explode(',', $request->sizes))
-                ->map(fn($size) => trim($size))
-                ->filter(fn($size) => $size !== '')
-                ->values();
+            // Lấy danh sách size từ JSON (nếu có)
+            $sizesJson = $request->input('sizes');
+            $parsedSizes = collect(json_decode($sizesJson, true));
 
-            $isFreeSize = $sizes->isEmpty() ? 1 : 0;
+            $isFreeSize = $parsedSizes->isEmpty() ? 1 : 0;
 
+            // ✅ Tính tổng số lượng từ các size, nếu có size
+            $totalQuantity = $isFreeSize
+                ? $request->quantity
+                : $parsedSizes->sum('quantity');
+
+            // Tạo sản phẩm
             $dataProduct = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -87,59 +92,70 @@ class ProductController extends Controller
                 'listed_price' => $request->listed_price ?? '',
                 'category_id' => $request->category_id,
                 'gender' => $request->gender,
+                'quantity' => $totalQuantity,
                 'slug' => Str::slug($request->name),
                 'is_free_size' => $isFreeSize,
             ];
+
             $createdProduct = Product::create($dataProduct);
             if (!$createdProduct) {
-                return redirect()->route('product.index')->with('error', 'Thêm sản phẩm thất bại !');
+                return redirect()->route('admin.product.index')->with('error', 'Thêm sản phẩm thất bại!');
             }
+
+            // Upload ảnh
             if ($request->hasFile('image')) {
-                foreach ($request->image as $key =>  $image) {
-                    $imageName = $key .  time() . '.' . $image->extension();
+                foreach ($request->image as $key => $image) {
+                    $imageName = $key . time() . '.' . $image->extension();
                     $image->move(public_path('images'), $imageName);
+
                     ProductImage::create([
                         'product_id' => $createdProduct->id,
                         'image' => $imageName,
                     ]);
                 }
             }
-            if ($isFreeSize === 0 && $request->sizes) {
-                $sizes = collect(explode(',', $request->sizes))
-                    ->map(fn($size) => trim($size))
-                    ->filter(fn($size) => $size !== '')
-                    ->all();
 
-                foreach ($sizes as $size) {
+            // Thêm size và số lượng vào bảng product_sizes nếu có
+            if (!$isFreeSize) {
+                foreach ($parsedSizes as $sizeData) {
+                    if (!isset($sizeData['size']) || !isset($sizeData['quantity'])) continue;
+
                     ProductSize::create([
                         'product_id' => $createdProduct->id,
-                        'size' => $size,
+                        'size' => $sizeData['size'],
+                        'quantity' => $sizeData['quantity'],
                     ]);
                 }
             }
 
-
             DB::commit();
-            return redirect()->route('admin.product.index')->with('success', 'Thêm sản phẩm thành công');
-        } catch (\Throwable $th) {
+            return redirect()->route('admin.product.index')->with('success', 'Thêm sản phẩm thành công!');
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('admin.product.index')->with('error', 'Thêm sản phẩm thất bại');
+            return redirect()->back()->with('error', 'Lỗi: ' . $e->getMessage());
         }
     }
+
 
     public function editForm($id)
     {
         $categories = Category::all();
-        $productSizes = ProductSize::where('product_id', $id)->pluck('size')->toArray();
+
+        // ✅ Lấy cả size và quantity
+        $productSizes = ProductSize::where('product_id', $id)->get(['size', 'quantity']);
+
         $productUpdate = Product::find($id);
         return view('admin.products.edit_product', compact(['categories', 'productUpdate', 'productSizes']));
     }
+
 
     public function edit(UpdateProductRequest $request, $id)
     {
         DB::beginTransaction();
         try {
             $oldProduct = Product::findOrFail($id);
+
+            // ✅ Xử lý ảnh nếu có
             if ($request->hasFile('image')) {
                 $images = $request->file('image');
                 if (is_array($images)) {
@@ -153,29 +169,43 @@ class ProductController extends Controller
                     }
                 }
             }
-            // Xử lý danh sách size sau khi trim và lọc rỗng
-            $sizes = collect(explode(',', $request->sizes))
-                ->map(fn($size) => trim($size))
-                ->filter(fn($size) => $size !== '')
-                ->values(); // reset lại key
 
-            // Cập nhật lại is_free_size
-            $oldProduct->is_free_size = $sizes->isEmpty() ? 1 : 0;
-            $oldProduct->save();
+            // ✅ Xử lý sizes từ JSON (gửi từ view)
+            $sizesJson = $request->input('sizes'); // Chuỗi JSON
+            $sizes = json_decode($sizesJson, true); // Mảng dạng: [['size' => 'M', 'quantity' => 10], ...]
+
+            // Nếu không phải array hợp lệ
+            if (!is_array($sizes)) {
+                throw new \Exception("Dữ liệu size không hợp lệ");
+            }
 
             // Xoá toàn bộ size cũ
             ProductSize::where('product_id', $oldProduct->id)->delete();
 
-            // Nếu có size mới thì tạo lại
-            if (!$sizes->isEmpty()) {
-                foreach ($sizes as $size) {
+            $totalQuantity = 0;
+            foreach ($sizes as $item) {
+                $size = trim($item['size'] ?? '');
+                $quantity = intval($item['quantity'] ?? 0);
+
+                if ($size !== '' && $quantity >= 0) {
                     ProductSize::create([
                         'product_id' => $oldProduct->id,
                         'size' => $size,
+                        'quantity' => $quantity,
                     ]);
+                    $totalQuantity += $quantity;
                 }
             }
 
+            // ✅ Nếu không có size thì là freesize
+            $isFreeSize = count($sizes) === 0;
+            $oldProduct->is_free_size = $isFreeSize;
+            $oldProduct->quantity = $isFreeSize
+                ? intval($request->input('quantity')) // nếu freesize thì lấy từ input "quantity"
+                : $totalQuantity; // nếu có size thì lấy tổng size
+            $oldProduct->save();
+
+            // ✅ Update thông tin chung của sản phẩm
             $newProduct = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -188,16 +218,16 @@ class ProductController extends Controller
             $oldProduct->update($newProduct);
 
             DB::commit();
-            if ($oldProduct->status === 'active') {
-                return redirect()->route('admin.product.index')->with('success', 'Chỉnh sửa quản sản phẩm thành công !');
-            } else {
-                return redirect()->route('admin.product.soldOut')->with('success', 'Chỉnh sửa sản phẩm thành công !');
-            }
+
+            return redirect()
+                ->route($oldProduct->status === 'active' ? 'admin.product.index' : 'admin.product.soldOut')
+                ->with('success', 'Chỉnh sửa sản phẩm thành công !');
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Sửa sản phẩm thất bại: ' . $th->getMessage());
         }
     }
+
 
     public function remove($id)
     {
@@ -226,7 +256,16 @@ class ProductController extends Controller
     public function detail($id)
     {
         $product = Product::with('images', 'category')->findOrFail($id);
-        return view('admin.products.detail', compact('product'));
+        if ($product->listed_price && $product->listed_price > $product->price) {
+            $sale = round((($product->listed_price - $product->price) / $product->listed_price) * 100);
+        }
+        $reviewStats = ProductReview::where('product_id', $id)
+            ->selectRaw('COUNT(*) as total_reviews, AVG(rating) as avg_rating')
+            ->first();
+
+        $totalReviews = $reviewStats->total_reviews ?? 0;
+        $avgRating = round($reviewStats->avg_rating) ?? 0;
+        return view('admin.products.detail', compact('product', 'sale','totalReviews', 'avgRating'));
     }
 
     public function updateStatus(Request $request, $id)

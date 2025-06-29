@@ -25,15 +25,30 @@ class AiChatController extends Controller
         self::$apiKey = env('GEMINI_API_KEY');
 
 
-        $products = Product::with(['category', 'firstImage'])->get();
+        $products = Product::with(['category', 'firstImage', 'sizes'])->get();
 
         $productsInfo = $products->map(function ($product) {
             $categoryName = $product->category->name ?? 'Không có danh mục';
             $image = $product->firstImage->image ?? 'default.png';
+            // 
+            $discountPercent = null;
+            if ($product->listed_price && $product->listed_price > $product->price) {
+                $discountPercent = round((($product->listed_price - $product->price) / $product->listed_price) * 100);
+            }
+            // Lấy danh sách kích thước và số lượng
+            $sizeInfo = $product->sizes->map(function ($size) {
+                return "{$size->size} ({$size->quantity})";
+            })->implode(', '); // Ngăn cách các size bằng dấu phẩy
 
-            return "ID: {$product->id} - {$product->name} - Giá: {$product->price} - Mô tả: {$product->description} - slug: {$product->slug} - 
-            Giới tính: {$product->gender} - Danh mục: {$categoryName} - Hình ảnh: {$image}";
+            $info = "ID: {$product->id} - {$product->name} - Giá: {$product->price} - Mô tả: {$product->description} - slug: {$product->slug} - 
+         Giới tính: {$product->gender} - Danh mục: {$categoryName} - Hình ảnh: {$image} - Kích thước: {$sizeInfo}";
+
+            if ($discountPercent) {
+                $info .= " - Giảm giá: {$discountPercent}% (Giá niêm yết: {$product->listed_price})";
+            }
+            return $info;
         })->join("\n");
+
 
         $reviews = ProductReview::with('product')->get();
 
@@ -43,36 +58,48 @@ class AiChatController extends Controller
         })->join("\n");
 
         $prompt = <<<EOT
-        Bạn là một nhân viên tư vấn trang sức chuyên nghiệp và thân thiện.
+Bạn là một nhân viên tư vấn trang sức chuyên nghiệp và thân thiện.
 
-        Dưới đây là danh sách sản phẩm hiện có:
-        {$productsInfo}
+Dưới đây là danh sách sản phẩm hiện có:
+{$productsInfo}
 
-        Và một số đánh giá khách hàng:
-        {$reviewsInfo}
+Và một số đánh giá khách hàng:
+{$reviewsInfo}
 
-        Khi người dùng hỏi về sản phẩm nào đó, hãy:
-        - Tìm sản phẩm phù hợp nhất từ danh sách trên (dựa theo tên hoặc mô tả)
-        - Trả lời ngắn gọn, lịch sự, dễ hiểu
-        - Nếu có sản phẩm phù hợp, hãy **hiển thị HTML sau đây** để bot frontend có thể hiển thị đúng:
-        - Ảnh sản phẩm: sử dụng `http://127.0.0.1:8000/images/<tên_ảnh>`
-        - Tên sản phẩm in đậm
-        - Giá định dạng: `1.000.000đ`
-        - Nút xem chi tiết sản phẩm: <a href="http://127.0.0.1:8000/product/<slug>" target="_blank">Xem chi tiết</a>
+Khi người dùng hỏi về sản phẩm nào đó, hãy:
+- Tìm sản phẩm phù hợp nhất từ danh sách trên (dựa theo tên hoặc mô tả)
+- Trả lời ngắn gọn, lịch sự, dễ hiểu
+- Nếu có sản phẩm phù hợp, hãy **hiển thị HTML sau đây** để bot frontend có thể hiển thị đúng:
+  - Ảnh sản phẩm: sử dụng `http://127.0.0.1:8000/images/<tên_ảnh>`
+  - Tên sản phẩm in đậm
+  - Giá định dạng: `1.000.000đ`
+  - Nút xem chi tiết sản phẩm: <a href="http://127.0.0.1:8000/product/<slug>" target="_blank">Xem chi tiết</a>
+  - Nếu sản phẩm có nhiều size, hãy liệt kê các size (ví dụ: "Size: 6, 7, 8")
+- Nếu sản phẩm có giảm giá, hãy ghi rõ mức giảm giá (ví dụ: "Giảm 30%")
 
-        Ví dụ sản phẩm hiển thị:
-        <div style="margin:10px 0;padding:10px;border:1px solid #ddd;border-radius:10px;max-width:200px;font-size:12px;background:#fafafa;">
-        <img src="http://127.0.0.1:8000/images/abc.jpg" alt="Tên sản phẩm" style="width:80px;height:auto;border-radius:8px;margin-bottom:8px;">
-        <div style="font-weight:bold;margin-bottom:4px;">Tên sản phẩm</div>
-        <div style="color:#c0392b;margin-bottom:6px;">Giá: 2.000.000đ</div>
-        <a href="http://127.0.0.1:8000/product/slug" target="_blank" style="display:inline-block;padding:6px 12px;background:#007bff;color:#fff;text-decoration:none;border-radius:6px;">
-            Xem chi tiết
-        </a>
-        </div>
 
-        Luôn bắt đầu bằng lời chào thân thiện và ngắn gọn.
-        Chỉ đưa sản phẩm nếu thấy phù hợp.
-        EOT;
+Ví dụ sản phẩm hiển thị:
+<div style="margin:10px 0;padding:10px;border:1px solid #ddd;border-radius:10px;max-width:200px;font-size:12px;background:#fafafa;">
+  <img src="http://127.0.0.1:8000/images/abc.jpg" alt="Tên sản phẩm" style="width:80px;height:auto;border-radius:8px;margin-bottom:8px;">
+  <div style="font-weight:bold;margin-bottom:4px;">Tên sản phẩm</div>
+  <div style="color:#c0392b;margin-bottom:6px;">Giá: 2.000.000đ</div>
+  <div style="margin-bottom:6px;">Size: 6, 7, 8</div>
+  <a href="http://127.0.0.1:8000/product/slug" target="_blank" style="display:inline-block;padding:6px 12px;background:#007bff;color:#fff;text-decoration:none;border-radius:6px;">
+    Xem chi tiết
+  </a>
+</div>
+
+Nếu người dùng hỏi cách chọn size trang sức (như nhẫn, vòng...), hãy trả lời ngắn gọn và cung cấp hướng dẫn đo size như sau:
+
+**Cách đo size tại nhà:**
+1. Dùng dây hoặc mảnh giấy nhỏ quấn quanh ngón tay (hoặc cổ tay, nếu là vòng).
+2. Đánh dấu điểm giao nhau và đo chiều dài bằng thước (đơn vị mm).
+3. Gửi số đo cho cửa hàng để được tư vấn size phù hợp.
+
+Luôn bắt đầu bằng lời chào thân thiện và ngắn gọn.
+Chỉ đưa sản phẩm nếu thấy phù hợp.
+EOT;
+
 
 
         self::$history[] = ['role' => 'user', 'parts' => [['text' => $prompt]]];
@@ -80,30 +107,7 @@ class AiChatController extends Controller
         session(['chat_history' => self::$history]);
     }
 
-    // public static function getChatResponse(string $message): string
-    // {
-    //     self::init();
-    //     self::$history[] = ['role' => 'user', 'parts' => [['text' => $message]]];
-    //     try {
-    //         $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent", [
-    //             'contents' => self::$history
-    //         ], [
-    //             'query' => ['key' => self::$apiKey]
-    //         ]);
 
-    //         if ($response->failed()) {
-    //             throw new \Exception('Failed to get response from Gemini API');
-    //         }
-
-    //         $text = $response->json('candidates.0.content.parts.0.text') ?? 'Không có phản hồi.';
-    //         self::$history[] = ['role' => 'model', 'parts' => [['text' => $text]]];
-    //         // Lưu lại vào session
-    //         session(['chat_history' => self::$history]);
-    //         return $text;
-    //     } catch (\Exception $e) {
-    //         return 'Xin lỗi, hiện tại hệ thống đang gặp vấn đề. Vui lòng thử lại sau.';
-    //     }
-    // }
 
     public function chatAjax(Request $request)
     {
@@ -142,7 +146,7 @@ class AiChatController extends Controller
                     $image = optional($product->firstImage)->image ?? 'default.png';
                     $imgUrl = asset('images/' . $image);
                     $link = url('/product/' . $product->slug);
-                    $price = number_format($product->price, 0, ',', '.') . 'đ';
+                    $price = number_format($product->price) . 'đ';
 
                     $text .= '
         <div style="margin:10px 0;padding:10px;border:1px solid #ddd;border-radius:10px;max-width:200px;font-size:12px;background:#fafafa;">

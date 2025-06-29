@@ -57,14 +57,14 @@
                                 @endif
                             </td>
                             <td>{{ $item->quantity }}</td>
-                            <td>{{ number_format($item->product->price ?? 0) }}</td>
-                            <td class="fw-bold">{{ number_format(($item->product->price ?? 0) * $item->quantity) }}
+                            <td>{{ number_format($item->product->price ?? 0) }} đ</td>
+                            <td class="fw-bold">{{ number_format(($item->product->price ?? 0) * $item->quantity)}} đ
                             </td>
                         </tr>
                         @endforeach
                         <tr>
                             <td colspan="3" class="text-end fw-bold">Tổng cộng</td>
-                            <td class="fw-bold">{{ number_format($order->total_price) }} VNĐ</td>
+                            <td class="fw-bold">{{ number_format($order->total_price, 0, ',', '.') }} đ</td>
                         </tr>
                     </tbody>
                 </table>

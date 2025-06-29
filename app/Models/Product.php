@@ -22,6 +22,7 @@ class Product extends Model
         'slug',
         'category_id',
         'gender',
+        'quantity',
         'is_free_size',
     ];
 

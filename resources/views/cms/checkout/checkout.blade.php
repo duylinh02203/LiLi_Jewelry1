@@ -118,7 +118,7 @@
                             <li class="list-group-item d-flex lh-condensed justify-content-between">
                                 <span class="fw-bold">Tổng tiền</span>
                                 <input type="hidden" value="{{ $totalPrice }}" name="total_price">
-                                <strong>{{ number_format($totalPrice, 0, '.', ',') }} VNĐ</strong>
+                                <strong>{{ number_format($totalPrice, 0, '.', ',') }} đ</strong>
                             </li>
                         </ul>
                     </div>

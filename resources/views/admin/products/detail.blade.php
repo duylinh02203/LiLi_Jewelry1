@@ -31,7 +31,6 @@
                             </div>
                             <div class="col-md-6 " style="padding-top: 15px;">
                                 <h3>CHI TIẾT SẢN PHẨM</h3>
-                                <br>
                                 <div class="mb-3">
                                     <span>Tên sản phẩm:</span> {{ $product->name }}
                                 </div>
@@ -42,18 +41,55 @@
                                     <span>Giá niêm yết:</span> {{ number_format($product->listed_price, 0, ',', '.') }} VNĐ
                                 </div>
                                 <div class="mb-3">
-                                    <span>Giá bán:</span> {{ number_format($product->price, 0, ',', '.') }} VNĐ
+                                    <span>Giá bán:</span>
+                                    {{ number_format($product->price, 0, ',', '.') }} VNĐ
+                                    @if($sale > 0)
+                                    <span style="color: red;">(-{{$sale}}%)</span>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
+                                    <span>Tổng kho:</span> {{ $product->quantity}}
+                                </div>
+                                <div class="mb-3">
+                                    <span>Đánh giá:</span>
+                                    <div class="text-warning">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($i <=floor($avgRating))
+                                            <i class="fas fa-star"></i>
+                                            @elseif ($i - $avgRating <= 0.5)
+                                                <i class="fas fa-star-half-alt"></i>
+                                                @else
+                                                <i class="far fa-star"></i>
+                                                @endif
+                                                @endfor
+                                                <span>({{ $totalReviews }} lượt)</span>
+                                    </div>
+
                                 </div>
                                 <div class="mb-3">
                                     <span>Kích thước:</span>
-                                    @if ($product->is_free_size===1)
+                                    @if ($product->is_free_size === 1)
                                     Free Size
                                     @else
-                                    @foreach ($product->sizes as $mee)
-                                    {{ $mee->size }}
-                                    @endforeach
+                                    <table class="table table-bordered mt-2" style="width: 60%;">
+                                        <thead>
+                                            <tr>
+                                                <th>Size</th>
+                                                <th>Số lượng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($product->sizes as $size)
+                                            <tr>
+                                                <td>{{ $size->size }}</td>
+                                                <td>{{ $size->quantity }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                     @endif
                                 </div>
+
                                 <div class="mb-3">
                                     <span>Sản phẩm dành cho:</span> {{ $product->gender === 'male' ? 'Nam' : ($product->gender === 'female' ? 'Nữ' : 'Cặp đôi') }}
                                 </div>

@@ -60,93 +60,194 @@
             cursor: not-allowed;
             color: #ccc;
         }
-        .shadow:hover{
+
+        .shadow:hover {
             background-color: black;
         }
     </style>
     <div class="row">
         <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-            <div class="card">
+            <div class="card shadow-sm">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-9">
-                            <div class="d-flex align-items-center align-self-start">
-                                <h3 class="mb-0">{{$productsCount}}</h3>
-                                <p class="text-success ml-2 mb-0 font-weight-medium"></p>
-                            </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h6 class="text-muted font-weight-normal mb-1">Tổng số sản phẩm</h6>
                         </div>
-                        <div class="col-3">
-                            <div>
-                                <img src="{{asset('images/product.png')}}" alt="Sản phẩm" style="width: 50px; height: 50px;">
-                            </div>
+                        <div>
+                            <img src="{{asset('images/product.png')}}" alt="Sản phẩm" style="width: 40px; height: 40px;">
                         </div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Số lượng sản phẩm</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-9">
-                            <div class="d-flex align-items-center align-self-start">
-                                <h3 class="mb-0">{{$usersCount}}</h3>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div>
-                                <img src="{{asset('images/User_icon_2.png')}}" alt="" style="width: 50px; height: 50px;">
-                            </div>
-                        </div>
-                    </div>
-                    <h6 class="text-muted font-weight-normal">Số lượng người dùng</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-9">
-                            <div class="d-flex align-items-center align-self-start">
-                                <h3 class="mb-0">{{$ordersCount}}</h3>
-                                <p class="text-danger ml-2 mb-0 font-weight-medium"></p>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div>
-                                <img src="{{asset('images/icon-3.png')}}" alt="Sản phẩm" style="width: 50px; height: 50px;">
+                    <ul class="list-unstyled mb-0" style="font-size: 14px;">
 
-                            </div>
-                        </div>
-                    </div>
-                    <h6 class="text-muted font-weight-normal">Số lượng đơn hàng</h6>
+                        <li class="mb-1">
+                            <h3>{{ $productsCount}}</h3>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-            <div class="card">
+            <div class="card shadow-sm">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-9">
-                            <div class="d-flex align-items-center align-self-start">
-                                <h3 class="mb-0">{{$categories->count()}}</h3>
-                                <p class="text-success ml-2 mb-0 font-weight-medium"></p>
-                            </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h6 class="text-muted font-weight-normal mb-1">Tổng người dùng</h6>
                         </div>
-                        <div class="col-3">
-                            <div>
-                                <img src="{{asset('images/danh-muc.png')}}" alt="Sản phẩm" style="width: 50px; height: 50px;">
-
-                            </div>
+                        <div>
+                            <img src="{{asset('images/User_icon_2.png')}}" alt="" style="width: 40px; height: 40px;">
                         </div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Số lượng danh mục</h6>
+                    <ul class="list-unstyled mb-0" style="font-size: 14px;">
+
+                        <li class="mb-1">
+                            <h3>{{ $usersCount}}</h3>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
+
+        <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h6 class="text-muted font-weight-normal mb-1">Tổng sản phẩm đã bán</h6>
+                        </div>
+                        <div>
+                            <img src="{{asset('images/icon-3.png')}}" alt="Sản phẩm" style="width: 40px; height: 40px;">
+                        </div>
+                    </div>
+                    <ul class="list-unstyled mb-0" style="font-size: 14px;">
+
+                        <li class="mb-1">
+                            <h3>{{ $ordersCount}}</h3>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h6 class="text-muted font-weight-normal mb-1">Tổng số danh mục sản phẩm</h6>
+                        </div>
+                        <div>
+                            <img src="{{asset('images/danh-muc.png')}}" alt="Sản phẩm" style="width: 40px; height: 40px;">
+                        </div>
+                    </div>
+                    <ul class="list-unstyled mb-0" style="font-size: 14px;">
+                        <h3>{{ $categories->count()}}</h3>
+
+                        <li class="mb-1">
+                            <ul class="list-unstyled mb-0" style="font-size: 14px;">
+                                @foreach($totalCate as $cat)
+                                <li class="mb-1">
+                                    <i class="mdi mdi-circle-medium text-primary align-middle me-1"></i>
+                                    <span>{{ $cat->name }}</span>
+                                    <span class="text-muted small">({{ $cat->product_count }} sản phẩm)</span>
+                                </li>
+                                @endforeach
+                            </ul>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-sm-6 grid-margin stretch-card">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h6 class="text-muted font-weight-normal mb-1">Top giảm giá</h6>
+                        </div>
+                        <div>
+                            <img src="{{asset('images/danh-muc.png')}}" alt="Sản phẩm" style="width: 40px; height: 40px;">
+                        </div>
+                    </div>
+                    <ul class="list-unstyled mb-0" style="font-size: 14px;">
+
+
+                        <li class="mb-1">
+                            <ul class="list-unstyled mb-0" style="font-size: 14px;">
+                                @foreach($topDiscountProducts as $product)
+                                <li class="mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('images/' . ($product->firstImage->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; margin-right: 10px;">
+                                        <div>
+                                            <div>{{ $product->name }}</div>
+                                            <div class="text-muted small">Giảm {{ $product->discount_percent }}%</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                @endforeach
+                            </ul>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h6 class="text-muted font-weight-normal mb-1">Top danh mục bán chạy</h6>
+                        </div>
+                        <div>
+                            <img src="{{asset('images/danh-muc.png')}}" alt="Sản phẩm" style="width: 40px; height: 40px;">
+                        </div>
+                    </div>
+                    <ul class="list-unstyled mb-0" style="font-size: 14px;">
+                        @forelse($topCategories as $cat)
+                        <li class="mb-1">
+                            <i class="mdi mdi-circle-medium text-primary align-middle me-1"></i>
+                            <span>{{ $cat->name }}</span>
+                            <span class="text-muted small">({{ $cat->total_sold }} đã bán)</span>
+                        </li>
+                        @empty
+                        <li>Chưa có dữ liệu</li>
+                        @endforelse
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h6 class="text-muted font-weight-normal mb-0">Trung bình đánh giá</h6>
+                            <h3 class="font-weight-bold mb-0 d-flex align-items-center" style="margin-left: 30px;">
+                                {{ $averageRating }}
+                                <i class="mdi mdi-star text-warning ms-1"></i>
+                                <!-- <i class="fas fa-star-half-alt text-warning ms-1" style="font-size: 12px;"></i> -->
+                            </h3>
+                        </div>
+
+                    </div>
+                    <ul class="list-unstyled mb-0" style="font-size: 14px;">
+                        @for ($i = 5; $i >= 1; $i--)
+                        <li class="mb-1 d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="mdi mdi-star text-warning"></i>
+                                {{ $i }} sao
+                            </span>
+                            <span class="text-muted small">{{ $ratingCounts[$i] ?? 0 }} lượt</span>
+                        </li>
+                        @endfor
+                    </ul>
+                </div>
+            </div>
+        </div>
+
     </div>
+
 
     <div class="row">
         <div class="col-md-4 grid-margin stretch-card">
@@ -211,14 +312,14 @@
 
                         <div class="contai" style="display: flex; justify-content: space-between; align-items: center;">
                             <div class="wrap">
-                            <h3 class="text-xl font-bold text-gray-800" style="color:#6c7293 !important">Doanh thu tháng {{ date('m-Y', strtotime($selectedMonth)) }}</h3>
-                            <h4 class="text-2xl text-blue-600 font-semibold">
-                                {{ number_format($monthlyRevenueTotal, 0, ',', '.') }} VNĐ
-                            </h4>
-                        </div>
-                        <div>
-                            <img src="{{asset('images/doanh-thu.png')}}" alt="Sản phẩm" style="width: 50px; height: 50px;">
-                        </div>
+                                <h3 class="text-xl font-bold text-gray-800" style="color:#6c7293 !important">Doanh thu tháng {{ date('m-Y', strtotime($selectedMonth)) }}</h3>
+                                <h4 class="text-2xl text-blue-600 font-semibold">
+                                    {{ number_format($monthlyRevenueTotal, 0, ',', '.') }} VNĐ
+                                </h4>
+                            </div>
+                            <div>
+                                <img src="{{asset('images/doanh-thu.png')}}" alt="Sản phẩm" style="width: 50px; height: 50px;">
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex flex-row justify-content-between">

@@ -31,7 +31,7 @@
 
     #chatbot-toggle {
         position: fixed;
-        bottom: 70px;
+        bottom: 120px;
         right: 13px;
         /* background: var(--primary-color); */
         color: white;

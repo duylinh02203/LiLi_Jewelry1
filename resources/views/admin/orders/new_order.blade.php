@@ -56,7 +56,7 @@
                                     <td>{{ $order->email }}</td>
                                     <td>{{ $order->payment == 'cod' ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua VNPay' }}
                                     </td>
-                                    <td>{{ number_format($order->total_price, 0, '.', ',') }} VNĐ</td>
+                                    <td>{{ number_format($order->total_price, 0, ',', '.') }} đ</td>
                                     @php
                                     $statusText = match ($order->status) {
                                     'pending' => 'Đang chờ xác nhận',

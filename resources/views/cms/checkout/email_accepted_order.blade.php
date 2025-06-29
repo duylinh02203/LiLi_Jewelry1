@@ -111,7 +111,7 @@
             </tbody>
         </table>
 
-        <p class="total">Tổng tiền: {{ number_format($order->total_price, 0, ',', '.') }} VNĐ @if($order->payment=='vnpay')<span style="color:green;">Đã thanh toán !</span>@endif</p>
+        <p class="total">Tổng tiền: {{ number_format($order->total_price, 0, ',', '.') }} đ @if($order->payment=='vnpay')<span style="color:green;">Đã thanh toán !</span>@endif</p>
 
         <div class="footer">
             <p>ShopDemo - Địa chỉ: Vân Nam - Phúc Thọ - Hà Nội</p>

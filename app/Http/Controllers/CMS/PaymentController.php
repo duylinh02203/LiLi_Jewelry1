@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\ProductSize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -32,7 +33,7 @@ class PaymentController extends Controller
         DB::beginTransaction();
         try {
             $cartId = Cart::where('user_id', session('userData')->id)->first()->id;
-            $cartItems = CartItem::where('cart_id', $cartId)->get();
+            $cartItems = CartItem::with('product')->where('cart_id', $cartId)->get();
             if ($request->payment == 'vnpay') {
                 $vnp_Url = config('vnpay.vnp_Url');
                 $vnp_Returnurl = config('vnpay.vnp_ReturnUrl');
@@ -102,19 +103,54 @@ class PaymentController extends Controller
                     'email' => $request->email,
                     'total_price' => $request->total_price,
                 ]);
-                if ($order) {
-                    foreach ($cartItems as $cartItem) {
-                        $orderItem = OrderItem::create([
-                            'order_id' => $order->id,
-                            'product_id' => $cartItem->product_id,
-                            'quantity' => $cartItem->quantity,
-                            'size' => $cartItem->size,
-                        ]);
-                        $cartItem->delete();
+
+                // ✅ Xử lý từng sản phẩm trong giỏ
+                foreach ($cartItems as $cartItem) {
+                    // Tạo order item
+                    $orderItem = OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $cartItem->product_id,
+                        'quantity' => $cartItem->quantity,
+                        'size' => $cartItem->size,
+                    ]);
+                    $product = $cartItem->product;
+
+                    if ($product->is_free_size) {
+                        // ✅ Nếu là freesize: trừ trực tiếp quantity tổng
+                        $product->quantity -= $cartItem->quantity;
+                        if ($product->quantity < 0) {
+                            throw new \Exception('Số lượng sản phẩm không đủ.');
+                        }
+                        $product->save();
+                    } else {
+                        // ✅ Nếu có size: trừ ở bảng product_sizes
+                        $productSize = ProductSize::where('product_id', $product->id)
+                            ->where('size', $cartItem->size)
+                            ->first();
+
+                        if (!$productSize) {
+                            throw new \Exception('Không tìm thấy kích thước phù hợp cho sản phẩm.');
+                        }
+
+                        if ($productSize->quantity < $cartItem->quantity) {
+                            throw new \Exception("Số lượng size {$cartItem->size} của sản phẩm không đủ.");
+                        }
+
+                        // Trừ size
+                        $productSize->quantity -= $cartItem->quantity;
+                        $productSize->save();
+
+                        // ✅ Cập nhật lại tổng số lượng sản phẩm
+                        $product->quantity = ProductSize::where('product_id', $product->id)->sum('quantity');
+                        $product->save();
                     }
+
+                    // ✅ Xóa khỏi giỏ
+                    $cartItem->delete();
                 }
-                $orderWithItems = Order::with('orderItems.product')->find($order->id);
+
                 DB::commit();
+                $orderWithItems = Order::with('orderItems.product')->find($order->id);
                 return view('cms.checkout.payment_success', compact('orderWithItems', 'order'));
             }
         } catch (\Exception $e) {
@@ -126,36 +162,73 @@ class PaymentController extends Controller
     public function vnpayReturn(Request $request)
     {
         $vnp_ResponseCode = $request->input('vnp_ResponseCode');
+
         if ($vnp_ResponseCode == '00') {
-            $cartId = Cart::where('user_id', session('userData')->id)->first()->id;
-            $cartItems = CartItem::where('cart_id', $cartId)->get();
-            $order = Order::create([
-                'user_id' => session('userData')->id,
-                'status' => 'pending',
-                'payment' => 'vnpay',
-                'phone' => session('orderData')['phone'],
-                'address' => session('orderData')['address'],
-                'name' => session('orderData')['name'],
-                'email' => session('orderData')['email'],
-                'total_price' => session('orderData')['total_price'],
-            ]);
-            if ($order) {
+            DB::beginTransaction();
+            try {
+                $userId = session('userData')->id;
+                $cart = Cart::where('user_id', $userId)->first();
+                $cartItems = CartItem::with('product')->where('cart_id', $cart->id)->get();
+
+                // Tạo đơn hàng
+                $order = Order::create([
+                    'user_id' => $userId,
+                    'status' => 'pending',
+                    'payment' => 'vnpay',
+                    'phone' => session('orderData')['phone'],
+                    'address' => session('orderData')['address'],
+                    'name' => session('orderData')['name'],
+                    'email' => session('orderData')['email'],
+                    'total_price' => session('orderData')['total_price'],
+                ]);
+
                 foreach ($cartItems as $cartItem) {
-                    $orderItem = OrderItem::create([
+                    // Tạo từng mục đơn hàng
+                    OrderItem::create([
                         'order_id' => $order->id,
                         'product_id' => $cartItem->product_id,
                         'quantity' => $cartItem->quantity,
                         'size' => $cartItem->size,
                     ]);
+
+                    // Trừ số lượng sản phẩm
+                    $product = $cartItem->product;
+
+                    if ($product->is_free_size) {
+                        // Nếu là freesize → trừ trực tiếp từ sản phẩm
+                        $product->decrement('quantity', $cartItem->quantity);
+                    } else {
+                        // Nếu có size → trừ từ bảng ProductSize
+                        $size = ProductSize::where('product_id', $product->id)
+                            ->where('size', $cartItem->size)
+                            ->first();
+
+                        if ($size) {
+                            $size->decrement('quantity', $cartItem->quantity);
+                        }
+                        
+                        $totalQuantity = ProductSize::where('product_id', $product->id)->sum('quantity');
+                        $product->update(['quantity' => $totalQuantity]);
+                    }
+
+                    // Xóa sản phẩm khỏi giỏ
                     $cartItem->delete();
                 }
+
+                DB::commit();
+
+                $orderWithItems = Order::with('orderItems.product')->find($order->id);
+                return view('cms.checkout.payment_success', compact('orderWithItems', 'order'));
+            } catch (\Throwable $e) {
+                DB::rollBack();
+                return view('cms.checkout.payment_failed')->with('error', 'Lỗi xử lý đơn hàng: ' . $e->getMessage());
             }
-            $orderWithItems = Order::with('orderItems.product')->find($order->id);
-            return view('cms.checkout.payment_success', compact('orderWithItems', 'order'));
-        } elseif ($vnp_ResponseCode == null) {
-            return view('cms.cart.cart');
-        } elseif ($vnp_ResponseCode != '00' && $vnp_ResponseCode != null) {
-            return view('cms.checkout.payment_failed');
         }
+
+        if ($vnp_ResponseCode === null) {
+            return view('cms.cart.cart');
+        }
+
+        return view('cms.checkout.payment_failed');
     }
 }

@@ -109,7 +109,7 @@
             </tbody>
         </table>
 
-        <p class="total">Tổng tiền: {{ number_format($order->total_price, 0, ',', '.') }} VNĐ</p>
+        <p class="total">Tổng tiền: {{ number_format($order->total_price, 0, ',', '.') }} đ</p>
 
         <div class="footer">
             <p>ShopDemo - Địa chỉ: Vân Nam - Phúc Thọ - Hà Nội</p>

@@ -25,7 +25,7 @@
                 <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
                     <div class="card col-lg-4 mx-auto">
                         <div class="card-body px-5 py-5">
-                            <h3 class="card-title text-left mb-3">Login</h3>
+                            <h3 class="card-title text-left mb-3">Đăng Nhập</h3>
                             <form method="POST" action="{{ route('admin.login') }}">
                                 @csrf
                                 <div class="form-group">
@@ -38,19 +38,19 @@
                                         @enderror
                                     </label>
                                     <input name="email" type="text" class="form-control p_input"
-                                        placeholder="Email">
+                                        placeholder="Địa chỉ Email">
                                 </div>
                                 <div class="form-group">
-                                    <label>Password
+                                    <label>Mật khẩu
                                         @error('password')
                                             <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                                         @enderror
                                     </label>
                                     <input name="password" type="password" class="form-control p_input"
-                                        placeholder="Password">
+                                        placeholder="Mật khẩu">
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-primary btn-block enter-btn">Login</button>
+                                    <button class="btn btn-primary btn-block enter-btn">Đăng Nhập</button>
                                 </div>
                             </form>
                         </div>

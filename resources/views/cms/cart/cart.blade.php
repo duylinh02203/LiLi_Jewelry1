@@ -83,6 +83,15 @@
 <section class="cart-section section-b-space">
     <div class="container">
         <div class="row">
+            @if (!empty($cartNotices))
+            <div class="alert alert-warning" style="margin-bottom: 20px;">
+                <ul style="margin-bottom: 0;">
+                    @foreach ($cartNotices as $notice)
+                    <li>{{ $notice }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             <div class="title title1 title-effect mb-1 title-left" style="margin-bottom: 40px !important;">
                 <h2>Giỏ hàng</h2>
             </div>
@@ -127,7 +136,7 @@
                                     </div>
                                     <div class="col">
                                         <!-- <h2>$18</h2> -->
-                                        <span>$18</span>
+                                        <span>{{ number_format($item->product->price, 0, ',', '.') }} VNĐ</span>
                                     </div>
                                     <div class="col">
                                         <h2 class="td-color">
@@ -272,7 +281,7 @@
         notification.textContent = message;
         Object.assign(notification.style, {
             position: 'fixed',
-            top: '20px',
+            top: '120px',
             right: '20px',
             padding: '10px 20px',
             borderRadius: '8px',
@@ -414,15 +423,22 @@
                     quantity: quantity
                 }),
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        'content'),
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                     'Content-Type': 'application/json',
                 }
             })
             .then(res => res.json())
             .then(data => {
-                showNotification(data.status === 'success' ? 'success' : 'error', data.message);
-                if (data.status === 'success') location.reload();
+                if (data.status === 'success') {
+                    showNotification('success', data.message);
+                    location.reload();
+                } else {
+                    showNotification('error', data.message);
+                    if (typeof data.max_quantity !== 'undefined') {
+                        const input = document.querySelector(`input[name="quantity"][data-cart-item-id="${cartItemId}"]`);
+                        if (input) input.value = data.max_quantity;
+                    }
+                }
             })
             .catch(() => showNotification('error', 'Đã có lỗi xảy ra!'));
     }
@@ -534,8 +550,7 @@
             fetch("{{ route('cart.updateCart') }}", {
                     method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                            .getAttribute('content'),
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -545,9 +560,16 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                    showNotification(data.status === 'success' ? 'success' : 'error', data
-                        .message);
-                    if (data.status === 'success') location.reload();
+                    if (data.status === 'success') {
+                        showNotification('success', data.message);
+                        location.reload();
+                    } else {
+                        showNotification('error', data.message);
+                        if (data.revert_size) {
+                            // Trả lại oldSize trên select
+                            this.value = data.revert_size;
+                        }
+                    }
                 })
                 .catch(() => showNotification('error', 'Đã có lỗi xảy ra khi cập nhật size!'));
         });

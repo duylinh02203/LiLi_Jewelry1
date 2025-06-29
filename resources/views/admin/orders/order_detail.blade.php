@@ -64,6 +64,7 @@
                                 <button type="submit" class="btn btn-success">Xác nhận đơn
                                     hàng</button>
                             </form>
+                            @if($order->payment == 'cod')
                             <form action="{{ route('admin.order.cancelOrder') }}" method="POST"
                                 id="cancelled-form-{{ $order->id }}" style="margin-top: 20px">
                                 @csrf
@@ -73,6 +74,7 @@
                                     Hủy đơn hàng
                                 </button>
                             </form>
+                            @endif
                             @endif
                         </div>
                         <div>
@@ -102,10 +104,10 @@
                                 </td>
                                 <td style="border: 1px solid #ccc; padding: 8px;">{{ $item->quantity }}</td>
                                 <td style="border: 1px solid #ccc; padding: 8px;">
-                                    {{ number_format($item->product->price, 0, ',', '.') }}
+                                    {{ number_format($item->product->price, 0, ',', '.') }} đ
                                 </td>
                                 <td style="border: 1px solid #ccc; padding: 8px;">
-                                    {{ number_format($item->quantity * $item->product->price, 0, ',', '.') }}
+                                    {{ number_format($item->quantity * $item->product->price, 0, ',', '.')}} đ
                                 </td>
                             </tr>
                             @endforeach
@@ -113,7 +115,7 @@
                             <tr style="text-align: center; font-weight: bold;">
                                 <td colspan="3" style="border: 1px solid #ccc; padding: 8px;">Tổng cộng</td>
                                 <td style="border: 1px solid #ccc; padding: 8px;">
-                                    {{ number_format($order->total_price, 0, ',', '.') }} VNĐ
+                                    {{ number_format($order->total_price, 0, ',', '.') }} đ
                                 </td>
                             </tr>
                         </tbody>
