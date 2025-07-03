@@ -154,7 +154,7 @@ class CartController extends Controller
                     ->where('size', $sizeToUpdate)
                     ->where('id', '!=', $cartItem->id)
                     ->sum('quantity');
-                
+
                 $totalRequested = $existingQtySameSize + $updatedQuantity;
 
                 if ($totalRequested > $productSize->quantity) {
@@ -270,10 +270,6 @@ class CartController extends Controller
                     $cartItem->delete();
                     continue;
                 }
-                // if ($cartItem->quantity > $stock) {
-                //     $cartNotices[] = "Số lượng sản phẩm {$product->name} (size {$cartItem->size}) vượt quá tồn kho. Đã cập nhật về $stock.";
-                //     $cartItem->update(['quantity' => $stock]);
-                // }
             } else {
                 $stock = $product->quantity;
                 if ($stock <= 0) {
@@ -281,10 +277,6 @@ class CartController extends Controller
                     $cartItem->delete();
                     continue;
                 }
-                // if ($cartItem->quantity > $stock) {
-                //     $cartNotices[] = "Số lượng sản phẩm {$product->name} vượt quá tồn kho. Đã cập nhật về $stock.";
-                //     $cartItem->update(['quantity' => $stock]);
-                // }
             }
             $totalPrice += $product->price * $cartItem->quantity;
         }

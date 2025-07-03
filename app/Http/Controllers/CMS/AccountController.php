@@ -34,6 +34,9 @@ class AccountController extends Controller
             $userInfor = UserInfor::where('user_id', $userChange->id)->first();
             $userInfor->update([
                 'phone' => $request->phone,
+                'address' => $request->address ?? null,
+                'district' => $request->district ?? null,
+                'province' => $request->province ?? null,
             ]);
             DB::commit();
             session(['userData' => $userChange->load('userInfor')]);

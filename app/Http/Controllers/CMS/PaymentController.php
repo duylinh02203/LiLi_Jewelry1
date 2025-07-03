@@ -9,6 +9,7 @@ use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ProductSize;
+use App\Models\UserInfor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -19,13 +20,15 @@ class PaymentController extends Controller
         $cartId = Cart::where('user_id', session('userData')->id)->first()->id;
         $cartItems = CartItem::where('cart_id', $cartId)->get();
         $totalPrice = 0;
+        $user = session('userData');
+        $userInfor = UserInfor::where('user_id', $user->id)->first();
         foreach ($cartItems as $cartItem) {
             $totalPrice += $cartItem->product->price * $cartItem->quantity;
         }
         if ($totalPrice <= 0) {
             return redirect()->route('shop')->with('error', 'Không thể thanh toán vì giỏ hàng trống');
         }
-        return view('cms.checkout.checkout', compact('cartItems', 'totalPrice', 'cartId'));
+        return view('cms.checkout.checkout', compact('cartItems', 'totalPrice', 'cartId', 'userInfor'));
     }
 
     public function orders(PaymentRequest $request)
@@ -206,7 +209,7 @@ class PaymentController extends Controller
                         if ($size) {
                             $size->decrement('quantity', $cartItem->quantity);
                         }
-                        
+
                         $totalQuantity = ProductSize::where('product_id', $product->id)->sum('quantity');
                         $product->update(['quantity' => $totalQuantity]);
                     }

@@ -1,21 +1,28 @@
-<div id="chatbot-toggle" onclick="toggleChatbot()"><img src="{{ asset('cms/assets/images/chat-icon.png') }}" alt="" width="50" height="50">
+<div id="chatbot-toggle" onclick="toggleChatbot()">
+    <img src="{{ asset('cms/assets/images/chat-icon.png') }}" alt="" width="50" height="50">
 </div>
 
 <div id="chatbot-box">
     <div id="chatbot-header">
         <span>LiLi Jewelry</span>
         <div class="wrap-chat">
-            <span onclick="clearChatHistory()" style="cursor:pointer; margin-right: 10px;"><i class="fa-solid fa-trash"></i></span>
-            <span onclick="toggleChatbot()" style="cursor:pointer;"><i class="fa-solid fa-xmark"></i></span>
+            <span onclick="clearChatHistory()" style="cursor:pointer; margin-right: 10px;">
+                <i class="fa-solid fa-trash"></i>
+            </span>
+            <span onclick="toggleChatbot()" style="cursor:pointer;">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
         </div>
     </div>
 
     <div id="chatbot-messages"></div>
     <div id="chatbot-input">
-        <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." onkeydown="if(event.key==='Enter') sendMessage();">
+        <input type="text" id="chat-input" placeholder="Nhập tin nhắn..."
+            onkeydown="if(event.key==='Enter') sendMessage();">
         <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
     </div>
 </div>
+
 <style>
     :root {
         --primary-color: #007bff;
@@ -33,9 +40,7 @@
         position: fixed;
         bottom: 120px;
         right: 13px;
-        /* background: var(--primary-color); */
         color: white;
-        /* padding: 15px; */
         border-radius: 50%;
         cursor: pointer;
         z-index: 10000;
@@ -73,19 +78,18 @@
         overflow-y: auto;
         font-size: 14px;
         background: var(--secondary-color);
+        display: flex;
+        flex-direction: column;
     }
 
     #chatbot-messages div {
-        margin: 8px 0;
-        padding: 10px;
+        margin: 6px 0;
+        padding: 8px;
         border-radius: var(--border-radius);
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        display: inline-block;
         max-width: 80%;
-    }
-
-    #chatbot-messages div strong {
-        display: block;
-        margin-bottom: 5px;
-        font-size: 13px;
     }
 
     #chatbot-messages div.user {
@@ -104,6 +108,8 @@
         color: red;
         text-align: center;
         font-size: 12px;
+        background: none;
+        display: block;
     }
 
     #chatbot-input {
@@ -129,7 +135,47 @@
         border: none;
         font-size: 14px;
     }
+
+    /* ✅ KHUNG SẢN PHẨM GỌN GÀNG NHẤT */
+    .bot .product-card {
+        background: white;
+        border-radius: 8px;
+        padding: 6px 8px;
+        margin: 4px 0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        max-width: 100%;
+        font-size: 13px;
+        line-height: 1.2;
+        box-sizing: border-box;
+    }
+
+    .product-card img {
+        width: 100%;
+        border-radius: 6px;
+        margin-bottom: 4px;
+    }
+
+    .product-card div {
+        margin-bottom: 2px;
+    }
+
+    .product-card button {
+        background: #007bff;
+        color: white;
+        padding: 4px 8px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 13px;
+        margin-top: 2px;
+    }
+
+    .product-card a {
+        text-decoration: none;
+        display: inline-block;
+    }
 </style>
+
 <script>
     function toggleChatbot() {
         const chatbotBox = document.getElementById('chatbot-box');
@@ -146,7 +192,6 @@
 
         if (!message) return;
 
-        // Hiển thị tin nhắn user ngay lập tức
         const userObj = {
             role: 'user',
             parts: [{
@@ -157,7 +202,6 @@
         addToHistory(userObj);
         input.value = '';
 
-        // Gửi message lên server
         fetch("{{ route('chat.ajax') }}", {
                 method: 'POST',
                 headers: {
@@ -172,7 +216,6 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success && Array.isArray(data.history) && data.history.length > 0) {
-                    // Lấy tin nhắn bot cuối cùng
                     const lastMsg = data.history[data.history.length - 1];
                     if (lastMsg && lastMsg.role === 'model') {
                         appendMessage(lastMsg);
@@ -189,7 +232,7 @@
                     addToHistory(errorMsg);
                 }
             })
-            .catch(error => {
+            .catch(() => {
                 const errorMsg = {
                     role: 'error',
                     parts: [{
@@ -227,12 +270,6 @@
         }
     }
 
-    function renderChatHistory(historyArr) {
-        const chatBox = document.getElementById('chatbot-messages');
-        chatBox.innerHTML = historyArr.map(renderMessageDiv).join('');
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
     function loadChatHistory() {
         const chatBox = document.getElementById('chatbot-messages');
         let history = JSON.parse(localStorage.getItem('chatHistory')) || [];
@@ -267,17 +304,12 @@
                     const welcomeObj = {
                         role: 'bot',
                         parts: [{
-                            text: 'Chào bạn đến với LiLi Jewelry! Hãy cho mình biết bạn đang quan tâm đến loại trang sức nào – mình sẽ gợi ý sản phẩm phù hợp nhất ✨'
+                            text: 'Chào bạn đến với LiLi Jewelry! Hãy cho mình biết bạn đang quan tâm đến loại trang sức nào ✨'
                         }]
                     };
                     chatBox.innerHTML = renderMessageDiv(welcomeObj);
                     localStorage.setItem('chatHistory', JSON.stringify([welcomeObj]));
-                } else {
-                    console.error('Lỗi:', data.message);
                 }
-            })
-            .catch(error => {
-                console.error('Lỗi:', error);
             });
     }
 </script>

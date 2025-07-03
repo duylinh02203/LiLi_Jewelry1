@@ -52,19 +52,6 @@
 </head>
 
 <body class="theme-color4 light ltr">
-
-    <script>
-        (function() {
-            var script = document.createElement('script');
-            script.dataset.bot = "6841cd5e5270993762ec5034";
-            script.dataset.zindex = "99999";
-            script.src = "https://panel.chatfuel.com/widgets/chat-widget/chat-widget.js";
-            script.async = true;
-            script.defer = true;
-            document.getElementsByTagName('head')[0].appendChild(script);
-        })()
-    </script>
-
     <header class="header-style-2 fixed-header" id="home">
         @include('cms.layouts.partials.header')
     </header>

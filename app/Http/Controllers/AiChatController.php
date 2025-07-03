@@ -24,21 +24,20 @@ class AiChatController extends Controller
 
         self::$apiKey = env('GEMINI_API_KEY');
 
-
         $products = Product::with(['category', 'firstImage', 'sizes'])->get();
 
         $productsInfo = $products->map(function ($product) {
             $categoryName = $product->category->name ?? 'Không có danh mục';
             $image = $product->firstImage->image ?? 'default.png';
-            // 
+
             $discountPercent = null;
             if ($product->listed_price && $product->listed_price > $product->price) {
                 $discountPercent = round((($product->listed_price - $product->price) / $product->listed_price) * 100);
             }
-            // Lấy danh sách kích thước và số lượng
+
             $sizeInfo = $product->sizes->map(function ($size) {
                 return "{$size->size} ({$size->quantity})";
-            })->implode(', '); // Ngăn cách các size bằng dấu phẩy
+            })->implode(', ');
 
             $info = "ID: {$product->id} - {$product->name} - Giá: {$product->price} - Mô tả: {$product->description} - slug: {$product->slug} - 
          Giới tính: {$product->gender} - Danh mục: {$categoryName} - Hình ảnh: {$image} - Kích thước: {$sizeInfo}";
@@ -46,9 +45,9 @@ class AiChatController extends Controller
             if ($discountPercent) {
                 $info .= " - Giảm giá: {$discountPercent}% (Giá niêm yết: {$product->listed_price})";
             }
+
             return $info;
         })->join("\n");
-
 
         $reviews = ProductReview::with('product')->get();
 
@@ -77,15 +76,14 @@ Khi người dùng hỏi về sản phẩm nào đó, hãy:
   - Nếu sản phẩm có nhiều size, hãy liệt kê các size (ví dụ: "Size: 6, 7, 8")
 - Nếu sản phẩm có giảm giá, hãy ghi rõ mức giảm giá (ví dụ: "Giảm 30%")
 
-
 Ví dụ sản phẩm hiển thị:
-<div style="margin:10px 0;padding:10px;border:1px solid #ddd;border-radius:10px;max-width:200px;font-size:12px;background:#fafafa;">
-  <img src="http://127.0.0.1:8000/images/abc.jpg" alt="Tên sản phẩm" style="width:80px;height:auto;border-radius:8px;margin-bottom:8px;">
-  <div style="font-weight:bold;margin-bottom:4px;">Tên sản phẩm</div>
-  <div style="color:#c0392b;margin-bottom:6px;">Giá: 2.000.000đ</div>
-  <div style="margin-bottom:6px;">Size: 6, 7, 8</div>
-  <a href="http://127.0.0.1:8000/product/slug" target="_blank" style="display:inline-block;padding:6px 12px;background:#007bff;color:#fff;text-decoration:none;border-radius:6px;">
-    Xem chi tiết
+<div class="product-card">
+  <img src="http://127.0.0.1:8000/images/abc.jpg" alt="Tên sản phẩm">
+  <div class="name">Tên sản phẩm</div>
+  <div class="price">Giá: 2.000.000đ</div>
+  <div class="discount">Giảm 30%</div>
+  <a href="http://127.0.0.1:8000/product/slug" target="_blank">
+    <button>Xem chi tiết</button>
   </a>
 </div>
 
@@ -100,19 +98,16 @@ Luôn bắt đầu bằng lời chào thân thiện và ngắn gọn.
 Chỉ đưa sản phẩm nếu thấy phù hợp.
 EOT;
 
-
-
         self::$history[] = ['role' => 'user', 'parts' => [['text' => $prompt]]];
         self::$initialized = true;
         session(['chat_history' => self::$history]);
     }
 
-
-
     public function chatAjax(Request $request)
     {
         self::init();
-        $message = $request->prompt ?? $request->prompt;
+        $message = $request->prompt ?? '';
+
         if (!$message || !is_string($message) || trim($message) === '') {
             return response()->json([
                 'success' => false,
@@ -120,11 +115,14 @@ EOT;
                 'errors' => ['message' => ['validation.required']]
             ], 422);
         }
+
         self::$history[] = ['role' => 'user', 'parts' => [['text' => $message]]];
+
         try {
-            $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBkqcA8SCP-nEnUDTJsl2mLpvV8Jnr9HtY", [
-                'contents' => self::$history
-            ]);
+            $response = Http::post(
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" . env('GEMINI_API_KEY'),
+                ['contents' => self::$history]
+            );
 
             if ($response->failed()) {
                 return response()->json([
@@ -136,34 +134,42 @@ EOT;
 
             $text = $response->json('candidates.0.content.parts.0.text') ?? 'Không có phản hồi.';
 
-            // Tìm sản phẩm liên quan theo tên hoặc từ khóa trong message
-            $products = Product::with('firstImage')->where('name', 'like', '%' . $message . '%')->limit(3)->get();
+            // Tìm sản phẩm liên quan theo tên
+            $products = Product::with('firstImage')
+                ->where('name', 'like', '%' . $message . '%')
+                ->limit(3)
+                ->get();
 
             if ($products->count() > 0) {
-                $text .= "<div style='margin-top:10px;'><strong>Sản phẩm phù hợp bạn tìm:</strong></div>";
+                $text .= "<div><strong>Sản phẩm phù hợp bạn tìm:</strong></div>";
 
                 foreach ($products as $product) {
                     $image = optional($product->firstImage)->image ?? 'default.png';
                     $imgUrl = asset('images/' . $image);
                     $link = url('/product/' . $product->slug);
                     $price = number_format($product->price) . 'đ';
+                    $discount = $product->listed_price && $product->listed_price > $product->price
+                        ? round((($product->listed_price - $product->price) / $product->listed_price) * 100)
+                        : null;
 
                     $text .= '
-        <div style="margin:10px 0;padding:10px;border:1px solid #ddd;border-radius:10px;max-width:200px;font-size:12px;background:#fafafa;">
-            <img src="' . $imgUrl . '" alt="' . e($product->name) . '" style="width:100%;height:auto;border-radius:8px;margin-bottom:8px;">
-            <div style="font-weight:bold;margin-bottom:4px;">' . e($product->name) . '</div>
-            <div style="color:#c0392b;margin-bottom:6px;">Giá: ' . $price . '</div>
-            <a href="' . $link . '" target="_blank" style="display:inline-block;padding:6px 12px;background:#007bff;color:#fff;text-decoration:none;border-radius:6px;">
-                Xem chi tiết
-            </a>
-        </div>';
+                            <div class="bot">
+                            <div class="product-card">
+                                <img src="' . $imgUrl . '" alt="' . e($product->name) . '">
+                                <div class="name">' . e($product->name) . '</div>
+                                <div class="price">Giá: ' . $price . '</div>' .
+                        ($discount ? '<div class="discount">Giảm ' . $discount . '%</div>' : '') . '
+                                <a href="' . $link . '" target="_blank">
+                                <button>Xem chi tiết</button>
+                                </a>
+                            </div>
+                            </div>';
                 }
             }
 
-
-
             self::$history[] = ['role' => 'model', 'parts' => [['text' => $text]]];
             session(['chat_history' => self::$history]);
+
             return response()->json([
                 'success' => true,
                 'message' => $text,
@@ -183,6 +189,7 @@ EOT;
             self::$history = [];
             self::$initialized = false;
             session()->forget('chat_history');
+
             return response()->json([
                 'success' => true,
                 'message' => 'Lịch sử chat đã được xóa.',
