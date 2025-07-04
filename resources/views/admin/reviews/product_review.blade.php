@@ -69,7 +69,7 @@
                                     <td>{{$productReview->product->name}}</td>
                                     <td>{{$productReview->user->name}}</td>
                                     <td>{{$productReview->rating}} sao</td>
-                                    <td style="max-width: 30ch; word-wrap: break-word; white-space: normal; text-align: left;">{{$productReview->comment}}</td>
+                                    <td style="max-width: 30ch; word-wrap: break-word; white-space: normal; text-align: left;"class="clamp-2-lines">{{ \Illuminate\Support\Str::limit($productReview->comment, 100, '...') }}</td>
                                     <td>
                                         @if($productReview->status == 'active')
                                         <a href="{{route('admin.review.detail',$productReview->id)}}"><button

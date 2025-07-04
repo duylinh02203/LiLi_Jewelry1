@@ -115,7 +115,7 @@
 
         <div class="footer">
             <p>ShopDemo - Địa chỉ: Vân Nam - Phúc Thọ - Hà Nội</p>
-            <p>Hotline: 0123 456 789 | Email: support@shopdemo.vn</p>
+            <p>Hotline: 0397 326 216 | Email: support@shopdemo.vn</p>
         </div>
     </div>
 </body>

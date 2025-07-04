@@ -83,7 +83,6 @@
                                     @enderror
                                 </label>
                                 <div id="size-list">
-                                    {{-- Các dòng nhập sẽ thêm ở đây --}}
                                 </div>
                                 <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addSizeRow()">+ Thêm size</button>
 

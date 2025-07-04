@@ -1,76 +1,6 @@
 @extends('cms.layouts.app')
 @section('content')
 <style>
-    .category-content>h3 {
-        color: #ffffff !important
-    }
-
-    .description {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .star {
-        color: #ccc;
-        font-size: 20px;
-    }
-
-    .price-sale {
-        background-color: #bd1125;
-        border-radius: 10px !important;
-    }
-
-    .price-color {
-        color: #767676;
-    }
-
-    /* Overlay phủ mờ */
-    .size-overlay {
-        display: none;
-        /* Mặc định ẩn */
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-        justify-content: center;
-        align-items: flex-end;
-    }
-
-    /* Modal chọn size nổi ở dưới */
-    .size-modal {
-        width: 100%;
-        max-height: 33vh;
-        background-color: white;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
-        animation: slideUp 0.3s ease-out;
-    }
-
-    .size-title {
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 15px;
-        color: #e87316;
-    }
-
-    /* Animation xuất hiện mượt */
-    @keyframes slideUp {
-        from {
-            transform: translateY(100%);
-        }
-
-        to {
-            transform: translateY(0%);
-        }
-    }
 </style>
 <div id="carouselExampleCaptions" class="carousel slide col-12" data-bs-ride="carousel">
     <div class="carousel-indicators">
@@ -276,7 +206,7 @@
         <div class="row m-0">
             <div class="col-12 p-0">
                 <div class="title-3 text-center">
-                    <h2>Ưu đãi đến 45 %</h2>
+                    <h2>Sản phẩm ưu đãi</h2>
                     <h5 class="theme-color">Mua ngay</h5>
                 </div>
             </div>
@@ -375,9 +305,9 @@
             <!-- Các option sẽ được JS chèn vào -->
         </select>
         <div class="d-flex justify-content-between">
-            <button id="cancelSize" type="button" class="btn btn-outline-dark">Hủy</button>
+            <button id="cancelSize" type="button" class="btn btn-outline-dark" style="border-radius:10px;">Hủy</button>
             <button id="confirmSize" type="button" class="btn"
-                style="background-color: #e87316; color: black; font-weight: bold;">Xác nhận</button>
+                style="background-color: #e87316; color: black; font-weight: bold; border-radius:10px;">Xác nhận</button>
         </div>
     </div>
 </div>

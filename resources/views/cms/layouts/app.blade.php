@@ -126,7 +126,7 @@
                 <img src="{{ asset('images/support.png') }}" alt="Support Icon">
             </div>
             <h3>HỖ TRỢ NHIỆT TÌNH</h3>
-            <p>Tất cả câu hỏi đều được các chuyên viên của LiLi tư vấn, giải đáp kỹ càng</p>
+            <p>Nhân viên tư vấn LiLi sẵn sàng phục vụ bạn, đem lại sự hài lòng</p>
         </div>
     </section>
     <footer class="footer-sm-space mt-5">

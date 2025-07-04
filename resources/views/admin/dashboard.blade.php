@@ -166,7 +166,7 @@
                             <h6 class="text-muted font-weight-normal mb-1">Top giảm giá</h6>
                         </div>
                         <div>
-                            <img src="{{asset('images/danh-muc.png')}}" alt="Sản phẩm" style="width: 40px; height: 40px;">
+                            <img src="{{asset('images/791968.png')}}" alt="Sản phẩm" style="width: 40px; height: 40px;">
                         </div>
                     </div>
                     <ul class="list-unstyled mb-0" style="font-size: 14px;">

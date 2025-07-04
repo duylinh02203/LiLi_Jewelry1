@@ -122,7 +122,7 @@
                                 </div>
                                 <div class="contact-title">
                                     <h4>Địa chỉ :</h4>
-                                    <p>149 Khương Thượng, Đống Đa, Hà Nội</p>
+                                    <p>Vân Nam, Phúc Thọ, Hà Nội</p>
                                 </div>
                             </div>
 
@@ -138,7 +138,7 @@
                                 </div>
                                 <div class="contact-title">
                                     <h4>Số điện thoại :</h4>
-                                    <p>+84 397326216</p>
+                                    <p>0397 326 216</p>
                                 </div>
                             </div>
 

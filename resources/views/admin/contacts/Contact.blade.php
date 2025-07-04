@@ -51,7 +51,7 @@
                                     <td>{{$contact->name}}</td>
                                     <td>{{ $contact->email }}</td>
                                     <td>{{ $contact->phone }}</td>
-                                    <td>{{ $contact->comment }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($contact->comment, 60, '...') }}</td>
                                     <td>
                                         @if($contact->status == 'active')
                                         <a href="{{ route('admin.contact.detail', $contact->id) }}">

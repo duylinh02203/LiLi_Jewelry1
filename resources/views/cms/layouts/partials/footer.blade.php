@@ -9,7 +9,7 @@
         display: inline-block;
         box-sizing: border-box;
     }
-
+    
     .menu-link::after {
         content: '';
         position: absolute;
@@ -86,8 +86,7 @@ $categories = \App\Models\Category::with('products')
                         <li>
                             <div>
                                 <i class="fa-solid fa-location-dot"></i>
-                                <span style="margin-left: 5px;"><b>Địa chỉ:</b><span class="font-light"> 149 Khương
-                                        Thượng, Đống Đa, Hà Nội</span></span>
+                                <span style="margin-left: 5px;"><b>Địa chỉ:</b><span class="font-light">Vân Nam, Phúc Thọ, Hà Nội</span></span>
                             </div>
                         </li>
                         <li>

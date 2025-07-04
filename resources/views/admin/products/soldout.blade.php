@@ -144,7 +144,7 @@
                                             @csrf
                                             @method('PUT')
                                             <select name="status" onchange="this.form.submit()" class="form-select form-select-sm"
-                                                style="background-color: rgb(25, 28, 36); color: orange; border: 1px solid orange;">
+                                                style="background-color: rgb(25, 28, 36); color: orange; border: 1px solid orange;border-radius:10px;">
                                                 <option value="soldout" {{ $product->status == 'soldout' ? 'selected' : '' }}>Hết hàng</option>
                                                 <option value="active" {{ $product->status == 'active' ? 'selected' : '' }}>Còn hàng</option>
                                             </select>

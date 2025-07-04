@@ -57,9 +57,11 @@
                                 @endif
                             </td>
                             <td>{{ $item->quantity }}</td>
-                            <td>{{ number_format($item->product->price ?? 0) }} đ</td>
-                            <td class="fw-bold">{{ number_format(($item->product->price ?? 0) * $item->quantity)}} đ
+                            <td>{{ number_format($item->product->price ?? 0,0, ',', '.') }} đ</td>
+                            <td class="fw-bold">
+                                {{ number_format(($item->product->price ?? 0) * $item->quantity, 0, ',', '.') }} đ
                             </td>
+
                         </tr>
                         @endforeach
                         <tr>

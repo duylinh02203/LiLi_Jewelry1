@@ -41,13 +41,18 @@ class HomeController extends Controller
 
         $products = Product::with('images')
             ->where('status', 'active')
+            ->where(function ($query) {
+                $query->whereColumn('listed_price', '<=', 'price')
+                    ->orWhereNull('listed_price');
+            })
             ->orderBy('created_at', 'desc')
             ->take(12)
             ->get();
 
+
         $productSales = Product::where('status', 'active')
             ->whereRaw(
-                'ROUND((CAST(listed_price AS SIGNED) - CAST(price AS SIGNED)) / listed_price * 100) BETWEEN 30 AND 45'
+                'ROUND((CAST(listed_price AS SIGNED) - CAST(price AS SIGNED)) / listed_price * 100) BETWEEN 1 AND 45'
             )
             ->get();
 
